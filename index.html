@@ -8,14 +8,124 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css">
+  <style>
+    :root{
+      /* Palette éco */
+      --green-900:#0E7C66; /* sapin */
+      --green-700:#149E78; /* pin clair */
+      --green-500:#2BB673; /* feuille */
+      --green-300:#6ED4A4; /* menthe */
+      --green-100:#E8F7EF; /* givre */
+      --earth-500:#946B2D; /* terre */
+      --sky-100:#EAF6F6; /* ciel */
+      --ink-900:#0B1B1B; /* texte fort */
+      --ink-700:#2C3D3D; /* texte */
+      --ink-400:#637777; /* secondaire */
+      --white:#ffffff;
+      --shadow:0 8px 30px rgba(14,124,102,.15);
+      --radius: 18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial; color:var(--ink-900); background:linear-gradient(180deg,var(--sky-100),var(--white));}
+    a{color:var(--green-700); text-decoration:none}
+    img{max-width:100%;height:auto}
+
+    /* App shell */
+    header{
+      position:sticky; top:0; z-index:50; backdrop-filter:saturate(1.2) blur(8px);
+      background:rgba(255,255,255,.75); border-bottom:1px solid rgba(20,158,120,.08);
+    }
+    .container{max-width:1100px; margin-inline:auto; padding:18px 20px}
+    nav{display:flex; align-items:center; gap:24px;}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.2px; color:var(--green-900)}
+    .brand svg{width:38px;height:38px}
+    .spacer{flex:1}
+    .menu a{margin:0 10px; font-weight:600; color:var(--ink-700)}
+    .menu a:hover{color:var(--green-900)}
+    .btn{display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:10px 16px; font-weight:700; border:1px solid transparent; box-shadow:var(--shadow); transition:.2s ease;}
+    .btn-primary{background:linear-gradient(135deg,var(--green-700),var(--green-500)); color:#fff}
+    .btn-primary:hover{transform:translateY(-2px)}
+    .btn-ghost{background:#fff; color:var(--green-700); border-color:rgba(20,158,120,.18)}
+
+    /* Hero */
+    .hero{position:relative; overflow:hidden}
+    .hero .container{display:grid; grid-template-columns:1.1fr .9fr; align-items:center; gap:28px; padding-top:40px; padding-bottom:32px}
+    .badge{display:inline-flex; align-items:center; gap:8px; background:var(--green-100); color:var(--green-900); font-weight:700; border-radius:999px; padding:8px 12px; box-shadow:var(--shadow)}
+    h1{font-size:clamp(28px,4.5vw,46px); line-height:1.04; margin:16px 0}
+    .lead{font-size:18px; color:var(--ink-400); margin-bottom:22px}
+
+    /* Search card */
+    .search-card{background:#fff; padding:16px; border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid rgba(20,158,120,.08)}
+    .search-grid{display:grid; grid-template-columns:1fr 1fr 180px auto; gap:10px}
+    .field{display:flex; flex-direction:column; gap:6px}
+    label{font-size:12px; text-transform:uppercase; letter-spacing:.12em; color:var(--ink-400); font-weight:800}
+    input, select{border:1px solid rgba(20,158,120,.18); border-radius:12px; padding:12px 14px; font-size:15px; outline:none}
+    input:focus{border-color:var(--green-500); box-shadow:0 0 0 4px rgba(43,182,115,.12)}
+
+    /* Illustration décorative */
+    .leafs{position:absolute; inset:auto -80px -120px auto; opacity:.15; pointer-events:none}
+
+    /* Features */
+    .features{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:22px}
+    .feature{background:#fff; padding:16px; border-radius:16px; border:1px solid rgba(20,158,120,.08); box-shadow:var(--shadow); display:flex; gap:12px}
+    .feature svg{width:28px;height:28px; flex:0 0 28px}
+
+    /* Rides */
+    section#covoiturages{padding:40px 0}
+    .section-title{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .filters{display:flex; gap:10px; flex-wrap:wrap}
+    .chip{border:1px solid rgba(20,158,120,.18); background:#fff; border-radius:999px; padding:8px 12px; font-weight:600}
+
+    .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px}
+    .card{background:#fff; border:1px solid rgba(20,158,120,.1); border-radius:16px; overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column}
+    .card-header{padding:14px 16px; background:linear-gradient(180deg,var(--green-100),#fff)}
+    .driver{display:flex; align-items:center; gap:12px}
+    .avatar{width:44px;height:44px;border-radius:50%; background:linear-gradient(135deg,var(--green-300),var(--green-500)); display:grid; place-items:center; font-weight:800; color:#fff}
+    .pill{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:800; background:var(--green-100); color:var(--green-900)}
+    .card-body{padding:16px; display:grid; gap:10px}
+    .meta{display:flex; gap:10px; flex-wrap:wrap; color:var(--ink-400); font-size:14px}
+    .price{font-weight:800; font-size:18px; color:var(--green-900)}
+    .card-footer{padding:12px 16px; display:flex; align-items:center; justify-content:space-between; border-top:1px dashed rgba(20,158,120,.2)}
+
+    footer{background:#0f2; background:linear-gradient(180deg,#fff,var(--green-100)); border-top:1px solid rgba(20,158,120,.15)}
+    footer .container{display:grid; grid-template-columns:1fr auto; gap:12px; padding-top:26px; padding-bottom:26px; align-items:center}
+    .legal{color:var(--ink-400); font-size:14px}
+
+    /* Responsive */
+    @media (max-width:1000px){
+      .hero .container{grid-template-columns:1fr}
+      .search-grid{grid-template-columns:1fr 1fr}
+      .cards{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:640px){
+      .menu{display:none}
+      .search-grid{grid-template-columns:1fr}
+      .cards{grid-template-columns:1fr}
+    }
+  </style>
 </head>
 <body>
+  <!-- En-tête + Logo (SVG) -->
   <header>
     <div class="container">
       <nav>
         <a class="brand" href="#">
-          <img src="./assets/logo.svg" alt="EcoRide" width="38" height="38" />
+          <!-- Logo: feuille + volant -->
+          <svg viewBox="0 0 64 64" aria-hidden="true" role="img">
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="var(--green-700)"/>
+                <stop offset="100%" stop-color="var(--green-300)"/>
+              </linearGradient>
+            </defs>
+            <circle cx="32" cy="32" r="30" fill="url(#g)" opacity=".18"/>
+            <path d="M50 28c0 12-10 22-22 22-3 0-6-.6-8.7-1.9l3.7-3.7c1.6.4 3.3.6 5 .6 9.4 0 17-7.6 17-17 0-1.7-.2-3.4-.6-5l3.7-3.7c1.2 2.6 1.9 5.7 1.9 8.7Z" fill="url(#g)"/>
+            <path d="M14 36c0-12 10-22 22-22 3 0 6 .6 8.7 1.9l-8.4 8.4A9 9 0 0 0 23 37L14 46c-1.2-2.6-1.9-5.7-1.9-8.7Z" fill="url(#g)"/>
+            <circle cx="32" cy="32" r="10" fill="#fff"/>
+            <path d="M32 23a9 9 0 1 1 0 18 9 9 0 0 1 0-18Zm0 4a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z" fill="var(--green-900)"/>
+          </svg>
           EcoRide
         </a>
         <div class="spacer"></div>
@@ -31,6 +141,7 @@
     </div>
   </header>
 
+  <!-- Section Hero -->
   <section id="hero" class="hero">
     <div class="container">
       <div>
@@ -38,8 +149,9 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C7 2 3 6 3 11c0 6 6.4 10.6 8.2 11.8.5.3 1.2.3 1.6 0C14.6 21.6 21 17 21 11c0-5-4-9-9-9Zm3.5 9.2c-1.6 3.3-4.1 5.3-7.3 6.1a1 1 0 0 1-.5-1.9c2.7-.8 4.7-2.4 6-5a1 1 0 0 1 1.8.9Z"/></svg>
           Covoiturez, respirez, économisez
         </div>
-        <h1>La plateforme de covoiturage <span class="accent">éco‑responsable</span></h1>
-        <p class="lead">Trouvez ou proposez un trajet. Filtrez par prix, durée, note et énergie.</p>
+        <h1>La plateforme de covoiturage <span style="color:var(--green-700)">éco‑responsable</span></h1>
+        <p class="lead">Trouvez ou proposez un trajet. Filtrez par prix, durée, note et énergie (électrique = trajet "éco").
+        </p>
 
         <div class="search-card" role="search" aria-label="Recherche d'itinéraire">
           <form id="searchForm" class="search-grid">
@@ -62,26 +174,57 @@
         <div class="features" aria-label="Atouts d'EcoRide">
           <div class="feature">
             <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 1 7 7c0 4-4 10-7 13-3-3-7-9-7-13a7 7 0 0 1 7-7Zm0 9.5 3.5 3.5 1.5-1.5L12 8l-7 7 1.5 1.5L12 11.5Z"/></svg>
-            <div><strong>Écologique</strong><br/><span class="sub">Mettez en avant les trajets électriques.</span></div>
+            <div><strong>Écologique</strong><br/><span class="sub">Mettez en avant les trajets en voiture électrique.</span></div>
           </div>
           <div class="feature">
             <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 1 3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5l-9-4Zm0 4.2 5 2.2v3.6c0 4.1-2.6 8-5 9.2-2.4-1.2-5-5.1-5-9.2V7.4l5-2.2Z"/></svg>
-            <div><strong>Sécurisé</strong><br/><span class="sub">Comptes, avis, double confirmation.</span></div>
+            <div><strong>Sécurisé</strong><br/><span class="sub">Comptes, avis, et double confirmation.</span></div>
           </div>
           <div class="feature">
             <svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg>
-            <div><strong>Transparent</strong><br/><span class="sub">Prix, durée, note et places.</span></div>
+            <div><strong>Transparent</strong><br/><span class="sub">Prix, durée, note et places restantes.</span></div>
           </div>
         </div>
       </div>
 
+      <!-- Illustration héro (SVG) -->
       <div aria-hidden="true">
-        <img src="./assets/hero-illustration.svg" alt="" />
+        <svg viewBox="0 0 520 420" role="img" aria-label="Illustration véhicule électrique" style="width:100%;filter:drop-shadow(var(--shadow))">
+          <defs>
+            <linearGradient id="car" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="var(--green-500)"/>
+              <stop offset="100%" stop-color="var(--green-300)"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="520" height="420" rx="24" fill="var(--green-100)"/>
+          <circle cx="420" cy="120" r="80" fill="url(#car)" opacity=".25"/>
+          <g transform="translate(40,220)">
+            <rect x="0" y="-20" width="420" height="90" rx="24" fill="url(#car)"/>
+            <rect x="40" y="-40" width="170" height="70" rx="16" fill="#fff" opacity=".85"/>
+            <rect x="230" y="-40" width="110" height="70" rx="16" fill="#fff" opacity=".85"/>
+            <g>
+              <circle cx="120" cy="90" r="34" fill="#222"/>
+              <circle cx="120" cy="90" r="18" fill="#666"/>
+            </g>
+            <g>
+              <circle cx="340" cy="90" r="34" fill="#222"/>
+              <circle cx="340" cy="90" r="18" fill="#666"/>
+            </g>
+            <path d="M370 -10h24l12 16-12 16h-24l12-16-12-16Z" fill="#fff"/>
+          </g>
+          <g>
+            <path d="M70 360c60-40 120-40 180 0 60 40 120 40 180 0" fill="none" stroke="var(--green-300)" stroke-width="8" stroke-linecap="round" opacity=".6"/>
+          </g>
+        </svg>
       </div>
     </div>
-    <img class="leafs" src="./assets/leafs.svg" alt="" />
+    <!-- Feuilles décoratives -->
+    <svg class="leafs" viewBox="0 0 200 200">
+      <path d="M20 180c40-80 80-120 160-160-40 80-80 120-160 160Z" fill="var(--green-300)"/>
+    </svg>
   </section>
 
+  <!-- Résultats & filtres -->
   <section id="covoiturages">
     <div class="container">
       <div class="section-title">
@@ -93,12 +236,14 @@
           <label class="chip">Note min <input type="number" id="fNote" min="1" max="5" step="0.5" style="width:90px;margin-left:8px"></label>
         </div>
       </div>
+
       <div id="cards" class="cards" aria-live="polite"></div>
     </div>
   </section>
 
-  <section class="hero cta">
-    <div class="container single">
+  <!-- CTA -->
+  <section class="hero" style="padding: 10px 0 30px">
+    <div class="container" style="grid-template-columns:1fr; text-align:center">
       <h3>Envie de participer ?</h3>
       <p class="lead">Créez un compte et recevez <strong>20 crédits</strong> de bienvenue.</p>
       <div>
@@ -108,6 +253,7 @@
     </div>
   </section>
 
+  <!-- Pied de page -->
   <footer id="contact">
     <div class="container">
       <p class="legal">💌 Contact : <a href="mailto:contact@ecoride.fr">contact@ecoride.fr</a></p>
@@ -115,698 +261,120 @@
     </div>
   </footer>
 
-  <script src="./app.js"></script>
+  <script>
+    // --- Données de démonstration (remplaçables par des données back-end) ---
+    const sampleRides = [
+      { id:1, from:"Paris", to:"Lyon", date:"2025-09-25", depart:"08:00", arrive:"12:30", driver:{ pseudo:"Nina", note:4.8, avatar:"N" }, places:2, prix:28, duree:270, eco:true, vehicule:{marque:"Renault", modele:"Mégane e-Tech", energie:"Électrique"}},
+      { id:2, from:"Paris", to:"Lille", date:"2025-09-25", depart:"09:10", arrive:"11:00", driver:{ pseudo:"Marc", note:4.2, avatar:"M" }, places:0, prix:14, duree:110, eco:false, vehicule:{marque:"Peugeot", modele:"308", energie:"Essence"}},
+      { id:3, from:"Bordeaux", to:"Toulouse", date:"2025-09-26", depart:"07:45", arrive:"10:05", driver:{ pseudo:"Zoé", note:5.0, avatar:"Z" }, places:3, prix:16, duree:140, eco:true, vehicule:{marque:"Tesla", modele:"Model 3", energie:"Électrique"}},
+      { id:4, from:"Paris", to:"Lyon", date:"2025-09-25", depart:"13:00", arrive:"17:00", driver:{ pseudo:"Ali", note:4.6, avatar:"A" }, places:1, prix:25, duree:240, eco:false, vehicule:{marque:"Citroën", modele:"C4", energie:"Diesel"}}
+    ];
+
+    const cardsEl = document.getElementById('cards');
+
+    function cardTemplate(r){
+      return `
+        <article class="card" data-id="${r.id}">
+          <div class="card-header">
+            <div class="driver">
+              <div class="avatar" aria-hidden="true">${r.driver.avatar}</div>
+              <div>
+                <strong>${r.driver.pseudo}</strong>
+                <div style="color:var(--ink-400); font-size:13px">⭐ ${r.driver.note.toFixed(1)} • ${r.vehicule.marque} ${r.vehicule.modele} (${r.vehicule.energie})</div>
+              </div>
+              <div class="spacer"></div>
+              ${r.eco ? '<span class="pill">🌱 Éco</span>' : ''}
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="meta">📍 ${r.from} → ${r.to}</div>
+            <div class="meta">🗓️ ${new Date(r.date).toLocaleDateString('fr-FR',{weekday:'short', day:'2-digit', month:'short'})} • ⏱️ ${r.depart} → ${r.arrive} (${r.duree} min)</div>
+            <div class="meta">🚗 Places restantes : <strong>${r.places}</strong></div>
+            <div class="price">${r.prix} €</div>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-ghost" onclick="details(${r.id})">Détail</button>
+            <button class="btn btn-primary" ${r.places<1? 'disabled aria-disabled="true"' : ''} onclick="participer(${r.id})">Participer</button>
+          </div>
+        </article>`;
+    }
+
+    function render(list){
+      cardsEl.innerHTML = list.filter(r=>r.places>0).map(cardTemplate).join('') || `<p>Aucun covoiturage disponible. Essayez d\'ajuster votre date (nous proposons le plus proche disponible si besoin).</p>`;
+    }
+
+    // Recherche simple (par villes + date)
+    document.getElementById('searchForm').addEventListener('submit', e=>{
+      e.preventDefault();
+      const from = e.target.from.value.trim().toLowerCase();
+      const to = e.target.to.value.trim().toLowerCase();
+      const date = e.target.date.value;
+      let results = sampleRides.filter(r=>
+        r.from.toLowerCase().includes(from) &&
+        r.to.toLowerCase().includes(to) &&
+        r.date === date
+      );
+      if(results.length===0){
+        // proposer la date la plus proche
+        const sameRoute = sampleRides.filter(r=>r.from.toLowerCase().includes(from) && r.to.toLowerCase().includes(to));
+        if(sameRoute.length){
+          const sorted = sameRoute.sort((a,b)=> Math.abs(new Date(a.date)-new Date(date)) - Math.abs(new Date(b.date)-new Date(date)));
+          const closestDate = sorted[0]?.date;
+          alert(`Aucun trajet ce jour. Prochaine disponibilité le ${new Date(closestDate).toLocaleDateString('fr-FR')}.`);
+          results = sameRoute.filter(r=>r.date===closestDate);
+        }
+      }
+      applyFilters(results);
+    });
+
+    // Filtres (éco, prix max, durée max, note min)
+    ['fEco','fPrix','fDuree','fNote'].forEach(id=>{
+      document.getElementById(id).addEventListener('input', ()=> applyFilters(currentBase));
+    });
+
+    let currentBase = sampleRides;
+    function applyFilters(base){
+      currentBase = base || sampleRides;
+      const eco = document.getElementById('fEco').checked;
+      const prix = parseFloat(document.getElementById('fPrix').value || Infinity);
+      const duree = parseFloat(document.getElementById('fDuree').value || Infinity);
+      const note = parseFloat(document.getElementById('fNote').value || 0);
+      const filtered = currentBase.filter(r=>
+        (!eco || r.eco) &&
+        (r.prix <= prix) &&
+        (r.duree <= duree) &&
+        (r.driver.note >= note)
+      );
+      render(filtered);
+    }
+
+    function details(id){
+      const r = sampleRides.find(x=>x.id===id);
+      if(!r) return;
+      const avis = [
+        {auteur:'Élise', note:5, texte:'Trajet impeccable, conducteur ponctuel.'},
+        {auteur:'Samir', note:4.5, texte:'Confortable et charge rapide en route.'}
+      ];
+      const prefs = ['Non‑fumeur','Animaux acceptés','Musique douce'];
+      const html = `\nTrajet: ${r.from} → ${r.to}\nDate: ${r.date} • ${r.depart} → ${r.arrive}\nVéhicule: ${r.vehicule.marque} ${r.vehicule.modele} (${r.vehicule.energie})\nChauffeur: ${r.driver.pseudo} (⭐ ${r.driver.note})\nPréférences: ${prefs.join(', ')}\nAvis: ${avis.map(a=>`${a.auteur} ⭐${a.note} — ${a.texte}`).join(' | ')}`;
+      alert(html);
+    }
+
+    function participer(id){
+      const r = sampleRides.find(x=>x.id===id);
+      if(!r) return;
+      if(r.places<1){ alert('Plus de place disponible.'); return; }
+      const first = confirm(`Participer à ce trajet (${r.from} → ${r.to}) pour ${r.prix}€ ?`);
+      if(!first) return;
+      const second = confirm('Confirmez l\'utilisation de vos crédits.');
+      if(!second) return;
+      r.places -= 1; // démo
+      alert('Participation confirmée ! Vos crédits seront mis à jour.');
+      applyFilters(currentBase);
+    }
+
+    // Initial render
+    render(sampleRides);
+  </script>
 </body>
 </html>
-"""
-
-styles_css = """:root{
-  --green-900:#0E7C66;
-  --green-700:#149E78;
-  --green-500:#2BB673;
-  --green-300:#6ED4A4;
-  --green-100:#E8F7EF;
-  --ink-900:#0B1B1B;
-  --ink-700:#2C3D3D;
-  --ink-400:#637777;
-  --white:#ffffff;
-  --shadow:0 8px 30px rgba(14,124,102,.15);
-  --radius: 18px;
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial; color:var(--ink-900); background:linear-gradient(180deg,#EAF6F6,var(--white));}
-a{color:var(--green-700); text-decoration:none}
-img{max-width:100%;height:auto}
-
-header{position:sticky; top:0; z-index:50; backdrop-filter:saturate(1.2) blur(8px); background:rgba(255,255,255,.75); border-bottom:1px solid rgba(20,158,120,.08);}
-.container{max-width:1100px; margin-inline:auto; padding:18px 20px}
-nav{display:flex; align-items:center; gap:24px;}
-.brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.2px; color:var(--green-900)}
-.spacer{flex:1}
-.menu a{margin:0 10px; font-weight:600; color:var(--ink-700)}
-.menu a:hover{color:var(--green-900)}
-.btn{display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:10px 16px; font-weight:700; border:1px solid transparent; box-shadow:var(--shadow); transition:.2s ease;}
-.btn-primary{background:linear-gradient(135deg,var(--green-700),var(--green-500)); color:#fff}
-.btn-primary:hover{transform:translateY(-2px)}
-.btn-ghost{background:#fff; color:var(--green-700); border-color:rgba(20,158,120,.18)}
-
-.hero{position:relative; overflow:hidden}
-.hero .container{display:grid; grid-template-columns:1.1fr .9fr; align-items:center; gap:28px; padding-top:40px; padding-bottom:32px}
-.badge{display:inline-flex; align-items:center; gap:8px; background:var(--green-100); color:var(--green-900); font-weight:700; border-radius:999px; padding:8px 12px; box-shadow:var(--shadow)}
-h1{font-size:clamp(28px,4.5vw,46px); line-height:1.04; margin:16px 0}
-.accent{color:var(--green-700)}
-.lead{font-size:18px; color:var(--ink-400); margin-bottom:22px}
-
-.search-card{background:#fff; padding:16px; border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid rgba(20,158,120,.08)}
-.search-grid{display:grid; grid-template-columns:1fr 1fr 180px auto; gap:10px}
-.field{display:flex; flex-direction:column; gap:6px}
-label{font-size:12px; text-transform:uppercase; letter-spacing:.12em; color:var(--ink-400); font-weight:800}
-input, select{border:1px solid rgba(20,158,120,.18); border-radius:12px; padding:12px 14px; font-size:15px; outline:none}
-input:focus{border-color:var(--green-500); box-shadow:0 0 0 4px rgba(43,182,115,.12)}
-
-.leafs{position:absolute; inset:auto -80px -120px auto; opacity:.15; pointer-events:none}
-
-.features{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:22px}
-.feature{background:#fff; padding:16px; border-radius:16px; border:1px solid rgba(20,158,120,.08); box-shadow:var(--shadow); display:flex; gap:12px}
-.feature svg{width:28px;height:28px; flex:0 0 28px}
-
-section#covoiturages{padding:40px 0}
-.section-title{display:flex; align-items:center; justify-content:space-between; gap:12px}
-.filters{display:flex; gap:10px; flex-wrap:wrap}
-.chip{border:1px solid rgba(20,158,120,.18); background:#fff; border-radius:999px; padding:8px 12px; font-weight:600}
-
-.cards{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px}
-.card{background:#fff; border:1px solid rgba(20,158,120,.1); border-radius:16px; overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column}
-.card-header{padding:14px 16px; background:linear-gradient(180deg,var(--green-100),#fff)}
-.driver{display:flex; align-items:center; gap:12px}
-.avatar{width:44px;height:44px;border-radius:50%; background:linear-gradient(135deg,var(--green-300),var(--green-500)); display:grid; place-items:center; font-weight:800; color:#fff}
-.pill{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:800; background:var(--green-100); color:var(--green-900)}
-.card-body{padding:16px; display:grid; gap:10px}
-.meta{display:flex; gap:10px; flex-wrap:wrap; color:var(--ink-400); font-size:14px}
-.price{font-weight:800; font-size:18px; color:var(--green-900)}
-.card-footer{padding:12px 16px; display:flex; align-items:center; justify-content:space-between; border-top:1px dashed rgba(20,158,120,.2)}
-
-.hero.cta .container.single{grid-template-columns:1fr; text-align:center}
-
-footer{background:linear-gradient(180deg,#fff,var(--green-100)); border-top:1px solid rgba(20,158,120,.15)}
-footer .container{display:grid; grid-template-columns:1fr auto; gap:12px; padding-top:26px; padding-bottom:26px; align-items:center}
-.legal{color:var(--ink-400); font-size:14px}
-
-@media (max-width:1000px){
-  .hero .container{grid-template-columns:1fr}
-  .search-grid{grid-template-columns:1fr 1fr}
-  .cards{grid-template-columns:1fr 1fr}
-}
-@media (max-width:640px){
-  .menu{display:none}
-  .search-grid{grid-template-columns:1fr}
-  .cards{grid-template-columns:1fr}
-}
-"""
-
-app_js = r"""// Données de démonstration
-const sampleRides = [
-  { id:1, from:"Paris", to:"Lyon", date:"2025-09-25", depart:"08:00", arrive:"12:30", driver:{ pseudo:"Nina", note:4.8, avatar:"N" }, places:2, prix:28, duree:270, eco:true, vehicule:{marque:"Renault", modele:"Mégane e-Tech", energie:"Électrique"}},
-  { id:2, from:"Paris", to:"Lille", date:"2025-09-25", depart:"09:10", arrive:"11:00", driver:{ pseudo:"Marc", note:4.2, avatar:"M" }, places:0, prix:14, duree:110, eco:false, vehicule:{marque:"Peugeot", modele:"308", energie:"Essence"}},
-  { id:3, from:"Bordeaux", to:"Toulouse", date:"2025-09-26", depart:"07:45", arrive:"10:05", driver:{ pseudo:"Zoé", note:5.0, avatar:"Z" }, places:3, prix:16, duree:140, eco:true, vehicule:{marque:"Tesla", modele:"Model 3", energie:"Électrique"}},
-  { id:4, from:"Paris", to:"Lyon", date:"2025-09-25", depart:"13:00", arrive:"17:00", driver:{ pseudo:"Ali", note:4.6, avatar:"A" }, places:1, prix:25, duree:240, eco:false, vehicule:{marque:"Citroën", modele:"C4", energie:"Diesel"}}
-];
-
-const cardsEl = document.getElementById('cards');
-
-function cardTemplate(r){
-  return `
-    <article class="card" data-id="${r.id}">
-      <div class="card-header">
-        <div class="driver">
-          <div class="avatar" aria-hidden="true">${r.driver.avatar}</div>
-          <div>
-            <strong>${r.driver.pseudo}</strong>
-            <div style="color:var(--ink-400); font-size:13px">⭐ ${r.driver.note.toFixed(1)} • ${r.vehicule.marque} ${r.vehicule.modele} (${r.vehicule.energie})</div>
-          </div>
-          <div class="spacer"></div>
-          ${r.eco ? '<span class="pill">🌱 Éco</span>' : ''}
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="meta">📍 ${r.from} → ${r.to}</div>
-        <div class="meta">🗓️ ${new Date(r.date).toLocaleDateString('fr-FR',{weekday:'short', day:'2-digit', month:'short'})} • ⏱️ ${r.depart} → ${r.arrive} (${r.duree} min)</div>
-        <div class="meta">🚗 Places restantes : <strong>${r.places}</strong></div>
-        <div class="price">${r.prix} €</div>
-      </div>
-      <div class="card-footer">
-        <button class="btn btn-ghost" onclick="details(${r.id})">Détail</button>
-        <button class="btn btn-primary" ${r.places<1? 'disabled aria-disabled="true"' : ''} onclick="participer(${r.id})">Participer</button>
-      </div>
-    </article>`;
-}
-
-function render(list){
-  cardsEl.innerHTML = list.filter(r=>r.places>0).map(cardTemplate).join('')
-    || `<p>Aucun covoiturage disponible. Essayez d'ajuster votre date.</p>`;
-}
-
-// Recherche simple (par villes + date)
-document.getElementById('searchForm').addEventListener('submit', e=>{
-  e.preventDefault();
-  const from = e.target.from.value.trim().toLowerCase();
-  const to = e.target.to.value.trim().toLowerCase();
-  const date = e.target.date.value;
-  let results = sampleRides.filter(r=>
-    r.from.toLowerCase().includes(from) &&
-    r.to.toLowerCase().includes(to) &&
-    r.date === date
-  );
-  if(results.length===0){
-    const sameRoute = sampleRides.filter(r=>r.from.toLowerCase().includes(from) && r.to.toLowerCase().includes(to));
-    if(sameRoute.length){
-      const sorted = sameRoute.sort((a,b)=> Math.abs(new Date(a.date)-new Date(date)) - Math.abs(new Date(b.date)-new Date(date)));
-      const closestDate = sorted[0]?.date;
-      alert(`Aucun trajet ce jour. Prochaine disponibilité le ${new Date(closestDate).toLocaleDateString('fr-FR')}.`);
-      results = sameRoute.filter(r=>r.date===closestDate);
-    }
-  }
-  applyFilters(results);
-});
-
-['fEco','fPrix','fDuree','fNote'].forEach(id=>{
-  document.getElementById(id).addEventListener('input', ()=> applyFilters(currentBase));
-});
-
-let currentBase = sampleRides;
-function applyFilters(base){
-  currentBase = base || sampleRides;
-  const eco = document.getElementById('fEco').checked;
-  const prix = parseFloat(document.getElementById('fPrix').value || Infinity);
-  const duree = parseFloat(document.getElementById('fDuree').value || Infinity);
-  const note = parseFloat(document.getElementById('fNote').value || 0);
-  const filtered = currentBase.filter(r=>
-    (!eco || r.eco) &&
-    (r.prix <= prix) &&
-    (r.duree <= duree) &&
-    (r.driver.note >= note)
-  );
-  render(filtered);
-}
-
-function details(id){
-  const r = sampleRides.find(x=>x.id===id);
-  if(!r) return;
-  const avis = [
-    {auteur:'Élise', note:5, texte:'Trajet impeccable, conducteur ponctuel.'},
-    {auteur:'Samir', note:4.5, texte:'Confortable et charge rapide en route.'}
-  ];
-  const prefs = ['Non‑fumeur','Animaux acceptés','Musique douce'];
-  const html = `
-Trajet: ${r.from} → ${r.to}
-Date: ${r.date} • ${r.depart} → ${r.arrive}
-Véhicule: ${r.vehicule.marque} ${r.vehicule.modele} (${r.vehicule.energie})
-Chauffeur: ${r.driver.pseudo} (⭐ ${r.driver.note})
-Préférences: ${prefs.join(', ')}
-Avis: ${avis.map(a=>`${a.auteur} ⭐${a.note} — ${a.texte}`).join(' | ')}`;
-  alert(html);
-}
-
-function participer(id){
-  const r = sampleRides.find(x=>x.id===id);
-  if(!r) return;
-  if(r.places<1){ alert('Plus de place disponible.'); return; }
-  const first = confirm(`Participer à ce trajet (${r.from} → ${r.to}) pour ${r.prix}€ ?`);
-  if(!first) return;
-  const second = confirm('Confirmez l\'utilisation de vos crédits.');
-  if(!second) return;
-  r.places -= 1; // démo
-  alert('Participation confirmée ! Vos crédits seront mis à jour.');
-  applyFilters(currentBase);
-}
-
-render(sampleRides);
-"""
-
-logo_svg = """<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#149E78"/>
-      <stop offset="100%" stop-color="#6ED4A4"/>
-    </linearGradient>
-  </defs>
-  <circle cx="32" cy="32" r="30" fill="url(#g)" opacity=".18"/>
-  <path d="M50 28c0 12-10 22-22 22-3 0-6-.6-8.7-1.9l3.7-3.7c1.6.4 3.3.6 5 .6 9.4 0 17-7.6 17-17 0-1.7-.2-3.4-.6-5l3.7-3.7c1.2 2.6 1.9 5.7 1.9 8.7Z" fill="url(#g)"/>
-  <path d="M14 36c0-12 10-22 22-22 3 0 6 .6 8.7 1.9l-8.4 8.4A9 9 0 0 0 23 37L14 46c-1.2-2.6-1.9-5.7-1.9-8.7Z" fill="url(#g)"/>
-  <circle cx="32" cy="32" r="10" fill="#fff"/>
-  <path d="M32 23a9 9 0 1 1 0 18 9 9 0 0 1 0-18Zm0 4a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z" fill="#0E7C66"/>
-</svg>
-"""
-
-leafs_svg = """<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/200/svg">
-  <path d="M20 180c40-80 80-120 160-160-40 80-80 120-160 160Z" fill="#6ED4A4"/>
-</svg>
-"""
-
-hero_svg = """<svg viewBox="0 0 520 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration véhicule électrique">
-  <defs>
-    <linearGradient id="car" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#2BB673"/>
-      <stop offset="100%" stop-color="#6ED4A4"/>
-    </linearGradient>
-  </defs>
-  <rect x="0" y="0" width="520" height="420" rx="24" fill="#E8F7EF"/>
-  <circle cx="420" cy="120" r="80" fill="url(#car)" opacity=".25"/>
-  <g transform="translate(40,220)">
-    <rect x="0" y="-20" width="420" height="90" rx="24" fill="url(#car)"/>
-    <rect x="40" y="-40" width="170" height="70" rx="16" fill="#fff" opacity=".85"/>
-    <rect x="230" y="-40" width="110" height="70" rx="16" fill="#fff" opacity=".85"/>
-    <g>
-      <circle cx="120" cy="90" r="34" fill="#222"/>
-      <circle cx="120" cy="90" r="18" fill="#666"/>
-    </g>
-    <g>
-      <circle cx="340" cy="90" r="34" fill="#222"/>
-      <circle cx="340" cy="90" r="18" fill="#666"/>
-    </g>
-    <path d="M370 -10h24l12 16-12 16h-24l12-16-12-16Z" fill="#fff"/>
-  </g>
-  <g>
-    <path d="M70 360c60-40 120-40 180 0 60 40 120 40 180 0" fill="none" stroke="#6ED4A4" stroke-width="8" stroke-linecap="round" opacity=".6"/>
-  </g>
-</svg>
-"""
-
-# Write static files
-with open(os.path.join(static_root, "index.html"), "w", encoding="utf-8") as f:
-    f.write(index_html)
-with open(os.path.join(static_root, "styles.css"), "w", encoding="utf-8") as f:
-    f.write(styles_css)
-with open(os.path.join(static_root, "app.js"), "w", encoding="utf-8") as f:
-    f.write(app_js)
-with open(os.path.join(static_root, "assets", "logo.svg"), "w", encoding="utf-8") as f:
-    f.write(logo_svg)
-with open(os.path.join(static_root, "assets", "leafs.svg"), "w", encoding="utf-8") as f:
-    f.write(leafs_svg)
-with open(os.path.join(static_root, "assets", "hero-illustration.svg"), "w", encoding="utf-8") as f:
-    f.write(hero_svg)
-
-# ---------- 2) Next.js skeleton ----------
-os.makedirs(next_root, exist_ok=True)
-os.makedirs(os.path.join(next_root, "app", "rides", "[id]"), exist_ok=True)
-os.makedirs(os.path.join(next_root, "app", "auth", "sign-in"), exist_ok=True)
-os.makedirs(os.path.join(next_root, "app", "auth", "sign-up"), exist_ok=True)
-os.makedirs(os.path.join(next_root, "app", "dashboard"), exist_ok=True)
-os.makedirs(os.path.join(next_root, "app", "admin"), exist_ok=True)
-os.makedirs(os.path.join(next_root, "components"), exist_ok=True)
-os.makedirs(os.path.join(next_root, "lib"), exist_ok=True)
-os.makedirs(os.path.join(next_root, "public"), exist_ok=True)
-
-package_json = {
-  "name": "ecoride-next",
-  "private": True,
-  "version": "0.1.0",
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "next": "14.2.5",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
-  },
-  "devDependencies": {
-    "autoprefixer": "10.4.19",
-    "postcss": "8.4.38",
-    "tailwindcss": "3.4.4",
-    "typescript": "5.4.5",
-    "@types/react": "18.2.0",
-    "@types/node": "20.12.7"
-  }
-}
-
-next_config = """/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  experimental: { appDir: true }
-};
-module.exports = nextConfig;
-"""
-
-postcss_config = """module.exports = {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
-};"""
-
-tailwind_config = """/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    "./app/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {
-      colors: {
-        green900: "#0E7C66",
-        green700: "#149E78",
-        green500: "#2BB673",
-        green300: "#6ED4A4",
-        green100: "#E8F7EF",
-        ink900: "#0B1B1B",
-        ink700: "#2C3D3D",
-        ink400: "#637777",
-      },
-      boxShadow: {
-        eco: "0 8px 30px rgba(14,124,102,.15)"
-      },
-      borderRadius: { 'eco':'18px' }
-    },
-  },
-  plugins: [],
-};"""
-
-tsconfig = """{
-  "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "types": ["node"]
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
-}"""
-
-globals_css = """@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root{
-  --radius-eco:18px;
-}
-body{ @apply text-ink900 bg-gradient-to-b from-[#EAF6F6] to-white font-sans; }
-a{ @apply text-green700 }
-.btn{ @apply inline-flex items-center gap-2 rounded-full px-4 py-2 font-bold border shadow-eco transition; }
-.btn-primary{ @apply text-white bg-gradient-to-br from-green700 to-green500 }
-.btn-ghost{ @apply bg-white text-green700 border-green700/20 }
-.card{ @apply bg-white border border-green700/10 rounded-2xl shadow-eco }
-"""
-
-layout_tsx = """import "./globals.css";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "EcoRide • Covoiturage éco-responsable",
-  description: "La plateforme de covoiturage qui favorise les trajets éco-responsables et économiques.",
-};
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="fr">
-      <body>
-        {children}
-      </body>
-    </html>
-  );
-}
-"""
-
-header_tsx = """export default function Header(){
-  return (
-    <header className="sticky top-0 z-50 backdrop-saturate-150 backdrop-blur bg-white/80 border-b border-green700/10">
-      <div className="max-w-[1100px] mx-auto px-5 py-4 flex items-center gap-6">
-        <a href="/" className="flex items-center gap-3 font-extrabold text-green900">
-          <img src="/logo.svg" width={38} height={38} alt="EcoRide" />
-          EcoRide
-        </a>
-        <div className="flex-1" />
-        <nav className="hidden sm:flex gap-4 text-ink700 font-semibold">
-          <a href="/rides">Covoiturages</a>
-          <a href="/auth/sign-in">Connexion</a>
-          <a href="/#contact">Contact</a>
-        </nav>
-        <a className="btn btn-ghost" href="/rides">+ Proposer</a>
-        <a className="btn btn-primary" href="/auth/sign-in">Se connecter</a>
-      </div>
-    </header>
-  )
-}"""
-
-searchform_tsx = """'use client';
-import { useState } from 'react';
-import { sampleRides } from '@/lib/sampleData';
-
-export default function SearchForm({ onResults }:{ onResults:(rides:any[])=>void }){
-  const [from,setFrom] = useState('');
-  const [to,setTo] = useState('');
-  const [date,setDate] = useState('');
-
-  function submit(e:React.FormEvent){
-    e.preventDefault();
-    let results = sampleRides.filter(r =>
-      r.from.toLowerCase().includes(from.toLowerCase()) &&
-      r.to.toLowerCase().includes(to.toLowerCase()) &&
-      r.date === date
-    );
-    if(results.length===0){
-      const sameRoute = sampleRides.filter(r=>r.from.toLowerCase().includes(from.toLowerCase()) && r.to.toLowerCase().includes(to.toLowerCase()));
-      if(sameRoute.length){
-        const sorted = sameRoute.sort((a,b)=> Math.abs(new Date(a.date).getTime()-new Date(date).getTime()) - Math.abs(new Date(b.date).getTime()-new Date(date).getTime()));
-        const closestDate = sorted[0]?.date;
-        alert(`Aucun trajet ce jour. Prochaine dispo le ${new Date(closestDate).toLocaleDateString('fr-FR')}.`);
-        results = sameRoute.filter(r=>r.date===closestDate);
-      }
-    }
-    onResults(results);
-  }
-
-  return (
-    <form onSubmit={submit} className="grid md:grid-cols-[1fr_1fr_180px_auto] grid-cols-1 gap-2 bg-white p-4 rounded-[18px] border border-green700/10 shadow-eco">
-      <div className="flex flex-col gap-1">
-        <label htmlFor="from" className="text-[12px] uppercase tracking-[.12em] text-ink400 font-extrabold">Départ</label>
-        <input id="from" value={from} onChange={e=>setFrom(e.target.value)} placeholder="Ville de départ" className="border border-green700/20 rounded-xl px-3 py-2 outline-none focus:border-green500 focus:ring-4 focus:ring-green500/20" required/>
-      </div>
-      <div className="flex flex-col gap-1">
-        <label htmlFor="to" className="text-[12px] uppercase tracking-[.12em] text-ink400 font-extrabold">Arrivée</label>
-        <input id="to" value={to} onChange={e=>setTo(e.target.value)} placeholder="Ville d'arrivée" className="border border-green700/20 rounded-xl px-3 py-2 outline-none focus:border-green500 focus:ring-4 focus:ring-green500/20" required/>
-      </div>
-      <div className="flex flex-col gap-1">
-        <label htmlFor="date" className="text-[12px] uppercase tracking-[.12em] text-ink400 font-extrabold">Date</label>
-        <input id="date" type="date" value={date} onChange={e=>setDate(e.target.value)} className="border border-green700/20 rounded-xl px-3 py-2 outline-none focus:border-green500 focus:ring-4 focus:ring-green500/20" required/>
-      </div>
-      <button className="btn btn-primary" type="submit">Rechercher</button>
-    </form>
-  )
-}
-"""
-
-ridecard_tsx = """export default function RideCard({ r }:{ r:any }){
-  return (
-    <article className="card p-0 overflow-hidden">
-      <div className="px-4 py-3 bg-gradient-to-b from-green100 to-white">
-        <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-full grid place-items-center font-extrabold text-white bg-gradient-to-br from-green300 to-green500">{r.driver.avatar}</div>
-          <div>
-            <strong>{r.driver.pseudo}</strong>
-            <div className="text-xs text-ink400">⭐ {r.driver.note.toFixed(1)} • {r.vehicule.marque} {r.vehicule.modele} ({r.vehicule.energie})</div>
-          </div>
-          <div className="flex-1" />
-          {r.eco ? <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-extrabold bg-green100 text-green900">🌱 Éco</span> : null}
-        </div>
-      </div>
-      <div className="p-4 grid gap-2">
-        <div className="text-sm text-ink400">📍 {r.from} → {r.to}</div>
-        <div className="text-sm text-ink400">🗓️ {new Date(r.date).toLocaleDateString('fr-FR',{weekday:'short', day:'2-digit', month:'short'})} • ⏱️ {r.depart} → {r.arrive} ({r.duree} min)</div>
-        <div className="text-sm text-ink400">🚗 Places restantes : <strong>{r.places}</strong></div>
-        <div className="text-green900 font-extrabold text-lg">{r.prix} €</div>
-      </div>
-      <div className="px-4 py-3 border-t border-dashed border-green700/20 flex items-center justify-between">
-        <a className="btn btn-ghost" href={`/rides/${r.id}`}>Détail</a>
-        <button className="btn btn-primary" disabled={r.places<1}>Participer</button>
-      </div>
-    </article>
-  )
-}
-"""
-
-sample_data_ts = """export const sampleRides = [
-  { id:1, from:'Paris', to:'Lyon', date:'2025-09-25', depart:'08:00', arrive:'12:30', driver:{ pseudo:'Nina', note:4.8, avatar:'N' }, places:2, prix:28, duree:270, eco:true, vehicule:{marque:'Renault', modele:'Mégane e-Tech', energie:'Électrique'}},
-  { id:2, from:'Paris', to:'Lille', date:'2025-09-25', depart:'09:10', arrive:'11:00', driver:{ pseudo:'Marc', note:4.2, avatar:'M' }, places:0, prix:14, duree:110, eco:false, vehicule:{marque:'Peugeot', modele:'308', energie:'Essence'}},
-  { id:3, from:'Bordeaux', to:'Toulouse', date:'2025-09-26', depart:'07:45', arrive:'10:05', driver:{ pseudo:'Zoé', note:5.0, avatar:'Z' }, places:3, prix:16, duree:140, eco:true, vehicule:{marque:'Tesla', modele:'Model 3', energie:'Électrique'}},
-  { id:4, from:'Paris', to:'Lyon', date:'2025-09-25', depart:'13:00', arrive:'17:00', driver:{ pseudo:'Ali', note:4.6, avatar:'A' }, places:1, prix:25, duree:240, eco:false, vehicule:{marque:'Citroën', modele:'C4', energie:'Diesel'}}
-] as const;
-"""
-
-home_page = """import Header from '@/components/Header';
-import SearchForm from '@/components/SearchForm';
-import RideCard from '@/components/RideCard';
-import { use } from 'react';
-import { sampleRides } from '@/lib/sampleData';
-
-function Hero(){
-  return (
-    <section id="hero" className="relative overflow-hidden">
-      <div className="max-w-[1100px] mx-auto px-5 grid md:grid-cols-[1.1fr_.9fr] gap-7 items-center pt-10 pb-8">
-        <div>
-          <div className="inline-flex items-center gap-2 bg-green100 text-green900 font-extrabold rounded-full px-3 py-2 shadow-eco">
-            <svg viewBox="0 0 24 24" className="w-5 h-5" aria-hidden="true"><path fill="currentColor" d="M12 2C7 2 3 6 3 11c0 6 6.4 10.6 8.2 11.8.5.3 1.2.3 1.6 0C14.6 21.6 21 17 21 11c0-5-4-9-9-9Zm3.5 9.2c-1.6 3.3-4.1 5.3-7.3 6.1a1 1 0 0 1-.5-1.9c2.7-.8 4.7-2.4 6-5a1 1 0 0 1 1.8.9Z"/></svg>
-            Covoiturez, respirez, économisez
-          </div>
-          <h1 className="text-[clamp(28px,4.5vw,46px)] leading-[1.04] mt-4 mb-2">La plateforme de covoiturage <span className="text-green700">éco‑responsable</span></h1>
-          <p className="text-lg text-ink400 mb-4">Trouvez ou proposez un trajet. Filtrez par prix, durée, note et énergie.</p>
-          <SearchForm onResults={()=>{}} />
-        </div>
-        <div aria-hidden="true">
-          <img src="/hero-illustration.svg" alt="" />
-        </div>
-      </div>
-      <img className="absolute -right-20 -bottom-28 opacity-15 pointer-events-none" src="/leafs.svg" alt="" />
-    </section>
-  )
-}
-
-export default function Page(){
-  const rides = sampleRides.filter(r=>r.places>0);
-  return (
-    <>
-      <Header />
-      <Hero />
-      <section className="py-10">
-        <div className="max-w-[1100px] mx-auto px-5">
-          <h2 className="text-2xl font-bold">Trajets disponibles</h2>
-          <div className="grid md:grid-cols-3 gap-4 mt-4">
-            {rides.map(r => <RideCard key={r.id} r={r} />)}
-          </div>
-        </div>
-      </section>
-      <section className="relative overflow-hidden py-8">
-        <div className="max-w-[1100px] mx-auto px-5 text-center">
-          <h3 className="text-xl font-bold">Envie de participer ?</h3>
-          <p className="text-lg text-ink400 mb-4">Créez un compte et recevez <strong>20 crédits</strong> de bienvenue.</p>
-          <div className="flex gap-3 items-center justify-center">
-            <a className="btn btn-primary" href="/auth/sign-up">Créer un compte</a>
-            <a className="btn btn-ghost" href="/rides">Proposer un trajet</a>
-          </div>
-        </div>
-      </section>
-      <footer id="contact" className="bg-gradient-to-b from-white to-green100 border-t border-green700/15">
-        <div className="max-w-[1100px] mx-auto px-5 py-6 grid sm:grid-cols-[1fr_auto] gap-3 items-center">
-          <p className="text-ink400 text-sm">💌 Contact : <a href="mailto:contact@ecoride.fr">contact@ecoride.fr</a></p>
-          <p className="text-ink400 text-sm"><a href="/mentions">Mentions légales</a></p>
-        </div>
-      </footer>
-    </>
-  )
-}
-"""
-
-rides_page = """import Header from '@/components/Header';
-import RideCard from '@/components/RideCard';
-import { sampleRides } from '@/lib/sampleData';
-
-export default function Page(){
-  const rides = sampleRides.filter(r=>r.places>0);
-  return (
-    <>
-      <Header />
-      <main className="max-w-[1100px] mx-auto px-5 py-8">
-        <h1 className="text-2xl font-bold mb-4">Tous les covoiturages</h1>
-        <div className="grid md:grid-cols-3 gap-4">
-          {rides.map(r => <RideCard key={r.id} r={r} />)}
-        </div>
-      </main>
-    </>
-  )
-}
-"""
-
-ride_detail = """import Header from '@/components/Header';
-import { sampleRides } from '@/lib/sampleData';
-
-export default function Page({ params }:{ params:{ id:string }}){
-  const id = Number(params.id);
-  const r = sampleRides.find(x=>x.id===id);
-  if(!r) return <div><Header /><div className="max-w-[1100px] mx-auto px-5 py-8">Trajet introuvable.</div></div>;
-  return (
-    <>
-      <Header />
-      <main className="max-w-[900px] mx-auto px-5 py-8 grid gap-4">
-        <h1 className="text-2xl font-bold">Trajet {r.from} → {r.to}</h1>
-        <div className="card p-4 grid gap-2">
-          <div>🗓️ {r.date} • {r.depart} → {r.arrive} ({r.duree} min)</div>
-          <div>🚗 {r.vehicule.marque} {r.vehicule.modele} ({r.vehicule.energie})</div>
-          <div>👤 {r.driver.pseudo} • ⭐ {r.driver.note}</div>
-          <div>💺 Places restantes : {r.places}</div>
-          <div className="flex gap-3">
-            <button className="btn btn-primary">Participer</button>
-            <a className="btn btn-ghost" href="/rides">Retour</a>
-          </div>
-        </div>
-      </main>
-    </>
-  )
-}
-"""
-
-sign_in = """import Header from '@/components/Header';
-
-export default function Page(){
-  return (
-    <>
-      <Header />
-      <main className="max-w-[480px] mx-auto px-5 py-10">
-        <h1 className="text-2xl font-bold mb-4">Connexion</h1>
-        <form className="card p-5 grid gap-3">
-          <input placeholder="Email" className="border border-green700/20 rounded-xl px-3 py-2" />
-          <input type="password" placeholder="Mot de passe" className="border border-green700/20 rounded-xl px-3 py-2" />
-          <button className="btn btn-primary">Se connecter</button>
-        </form>
-        <p className="text-sm text-ink400 mt-3">Pas encore de compte ? <a href="/auth/sign-up">Créer un compte</a></p>
-      </main>
-    </>
-  )
-}
-"""
-
-sign_up = """import Header from '@/components/Header';
-
-export default function Page(){
-  return (
-    <>
-      <Header />
-      <main className="max-w-[480px] mx-auto px-5 py-10">
-        <h1 className="text-2xl font-bold mb-4">Inscription</h1>
-        <form className="card p-5 grid gap-3">
-          <input placeholder="Nom complet" className="border border-green700/20 rounded-xl px-3 py-2" />
-          <input placeholder="Email" className="border border-green700/20 rounded-xl px-3 py-2" />
-          <input type="password" placeholder="Mot de passe" className="border border-green700/20 rounded-xl px-3 py-2" />
-          <button className="btn btn-primary">Créer le compte</button>
-        </form>
-        <p className="text-sm text-ink400 mt-3">Déjà inscrit ? <a href="/auth/sign-in">Se connecter</a></p>
-      </main>
-    </>
-  )
-}
-"""
-
-dashboard = """import Header from '@/components/Header';
-
-export default function Page(){
-  return (
-    <>
-      <Header />
-      <main className="max-w-[900px] mx-auto px-5 py-8 grid gap-4">
-        <h1 className="text-2xl font-bold">Espace utilisateur</h1>
-        <div className="card p-4">Mes trajets à venir — (démo)</div>
-        <div className="card p-4">Mes annonces — (démo)</div>
-        <div className="card p-4">Mes avis — (démo)</div>
-      </main>
-    </>
-  )
-}
-"""
-
-admin = """import Header from '@/components/Header';
-
-export default function Page(){
-  return (
-    <>
-      <Header />
-      <main className="max-w-[1100px] mx-auto px-5 py-8 grid gap-4">
-        <h1 className="text-2xl font-bold">Admin</h1>
-        <div className="card p-4">Modération des annonces — (démo)</div>
-        <div className="card p-4">Utilisateurs — (démo)</div>
-        <div className="card p-4">Statistiques — (démo)</div>
-      </main>
-    </>
-  
