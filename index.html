@@ -2,21 +2,102 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ecoride</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EcoRide — Covoiturage éco-responsable</title>
+  <meta name="description" content="EcoRide : plateforme de covoiturage axée écologie, trajets en voiture, économies et planète.">
+  <link rel="preload" as="image" href="assets/hero-leaf.jpg">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header><h1>Ecoride</h1></header>
-  <main>
-    <p>Bonjour 👋 — Site déployé avec Vercel.</p>
+  <a class="skip-link" href="#main">Aller au contenu</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="EcoRide, retour accueil">
+        <img src="assets/logo.svg" alt="" class="brand-logo" />
+        <span class="brand-name">EcoRide</span>
+      </a>
+
+      <nav aria-label="Navigation principale">
+        <ul class="nav">
+          <li><a class="nav-link current" href="index.html">Accueil</a></li>
+          <li><a class="nav-link" href="next.html">Covoiturages</a></li>
+          <li><a class="nav-link" href="#connexion">Connexion</a></li>
+          <li><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1>Partagez la route, préservez la planète</h1>
+          <p class="lead">
+            EcoRide encourage le covoiturage pour réduire l’impact environnemental des déplacements,
+            tout en proposant une solution économique et conviviale.
+          </p>
+          <ul class="bullets">
+            <li>Trajets en voiture uniquement</li>
+            <li>Mise en avant des véhicules électriques (voyages « écologiques »)</li>
+            <li>Plateforme simple, sûre et rapide</li>
+          </ul>
+        </div>
+        <figure class="hero-visual">
+          <img src="assets/hero-leaf.jpg" alt="Voiture sur une route bordée d'arbres, esprit écologique">
+        </figure>
+      </div>
+    </section>
+
+    <section class="search">
+      <div class="container">
+        <h2>Trouver un itinéraire</h2>
+        <p class="muted">Recherchez par <strong>ville de départ</strong>, <strong>ville d’arrivée</strong> et <strong>date</strong>.</p>
+        <form class="search-form" action="next.html" method="get" aria-describedby="search-help">
+          <div class="field">
+            <label for="from">Ville de départ</label>
+            <input id="from" name="from" required placeholder="ex. Lyon" autocomplete="address-level2">
+          </div>
+          <div class="field">
+            <label for="to">Ville d’arrivée</label>
+            <input id="to" name="to" required placeholder="ex. Paris" autocomplete="address-level2">
+          </div>
+          <div class="field">
+            <label for="date">Date</label>
+            <input id="date" name="date" type="date" required>
+          </div>
+          <div class="actions">
+            <button class="btn" type="submit">Chercher</button>
+          </div>
+          <p id="search-help" class="muted small">
+            Vous serez redirigé vers la liste des covoiturages correspondant (si disponibles).
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <section class="about">
+      <div class="container">
+        <h2>À propos d’EcoRide</h2>
+        <p>
+          Notre ambition est de devenir la plateforme de référence pour les voyageurs soucieux de
+          l’environnement et à la recherche de solutions économiques. Nous mettons à l’honneur
+          les trajets réalisés en <strong>véhicule électrique</strong>.
+        </p>
+      </div>
+    </section>
   </main>
-  <footer>&copy; 2025</footer>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <p id="contact">
+        <strong>Contact :</strong> <a href="mailto:contact@ecoride.fr">contact@ecoride.fr</a>
+      </p>
+      <p>
+        <a href="mentions-legales.html">Mentions légales</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>
-git init
-git branch -M main
-git remote add origin https://github.com/Kaosovanna/EcoRide.git
-git add .
-git commit -m "Initial commit (site statique)"
-git push -u origin main
