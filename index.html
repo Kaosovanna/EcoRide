@@ -1,522 +1,812 @@
-function EcoBadge({ electric }: { electric: boolean }) {
-  return (
-    <span
-      className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium ${
-        electric ? "bg-emerald-100 text-emerald-800" : "bg-zinc-100 text-zinc-700"
-      }`}
-      title={electric ? "Voyage écologique (voiture électrique)" : "Thermique"}
-    >
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
-        <path d="M3 21s6-1 9-4 4-9 4-9-6 1-9 4-4 9-4 9Z" stroke="currentColor" strokeWidth="1.5"/>
-        <path d="M14 10c.5 1.5 2 3 3.5 3.5" stroke="currentColor" strokeWidth="1.5"/>
-      </svg>
-      {electric ? "Écologique" : "Classique"}
-    </span>
-  );
-}
-
-function Stars({ rating }: { rating: number }) {
-  return (
-    <div className="flex items-center gap-0.5" aria-label={`Note ${rating}/5`}>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <svg key={i} width="16" height="16" viewBox="0 0 24 24" aria-hidden
-          className={i < Math.round(rating) ? "fill-yellow-400" : "fill-zinc-200"}>
-          <path d="M12 17.3l-5.4 3 1.1-6.2L3 9.7l6.3-.9L12 3l2.7 5.8 6.3.9-4.7 4.4 1.1 6.2Z" />
-        </svg>
-      ))}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EcoRide • Covoiturage éco-responsable</title>
+  <meta name="description" content="EcoRide — la plateforme de covoiturage qui favorise les trajets éco-responsables et économiques." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a class="brand" href="#">
+          <img src="./assets/logo.svg" alt="EcoRide" width="38" height="38" />
+          EcoRide
+        </a>
+        <div class="spacer"></div>
+        <div class="menu" aria-label="Menu principal">
+          <a href="#hero">Accueil</a>
+          <a href="#covoiturages">Covoiturages</a>
+          <a href="#connexion">Connexion</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <a class="btn btn-ghost" href="#covoiturages" aria-label="Proposer un trajet">+ Proposer</a>
+        <a class="btn btn-primary" href="#connexion" aria-label="Se connecter">Se connecter</a>
+      </nav>
     </div>
-  );
+  </header>
+
+  <section id="hero" class="hero">
+    <div class="container">
+      <div>
+        <div class="badge" aria-label="Étiquette éco">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C7 2 3 6 3 11c0 6 6.4 10.6 8.2 11.8.5.3 1.2.3 1.6 0C14.6 21.6 21 17 21 11c0-5-4-9-9-9Zm3.5 9.2c-1.6 3.3-4.1 5.3-7.3 6.1a1 1 0 0 1-.5-1.9c2.7-.8 4.7-2.4 6-5a1 1 0 0 1 1.8.9Z"/></svg>
+          Covoiturez, respirez, économisez
+        </div>
+        <h1>La plateforme de covoiturage <span class="accent">éco‑responsable</span></h1>
+        <p class="lead">Trouvez ou proposez un trajet. Filtrez par prix, durée, note et énergie.</p>
+
+        <div class="search-card" role="search" aria-label="Recherche d'itinéraire">
+          <form id="searchForm" class="search-grid">
+            <div class="field">
+              <label for="from">Départ</label>
+              <input id="from" name="from" placeholder="Ville de départ" required />
+            </div>
+            <div class="field">
+              <label for="to">Arrivée</label>
+              <input id="to" name="to" placeholder="Ville d'arrivée" required />
+            </div>
+            <div class="field">
+              <label for="date">Date</label>
+              <input id="date" name="date" type="date" required />
+            </div>
+            <button class="btn btn-primary" type="submit" aria-label="Rechercher">Rechercher</button>
+          </form>
+        </div>
+
+        <div class="features" aria-label="Atouts d'EcoRide">
+          <div class="feature">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 1 7 7c0 4-4 10-7 13-3-3-7-9-7-13a7 7 0 0 1 7-7Zm0 9.5 3.5 3.5 1.5-1.5L12 8l-7 7 1.5 1.5L12 11.5Z"/></svg>
+            <div><strong>Écologique</strong><br/><span class="sub">Mettez en avant les trajets électriques.</span></div>
+          </div>
+          <div class="feature">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 1 3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5l-9-4Zm0 4.2 5 2.2v3.6c0 4.1-2.6 8-5 9.2-2.4-1.2-5-5.1-5-9.2V7.4l5-2.2Z"/></svg>
+            <div><strong>Sécurisé</strong><br/><span class="sub">Comptes, avis, double confirmation.</span></div>
+          </div>
+          <div class="feature">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg>
+            <div><strong>Transparent</strong><br/><span class="sub">Prix, durée, note et places.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div aria-hidden="true">
+        <img src="./assets/hero-illustration.svg" alt="" />
+      </div>
+    </div>
+    <img class="leafs" src="./assets/leafs.svg" alt="" />
+  </section>
+
+  <section id="covoiturages">
+    <div class="container">
+      <div class="section-title">
+        <h2>Trajets disponibles</h2>
+        <div class="filters" aria-label="Filtres">
+          <label class="chip"><input type="checkbox" id="fEco" style="accent-color:var(--green-700)"> Trajet éco (VE)</label>
+          <label class="chip">Prix max <input type="number" id="fPrix" min="1" step="1" style="width:90px;margin-left:8px"></label>
+          <label class="chip">Durée max <input type="number" id="fDuree" min="5" step="5" style="width:90px;margin-left:8px"> min</label>
+          <label class="chip">Note min <input type="number" id="fNote" min="1" max="5" step="0.5" style="width:90px;margin-left:8px"></label>
+        </div>
+      </div>
+      <div id="cards" class="cards" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="hero cta">
+    <div class="container single">
+      <h3>Envie de participer ?</h3>
+      <p class="lead">Créez un compte et recevez <strong>20 crédits</strong> de bienvenue.</p>
+      <div>
+        <a class="btn btn-primary" href="#inscription">Créer un compte</a>
+        <a class="btn btn-ghost" href="#proposer">Proposer un trajet</a>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="container">
+      <p class="legal">💌 Contact : <a href="mailto:contact@ecoride.fr">contact@ecoride.fr</a></p>
+      <p class="legal"><a href="#mentions">Mentions légales</a></p>
+    </div>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
+"""
+
+styles_css = """:root{
+  --green-900:#0E7C66;
+  --green-700:#149E78;
+  --green-500:#2BB673;
+  --green-300:#6ED4A4;
+  --green-100:#E8F7EF;
+  --ink-900:#0B1B1B;
+  --ink-700:#2C3D3D;
+  --ink-400:#637777;
+  --white:#ffffff;
+  --shadow:0 8px 30px rgba(14,124,102,.15);
+  --radius: 18px;
 }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial; color:var(--ink-900); background:linear-gradient(180deg,#EAF6F6,var(--white));}
+a{color:var(--green-700); text-decoration:none}
+img{max-width:100%;height:auto}
 
-// -------------------------
-// Illustrations SVG (custom, légères)
-// -------------------------
-function LogoEcoRide({ size = 28 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 64 64"
-      className="shrink-0"
-      aria-label="EcoRide logo"
-    >
-      {/* Feuille */}
-      <path d="M8 36c0-14 12-22 28-22 10 0 16 3 20 7-12 1-25 6-32 14 6-2 11-2 16-1-6 9-17 16-28 16-2 0-4 0-4-2 0-4 0-8 0-12Z" fill={palette.leaf} />
-      {/* Route courbe */}
-      <path d="M12 56c12-5 22-13 26-24" stroke={palette.earth} strokeWidth="4" fill="none" strokeLinecap="round"/>
-      <path d="M24 50l4-1" stroke={palette.sand} strokeWidth="3" strokeLinecap="round"/>
-      <path d="M36 40l4-1" stroke={palette.sand} strokeWidth="3" strokeLinecap="round"/>
-      {/* Lettre E stylisée */}
-      <path d="M6 20h16M6 28h12M6 36h10" stroke={palette.primaryDark} strokeWidth="4" strokeLinecap="round"/>
-    </svg>
-  );
+header{position:sticky; top:0; z-index:50; backdrop-filter:saturate(1.2) blur(8px); background:rgba(255,255,255,.75); border-bottom:1px solid rgba(20,158,120,.08);}
+.container{max-width:1100px; margin-inline:auto; padding:18px 20px}
+nav{display:flex; align-items:center; gap:24px;}
+.brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.2px; color:var(--green-900)}
+.spacer{flex:1}
+.menu a{margin:0 10px; font-weight:600; color:var(--ink-700)}
+.menu a:hover{color:var(--green-900)}
+.btn{display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:10px 16px; font-weight:700; border:1px solid transparent; box-shadow:var(--shadow); transition:.2s ease;}
+.btn-primary{background:linear-gradient(135deg,var(--green-700),var(--green-500)); color:#fff}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost{background:#fff; color:var(--green-700); border-color:rgba(20,158,120,.18)}
+
+.hero{position:relative; overflow:hidden}
+.hero .container{display:grid; grid-template-columns:1.1fr .9fr; align-items:center; gap:28px; padding-top:40px; padding-bottom:32px}
+.badge{display:inline-flex; align-items:center; gap:8px; background:var(--green-100); color:var(--green-900); font-weight:700; border-radius:999px; padding:8px 12px; box-shadow:var(--shadow)}
+h1{font-size:clamp(28px,4.5vw,46px); line-height:1.04; margin:16px 0}
+.accent{color:var(--green-700)}
+.lead{font-size:18px; color:var(--ink-400); margin-bottom:22px}
+
+.search-card{background:#fff; padding:16px; border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid rgba(20,158,120,.08)}
+.search-grid{display:grid; grid-template-columns:1fr 1fr 180px auto; gap:10px}
+.field{display:flex; flex-direction:column; gap:6px}
+label{font-size:12px; text-transform:uppercase; letter-spacing:.12em; color:var(--ink-400); font-weight:800}
+input, select{border:1px solid rgba(20,158,120,.18); border-radius:12px; padding:12px 14px; font-size:15px; outline:none}
+input:focus{border-color:var(--green-500); box-shadow:0 0 0 4px rgba(43,182,115,.12)}
+
+.leafs{position:absolute; inset:auto -80px -120px auto; opacity:.15; pointer-events:none}
+
+.features{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:22px}
+.feature{background:#fff; padding:16px; border-radius:16px; border:1px solid rgba(20,158,120,.08); box-shadow:var(--shadow); display:flex; gap:12px}
+.feature svg{width:28px;height:28px; flex:0 0 28px}
+
+section#covoiturages{padding:40px 0}
+.section-title{display:flex; align-items:center; justify-content:space-between; gap:12px}
+.filters{display:flex; gap:10px; flex-wrap:wrap}
+.chip{border:1px solid rgba(20,158,120,.18); background:#fff; border-radius:999px; padding:8px 12px; font-weight:600}
+
+.cards{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px}
+.card{background:#fff; border:1px solid rgba(20,158,120,.1); border-radius:16px; overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column}
+.card-header{padding:14px 16px; background:linear-gradient(180deg,var(--green-100),#fff)}
+.driver{display:flex; align-items:center; gap:12px}
+.avatar{width:44px;height:44px;border-radius:50%; background:linear-gradient(135deg,var(--green-300),var(--green-500)); display:grid; place-items:center; font-weight:800; color:#fff}
+.pill{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:800; background:var(--green-100); color:var(--green-900)}
+.card-body{padding:16px; display:grid; gap:10px}
+.meta{display:flex; gap:10px; flex-wrap:wrap; color:var(--ink-400); font-size:14px}
+.price{font-weight:800; font-size:18px; color:var(--green-900)}
+.card-footer{padding:12px 16px; display:flex; align-items:center; justify-content:space-between; border-top:1px dashed rgba(20,158,120,.2)}
+
+.hero.cta .container.single{grid-template-columns:1fr; text-align:center}
+
+footer{background:linear-gradient(180deg,#fff,var(--green-100)); border-top:1px solid rgba(20,158,120,.15)}
+footer .container{display:grid; grid-template-columns:1fr auto; gap:12px; padding-top:26px; padding-bottom:26px; align-items:center}
+.legal{color:var(--ink-400); font-size:14px}
+
+@media (max-width:1000px){
+  .hero .container{grid-template-columns:1fr}
+  .search-grid{grid-template-columns:1fr 1fr}
+  .cards{grid-template-columns:1fr 1fr}
 }
-
-function IllustrationCarpool() {
-  return (
-    <svg viewBox="0 0 320 120" className="w-full h-auto" aria-hidden>
-      <defs>
-        <linearGradient id="g" x1="0" x2="1">
-          <stop offset="0%" stopColor={palette.sky} />
-          <stop offset="100%" stopColor="#ffffff" />
-        </linearGradient>
-      </defs>
-      <rect width="320" height="120" fill="url(#g)" rx="12" />
-      <path d="M10 92c22-14 58-26 100-26s78 12 100 26" stroke={palette.leaf} strokeWidth="3" fill="none" />
-      <g>
-        <circle cx="90" cy="80" r="18" fill={palette.primary} />
-        <circle cx="230" cy="80" r="18" fill={palette.primary} />
-        <rect x="70" y="50" width="170" height="35" rx="10" fill={palette.primaryLight} />
-        <circle cx="120" cy="67" r="8" fill="#fff" />
-        <circle cx="150" cy="67" r="8" fill="#fff" />
-        <circle cx="180" cy="67" r="8" fill="#fff" />
-      </g>
-      <text x="18" y="28" fontSize="14" fill={palette.primaryDark} fontWeight="700">Partagez la route, économisez, respirez mieux.</text>
-    </svg>
-  );
+@media (max-width:640px){
+  .menu{display:none}
+  .search-grid{grid-template-columns:1fr}
+  .cards{grid-template-columns:1fr}
 }
+"""
 
-// -------------------------
-// Données mock pour la démo
-// -------------------------
-export type Ride = {
-  id: string;
-  from: string;
-  to: string;
-  date: string; // ISO yyyy-mm-dd
-  depart: string; // HH:mm
-  arrivee: string; // HH:mm
-  driver: { pseudo: string; rating: number; avatarHue?: number };
-  price: number; // €
-  seatsLeft: number;
-  durationMin: number;
-  electric: boolean;
-  car: { brand: string; model: string; energy: "electrique" | "essence" | "diesel" };
-  prefs: string[];
-  reviews: { author: string; rating: number; text: string }[];
-};
-
-const MOCK_RIDES: Ride[] = [
-  {
-    id: "r1",
-    from: "Lyon",
-    to: "Grenoble",
-    date: "2025-09-29",
-    depart: "08:10",
-    arrivee: "09:35",
-    driver: { pseudo: "CamilleE", rating: 4.7, avatarHue: 160 },
-    price: 11,
-    seatsLeft: 2,
-    durationMin: 85,
-    electric: true,
-    car: { brand: "Renault", model: "Megane E-Tech", energy: "electrique" },
-    prefs: ["Non-fumeur", "OK animaux"],
-    reviews: [
-      { author: "Paul", rating: 5, text: "Trajet nickel, conduite douce." },
-      { author: "Lina", rating: 4, text: "Ponctuelle et sympa." },
-    ],
-  },
-  {
-    id: "r2",
-    from: "Paris",
-    to: "Rouen",
-    date: "2025-09-29",
-    depart: "18:00",
-    arrivee: "19:40",
-    driver: { pseudo: "Yassine", rating: 4.2, avatarHue: 40 },
-    price: 9,
-    seatsLeft: 1,
-    durationMin: 100,
-    electric: false,
-    car: { brand: "Peugeot", model: "308", energy: "essence" },
-    prefs: ["Non-fumeur"],
-    reviews: [
-      { author: "Zoé", rating: 4, text: "Bonne ambiance, un peu de trafic." },
-    ],
-  },
-  {
-    id: "r3",
-    from: "Bordeaux",
-    to: "Toulouse",
-    date: "2025-09-30",
-    depart: "07:30",
-    arrivee: "10:05",
-    driver: { pseudo: "Nora", rating: 4.9, avatarHue: 200 },
-    price: 15,
-    seatsLeft: 3,
-    durationMin: 155,
-    electric: true,
-    car: { brand: "Tesla", model: "Model 3", energy: "electrique" },
-    prefs: ["Silence bienvenu"],
-    reviews: [
-      { author: "Hugo", rating: 5, text: "Très confortable et rapide." },
-      { author: "Inès", rating: 5, text: "Excellente communication." },
-    ],
-  },
+app_js = r"""// Données de démonstration
+const sampleRides = [
+  { id:1, from:"Paris", to:"Lyon", date:"2025-09-25", depart:"08:00", arrive:"12:30", driver:{ pseudo:"Nina", note:4.8, avatar:"N" }, places:2, prix:28, duree:270, eco:true, vehicule:{marque:"Renault", modele:"Mégane e-Tech", energie:"Électrique"}},
+  { id:2, from:"Paris", to:"Lille", date:"2025-09-25", depart:"09:10", arrive:"11:00", driver:{ pseudo:"Marc", note:4.2, avatar:"M" }, places:0, prix:14, duree:110, eco:false, vehicule:{marque:"Peugeot", modele:"308", energie:"Essence"}},
+  { id:3, from:"Bordeaux", to:"Toulouse", date:"2025-09-26", depart:"07:45", arrive:"10:05", driver:{ pseudo:"Zoé", note:5.0, avatar:"Z" }, places:3, prix:16, duree:140, eco:true, vehicule:{marque:"Tesla", modele:"Model 3", energie:"Électrique"}},
+  { id:4, from:"Paris", to:"Lyon", date:"2025-09-25", depart:"13:00", arrive:"17:00", driver:{ pseudo:"Ali", note:4.6, avatar:"A" }, places:1, prix:25, duree:240, eco:false, vehicule:{marque:"Citroën", modele:"C4", energie:"Diesel"}}
 ];
 
-// -------------------------
-// Composant principal
-// -------------------------
-export default function EcoRideApp() {
-  // Recherche
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [date, setDate] = useState("");
+const cardsEl = document.getElementById('cards');
 
-  const [showResults, setShowResults] = useState(false);
-  const [selected, setSelected] = useState<Ride | null>(null);
+function cardTemplate(r){
+  return `
+    <article class="card" data-id="${r.id}">
+      <div class="card-header">
+        <div class="driver">
+          <div class="avatar" aria-hidden="true">${r.driver.avatar}</div>
+          <div>
+            <strong>${r.driver.pseudo}</strong>
+            <div style="color:var(--ink-400); font-size:13px">⭐ ${r.driver.note.toFixed(1)} • ${r.vehicule.marque} ${r.vehicule.modele} (${r.vehicule.energie})</div>
+          </div>
+          <div class="spacer"></div>
+          ${r.eco ? '<span class="pill">🌱 Éco</span>' : ''}
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="meta">📍 ${r.from} → ${r.to}</div>
+        <div class="meta">🗓️ ${new Date(r.date).toLocaleDateString('fr-FR',{weekday:'short', day:'2-digit', month:'short'})} • ⏱️ ${r.depart} → ${r.arrive} (${r.duree} min)</div>
+        <div class="meta">🚗 Places restantes : <strong>${r.places}</strong></div>
+        <div class="price">${r.prix} €</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-ghost" onclick="details(${r.id})">Détail</button>
+        <button class="btn btn-primary" ${r.places<1? 'disabled aria-disabled="true"' : ''} onclick="participer(${r.id})">Participer</button>
+      </div>
+    </article>`;
+}
 
-  // Filtres
-  const [onlyEco, setOnlyEco] = useState(false);
-  const [maxPrice, setMaxPrice] = useState(30);
-  const [maxDuration, setMaxDuration] = useState(240);
-  const [minRating, setMinRating] = useState(0);
+function render(list){
+  cardsEl.innerHTML = list.filter(r=>r.places>0).map(cardTemplate).join('')
+    || `<p>Aucun covoiturage disponible. Essayez d'ajuster votre date.</p>`;
+}
 
-  const filtered = useMemo(() => {
-    const base = MOCK_RIDES.filter((r) => {
-      const byCity =
-        (!from || r.from.toLowerCase().includes(from.toLowerCase())) &&
-        (!to || r.to.toLowerCase().includes(to.toLowerCase()));
-      const byDate = !date || r.date === date;
-      return byCity && byDate && r.seatsLeft > 0;
-    });
-
-    let out = base.filter(
-      (r) => r.price <= maxPrice && r.durationMin <= maxDuration && r.driver.rating >= minRating
-    );
-
-    if (onlyEco) out = out.filter((r) => r.electric);
-
-    return out;
-  }, [from, to, date, onlyEco, maxPrice, maxDuration, minRating]);
-
-  const firstNearestDate = useMemo(() => {
-    if (showResults && filtered.length === 0) {
-      // propose la date la plus proche dispo (démo: on regarde les rides qui matchent ville mais pas date)
-      const candidates = MOCK_RIDES.filter(
-        (r) => (!from || r.from.toLowerCase().includes(from.toLowerCase())) && (!to || r.to.toLowerCase().includes(to.toLowerCase()))
-      ).sort((a, b) => a.date.localeCompare(b.date));
-      return candidates[0]?.date || null;
+// Recherche simple (par villes + date)
+document.getElementById('searchForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  const from = e.target.from.value.trim().toLowerCase();
+  const to = e.target.to.value.trim().toLowerCase();
+  const date = e.target.date.value;
+  let results = sampleRides.filter(r=>
+    r.from.toLowerCase().includes(from) &&
+    r.to.toLowerCase().includes(to) &&
+    r.date === date
+  );
+  if(results.length===0){
+    const sameRoute = sampleRides.filter(r=>r.from.toLowerCase().includes(from) && r.to.toLowerCase().includes(to));
+    if(sameRoute.length){
+      const sorted = sameRoute.sort((a,b)=> Math.abs(new Date(a.date)-new Date(date)) - Math.abs(new Date(b.date)-new Date(date)));
+      const closestDate = sorted[0]?.date;
+      alert(`Aucun trajet ce jour. Prochaine disponibilité le ${new Date(closestDate).toLocaleDateString('fr-FR')}.`);
+      results = sameRoute.filter(r=>r.date===closestDate);
     }
-    return null;
-  }, [showResults, filtered.length, from, to]);
+  }
+  applyFilters(results);
+});
 
+['fEco','fPrix','fDuree','fNote'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', ()=> applyFilters(currentBase));
+});
+
+let currentBase = sampleRides;
+function applyFilters(base){
+  currentBase = base || sampleRides;
+  const eco = document.getElementById('fEco').checked;
+  const prix = parseFloat(document.getElementById('fPrix').value || Infinity);
+  const duree = parseFloat(document.getElementById('fDuree').value || Infinity);
+  const note = parseFloat(document.getElementById('fNote').value || 0);
+  const filtered = currentBase.filter(r=>
+    (!eco || r.eco) &&
+    (r.prix <= prix) &&
+    (r.duree <= duree) &&
+    (r.driver.note >= note)
+  );
+  render(filtered);
+}
+
+function details(id){
+  const r = sampleRides.find(x=>x.id===id);
+  if(!r) return;
+  const avis = [
+    {auteur:'Élise', note:5, texte:'Trajet impeccable, conducteur ponctuel.'},
+    {auteur:'Samir', note:4.5, texte:'Confortable et charge rapide en route.'}
+  ];
+  const prefs = ['Non‑fumeur','Animaux acceptés','Musique douce'];
+  const html = `
+Trajet: ${r.from} → ${r.to}
+Date: ${r.date} • ${r.depart} → ${r.arrive}
+Véhicule: ${r.vehicule.marque} ${r.vehicule.modele} (${r.vehicule.energie})
+Chauffeur: ${r.driver.pseudo} (⭐ ${r.driver.note})
+Préférences: ${prefs.join(', ')}
+Avis: ${avis.map(a=>`${a.auteur} ⭐${a.note} — ${a.texte}`).join(' | ')}`;
+  alert(html);
+}
+
+function participer(id){
+  const r = sampleRides.find(x=>x.id===id);
+  if(!r) return;
+  if(r.places<1){ alert('Plus de place disponible.'); return; }
+  const first = confirm(`Participer à ce trajet (${r.from} → ${r.to}) pour ${r.prix}€ ?`);
+  if(!first) return;
+  const second = confirm('Confirmez l\'utilisation de vos crédits.');
+  if(!second) return;
+  r.places -= 1; // démo
+  alert('Participation confirmée ! Vos crédits seront mis à jour.');
+  applyFilters(currentBase);
+}
+
+render(sampleRides);
+"""
+
+logo_svg = """<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#149E78"/>
+      <stop offset="100%" stop-color="#6ED4A4"/>
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="url(#g)" opacity=".18"/>
+  <path d="M50 28c0 12-10 22-22 22-3 0-6-.6-8.7-1.9l3.7-3.7c1.6.4 3.3.6 5 .6 9.4 0 17-7.6 17-17 0-1.7-.2-3.4-.6-5l3.7-3.7c1.2 2.6 1.9 5.7 1.9 8.7Z" fill="url(#g)"/>
+  <path d="M14 36c0-12 10-22 22-22 3 0 6 .6 8.7 1.9l-8.4 8.4A9 9 0 0 0 23 37L14 46c-1.2-2.6-1.9-5.7-1.9-8.7Z" fill="url(#g)"/>
+  <circle cx="32" cy="32" r="10" fill="#fff"/>
+  <path d="M32 23a9 9 0 1 1 0 18 9 9 0 0 1 0-18Zm0 4a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z" fill="#0E7C66"/>
+</svg>
+"""
+
+leafs_svg = """<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/200/svg">
+  <path d="M20 180c40-80 80-120 160-160-40 80-80 120-160 160Z" fill="#6ED4A4"/>
+</svg>
+"""
+
+hero_svg = """<svg viewBox="0 0 520 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration véhicule électrique">
+  <defs>
+    <linearGradient id="car" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2BB673"/>
+      <stop offset="100%" stop-color="#6ED4A4"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="520" height="420" rx="24" fill="#E8F7EF"/>
+  <circle cx="420" cy="120" r="80" fill="url(#car)" opacity=".25"/>
+  <g transform="translate(40,220)">
+    <rect x="0" y="-20" width="420" height="90" rx="24" fill="url(#car)"/>
+    <rect x="40" y="-40" width="170" height="70" rx="16" fill="#fff" opacity=".85"/>
+    <rect x="230" y="-40" width="110" height="70" rx="16" fill="#fff" opacity=".85"/>
+    <g>
+      <circle cx="120" cy="90" r="34" fill="#222"/>
+      <circle cx="120" cy="90" r="18" fill="#666"/>
+    </g>
+    <g>
+      <circle cx="340" cy="90" r="34" fill="#222"/>
+      <circle cx="340" cy="90" r="18" fill="#666"/>
+    </g>
+    <path d="M370 -10h24l12 16-12 16h-24l12-16-12-16Z" fill="#fff"/>
+  </g>
+  <g>
+    <path d="M70 360c60-40 120-40 180 0 60 40 120 40 180 0" fill="none" stroke="#6ED4A4" stroke-width="8" stroke-linecap="round" opacity=".6"/>
+  </g>
+</svg>
+"""
+
+# Write static files
+with open(os.path.join(static_root, "index.html"), "w", encoding="utf-8") as f:
+    f.write(index_html)
+with open(os.path.join(static_root, "styles.css"), "w", encoding="utf-8") as f:
+    f.write(styles_css)
+with open(os.path.join(static_root, "app.js"), "w", encoding="utf-8") as f:
+    f.write(app_js)
+with open(os.path.join(static_root, "assets", "logo.svg"), "w", encoding="utf-8") as f:
+    f.write(logo_svg)
+with open(os.path.join(static_root, "assets", "leafs.svg"), "w", encoding="utf-8") as f:
+    f.write(leafs_svg)
+with open(os.path.join(static_root, "assets", "hero-illustration.svg"), "w", encoding="utf-8") as f:
+    f.write(hero_svg)
+
+# ---------- 2) Next.js skeleton ----------
+os.makedirs(next_root, exist_ok=True)
+os.makedirs(os.path.join(next_root, "app", "rides", "[id]"), exist_ok=True)
+os.makedirs(os.path.join(next_root, "app", "auth", "sign-in"), exist_ok=True)
+os.makedirs(os.path.join(next_root, "app", "auth", "sign-up"), exist_ok=True)
+os.makedirs(os.path.join(next_root, "app", "dashboard"), exist_ok=True)
+os.makedirs(os.path.join(next_root, "app", "admin"), exist_ok=True)
+os.makedirs(os.path.join(next_root, "components"), exist_ok=True)
+os.makedirs(os.path.join(next_root, "lib"), exist_ok=True)
+os.makedirs(os.path.join(next_root, "public"), exist_ok=True)
+
+package_json = {
+  "name": "ecoride-next",
+  "private": True,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "10.4.19",
+    "postcss": "8.4.38",
+    "tailwindcss": "3.4.4",
+    "typescript": "5.4.5",
+    "@types/react": "18.2.0",
+    "@types/node": "20.12.7"
+  }
+}
+
+next_config = """/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  experimental: { appDir: true }
+};
+module.exports = nextConfig;
+"""
+
+postcss_config = """module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};"""
+
+tailwind_config = """/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        green900: "#0E7C66",
+        green700: "#149E78",
+        green500: "#2BB673",
+        green300: "#6ED4A4",
+        green100: "#E8F7EF",
+        ink900: "#0B1B1B",
+        ink700: "#2C3D3D",
+        ink400: "#637777",
+      },
+      boxShadow: {
+        eco: "0 8px 30px rgba(14,124,102,.15)"
+      },
+      borderRadius: { 'eco':'18px' }
+    },
+  },
+  plugins: [],
+};"""
+
+tsconfig = """{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "types": ["node"]
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}"""
+
+globals_css = """@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+  --radius-eco:18px;
+}
+body{ @apply text-ink900 bg-gradient-to-b from-[#EAF6F6] to-white font-sans; }
+a{ @apply text-green700 }
+.btn{ @apply inline-flex items-center gap-2 rounded-full px-4 py-2 font-bold border shadow-eco transition; }
+.btn-primary{ @apply text-white bg-gradient-to-br from-green700 to-green500 }
+.btn-ghost{ @apply bg-white text-green700 border-green700/20 }
+.card{ @apply bg-white border border-green700/10 rounded-2xl shadow-eco }
+"""
+
+layout_tsx = """import "./globals.css";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "EcoRide • Covoiturage éco-responsable",
+  description: "La plateforme de covoiturage qui favorise les trajets éco-responsables et économiques.",
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-white text-zinc-900">
-      {/* Barre supérieure */}
-      <header className="sticky top-0 z-40 backdrop-blur bg-white/80 border-b border-zinc-200">
-        <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <LogoEcoRide />
-            <span className="font-extrabold tracking-tight" style={{ color: palette.primaryDark }}>
-              EcoRide
-            </span>
-          </div>
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#home" className="hover:text-emerald-700">Accueil</a>
-            <a href="#search" className="hover:text-emerald-700">Covoiturages</a>
-            <a href="#login" className="hover:text-emerald-700">Connexion</a>
-            <a href="#contact" className="hover:text-emerald-700">Contact</a>
-          </nav>
-          <Button className="bg-emerald-600 hover:bg-emerald-700">Proposer un trajet</Button>
-        </div>
-      </header>
-
-      {/* Hero */}
-      <section id="home" className="relative isolate overflow-hidden">
-        <div className="mx-auto max-w-6xl px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
-          <div>
-            <motion.h1
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-4xl md:text-5xl font-extrabold leading-tight"
-            >
-              La plateforme de covoiturage <span className="text-emerald-700">éco‑responsable</span>
-            </motion.h1>
-            <p className="mt-4 text-lg text-zinc-600">
-              Réduisez votre empreinte carbone et vos coûts en partageant vos trajets en voiture.
-              Rejoignez une communauté qui privilégie l'électrique lorsque c'est possible.
-            </p>
-            <div className="mt-6 flex items-center gap-3">
-              <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-sm text-emerald-800">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <path d="M4 12c4-6 12-6 16 0" stroke="currentColor" strokeWidth="2"/>
-                  <path d="M8 12c2-3 6-3 8 0" stroke="currentColor" strokeWidth="2"/>
-                  <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
-                </svg>
-                Priorité à l'électrique
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-3 py-1 text-sm text-zinc-800">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" strokeWidth="2"/>
-                </svg>
-                Transparence & simplicité
-              </div>
-            </div>
-          </div>
-          <div className="relative">
-            <IllustrationCarpool />
-          </div>
-        </div>
-      </section>
-
-      {/* Recherche */}
-      <section id="search" className="bg-[#f6fbf8] border-y border-emerald-50">
-        <div className="mx-auto max-w-6xl px-4 py-10">
-          <h2 className="text-2xl font-bold">Trouver un itinéraire</h2>
-          <form
-            className="mt-4 grid md:grid-cols-5 gap-3"
-            onSubmit={(e) => {
-              e.preventDefault();
-              setShowResults(true);
-            }}
-          >
-            <Input placeholder="Départ (ville)" value={from} onChange={(e) => setFrom(e.target.value)} />
-            <Input placeholder="Arrivée (ville)" value={to} onChange={(e) => setTo(e.target.value)} />
-            <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-            <div className="md:col-span-1 flex items-center gap-2">
-              <label className="text-sm text-zinc-600 flex items-center gap-2">
-                <input type="checkbox" className="scale-110" checked={onlyEco} onChange={(e) => setOnlyEco(e.target.checked)} />
-                Écologique
-              </label>
-            </div>
-            <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700">Rechercher</Button>
-          </form>
-
-          {/* Filtres avancés */}
-          {showResults && (
-            <div className="mt-6 grid md:grid-cols-3 gap-6">
-              <Card>
-                <CardContent className="p-4">
-                  <h3 className="font-semibold">Prix maximum : {maxPrice}€</h3>
-                  <Slider value={[maxPrice]} max={50} step={1} onValueChange={(v) => setMaxPrice(v[0])} />
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="p-4">
-                  <h3 className="font-semibold">Durée max : {maxDuration} min</h3>
-                  <Slider value={[maxDuration]} max={480} step={5} onValueChange={(v) => setMaxDuration(v[0])} />
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="p-4">
-                  <h3 className="font-semibold">Note minimale : {minRating.toFixed(1)}</h3>
-                  <Slider value={[minRating]} max={5} step={0.5} onValueChange={(v) => setMinRating(v[0])} />
-                </CardContent>
-              </Card>
-            </div>
-          )}
-
-          {/* Résultats */}
-          {showResults && (
-            <div className="mt-6">
-              {filtered.length === 0 ? (
-                <div className="rounded-xl border border-zinc-200 p-6 bg-white">
-                  <p className="text-zinc-700">Aucun covoiturage disponible pour cette recherche.</p>
-                  {firstNearestDate && (
-                    <p className="mt-2 text-sm text-zinc-600">
-                      Astuce : essayez la date la plus proche disponible :
-                      <Button variant="link" className="ml-1 p-0 h-auto text-emerald-700" onClick={() => setDate(firstNearestDate!)}>
-                        {firstNearestDate}
-                      </Button>
-                    </p>
-                  )}
-                </div>
-              ) : (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {filtered.map((r) => (
-                    <Card key={r.id} className="overflow-hidden">
-                      <CardContent className="p-4">
-                        <div className="flex items-start justify-between">
-                          <div className="flex items-center gap-3">
-                            <div
-                              className="w-10 h-10 rounded-full grid place-items-center text-white font-bold"
-                              style={{ backgroundColor: `hsl(${r.driver.avatarHue ?? 140},70%,45%)` }}
-                              aria-label={`Avatar de ${r.driver.pseudo}`}
-                            >
-                              {r.driver.pseudo.slice(0, 2).toUpperCase()}
-                            </div>
-                            <div>
-                              <div className="font-semibold">{r.driver.pseudo}</div>
-                              <Stars rating={r.driver.rating} />
-                            </div>
-                          </div>
-                          <EcoBadge electric={r.electric} />
-                        </div>
-                        <div className="mt-3 text-sm text-zinc-700">
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium">{r.from}</span>
-                            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden>
-                              <path d="M4 12h16M14 6l6 6-6 6" stroke="currentColor" strokeWidth="2" fill="none"/>
-                            </svg>
-                            <span className="font-medium">{r.to}</span>
-                          </div>
-                          <div className="mt-1">{r.date} • {r.depart} → {r.arrivee} • {Math.round(r.durationMin/60)}h{("0" + (r.durationMin%60)).slice(-2)}</div>
-                          <div className="mt-1">Places restantes : <span className="font-medium">{r.seatsLeft}</span></div>
-                        </div>
-                        <div className="mt-4 flex items-center justify-between">
-                          <div className="text-2xl font-extrabold" style={{ color: palette.primaryDark }}>{r.price}€</div>
-                          <div className="flex items-center gap-2">
-                            <Button variant="secondary" onClick={() => setSelected(r)}>Détail</Button>
-                            <Button className="bg-emerald-600 hover:bg-emerald-700">Participer</Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Section valeurs / présentation */}
-      <section className="mx-auto max-w-6xl px-4 py-14">
-        <h2 className="text-2xl font-bold">Pourquoi EcoRide ?</h2>
-        <div className="mt-6 grid md:grid-cols-3 gap-6">
-          {[
-            {
-              title: "Écologie pragmatique",
-              text: "Nous favorisons les trajets en véhicules électriques et valorisons le remplissage des voitures.",
-            },
-            {
-              title: "Transparence & confiance",
-              text: "Avis modérés, profils clairs, préférences affichées pour des trajets sereins.",
-            },
-            {
-              title: "Économie locale",
-              text: "Un système de crédits simple et équitable pour soutenir la plateforme.",
-            },
-          ].map((b, i) => (
-            <Card key={i}>
-              <CardContent className="p-5">
-                <div className="text-lg font-semibold">{b.title}</div>
-                <p className="mt-2 text-zinc-600">{b.text}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* Contact & Connexion ancres */}
-      <section id="login" className="bg-zinc-50 border-t">
-        <div className="mx-auto max-w-6xl px-4 py-12 grid md:grid-cols-2 gap-8 items-center">
-          <div>
-            <h3 className="text-xl font-bold">Prêt·e à rejoindre la communauté ?</h3>
-            <p className="mt-2 text-zinc-600">Créez un compte en quelques secondes et recevez 20 crédits de bienvenue.</p>
-          </div>
-          <div className="flex gap-3">
-            <Button className="bg-emerald-600 hover:bg-emerald-700">Créer un compte</Button>
-            <Button variant="outline">Se connecter</Button>
-          </div>
-        </div>
-      </section>
-
-      <section id="contact" className="bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-12">
-          <h3 className="text-xl font-bold">Contact</h3>
-          <p className="mt-2 text-zinc-600">Une question, une suggestion ? Écrivez‑nous.</p>
-          <div className="mt-4 grid md:grid-cols-2 gap-3">
-            <Input placeholder="Votre email" />
-            <Input placeholder="Sujet" />
-            <textarea className="col-span-full rounded-md border border-zinc-200 p-3 min-h-[120px] focus:outline-none focus:ring-2 focus:ring-emerald-300" placeholder="Votre message" />
-            <div>
-              <Button className="bg-emerald-600 hover:bg-emerald-700">Envoyer</Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-emerald-900 text-emerald-50">
-        <div className="mx-auto max-w-6xl px-4 py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <LogoEcoRide />
-            <div className="font-semibold">EcoRide</div>
-          </div>
-          <div className="text-sm">
-            Mail : <a href="mailto:contact@ecoride.fr" className="underline underline-offset-4">contact@ecoride.fr</a>
-          </div>
-          <div className="text-sm">
-            <a href="#mentions" className="underline underline-offset-4">Mentions légales</a>
-          </div>
-        </div>
-      </footer>
-
-      {/* Modal détail */}
-      {selected && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4" role="dialog" aria-modal>
-          <div className="w-full max-w-2xl rounded-2xl bg-white shadow-xl overflow-hidden">
-            <div className="p-4 border-b flex items-center justify-between">
-              <div className="font-bold">Détail du covoiturage</div>
-              <button onClick={() => setSelected(null)} className="p-1 rounded hover:bg-zinc-100" aria-label="Fermer">
-                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
-                  <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" />
-                </svg>
-              </button>
-            </div>
-            <div className="p-5 grid md:grid-cols-2 gap-4">
-              <div>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full grid place-items-center text-white font-bold" style={{ backgroundColor: `hsl(${selected.driver.avatarHue ?? 140},70%,45%)` }}>
-                    {selected.driver.pseudo.slice(0, 2).toUpperCase()}
-                  </div>
-                  <div>
-                    <div className="font-semibold">{selected.driver.pseudo}</div>
-                    <Stars rating={selected.driver.rating} />
-                  </div>
-                </div>
-                <div className="mt-3 text-sm text-zinc-700">
-                  <div className="font-medium">Trajet</div>
-                  <div>{selected.from} → {selected.to}</div>
-                  <div>{selected.date} • {selected.depart} → {selected.arrivee} • {Math.round(selected.durationMin/60)}h{("0" + (selected.durationMin%60)).slice(-2)}</div>
-                  <div className="mt-2 flex items-center justify-between">
-                    <EcoBadge electric={selected.electric} />
-                    <div className="text-xl font-extrabold" style={{ color: palette.primaryDark }}>{selected.price}€</div>
-                  </div>
-                </div>
-                <div className="mt-4 text-sm text-zinc-700">
-                  <div className="font-medium">Véhicule</div>
-                  <div>{selected.car.brand} {selected.car.model} • {selected.car.energy === "electrique" ? "Électrique" : selected.car.energy === "essence" ? "Essence" : "Diesel"}</div>
-                </div>
-                <div className="mt-4 text-sm text-zinc-700">
-                  <div className="font-medium">Préférences conducteur</div>
-                  <ul className="list-disc pl-5 space-y-1">
-                    {selected.prefs.map((p, i) => (<li key={i}>{p}</li>))}
-                  </ul>
-                </div>
-              </div>
-              <div>
-                <div className="font-medium">Avis</div>
-                <div className="mt-2 space-y-3">
-                  {selected.reviews.map((rv, i) => (
-                    <div key={i} className="rounded-lg border border-zinc-200 p-3">
-                      <div className="flex items-center justify-between">
-                        <div className="font-semibold">{rv.author}</div>
-                        <Stars rating={rv.rating} />
-                      </div>
-                      <p className="text-sm text-zinc-700 mt-1">{rv.text}</p>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-4 flex gap-2">
-                  <Button className="bg-emerald-600 hover:bg-emerald-700">Participer</Button>
-                  <Button variant="outline" onClick={() => setSelected(null)}>Fermer</Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Mentions légales ancre (placeholder) */}
-      <section id="mentions" className="mx-auto max-w-6xl px-4 py-10 text-sm text-zinc-600">
-        <div className="font-semibold mb-2">Mentions légales (exemple)</div>
-        <p>EcoRide – 123 rue du Partage, 75000 Paris • contact@ecoride.fr • SIREN 000 000 000</p>
-      </section>
-    </div>
+    <html lang="fr">
+      <body>
+        {children}
+      </body>
+    </html>
   );
 }
+"""
+
+header_tsx = """export default function Header(){
+  return (
+    <header className="sticky top-0 z-50 backdrop-saturate-150 backdrop-blur bg-white/80 border-b border-green700/10">
+      <div className="max-w-[1100px] mx-auto px-5 py-4 flex items-center gap-6">
+        <a href="/" className="flex items-center gap-3 font-extrabold text-green900">
+          <img src="/logo.svg" width={38} height={38} alt="EcoRide" />
+          EcoRide
+        </a>
+        <div className="flex-1" />
+        <nav className="hidden sm:flex gap-4 text-ink700 font-semibold">
+          <a href="/rides">Covoiturages</a>
+          <a href="/auth/sign-in">Connexion</a>
+          <a href="/#contact">Contact</a>
+        </nav>
+        <a className="btn btn-ghost" href="/rides">+ Proposer</a>
+        <a className="btn btn-primary" href="/auth/sign-in">Se connecter</a>
+      </div>
+    </header>
+  )
+}"""
+
+searchform_tsx = """'use client';
+import { useState } from 'react';
+import { sampleRides } from '@/lib/sampleData';
+
+export default function SearchForm({ onResults }:{ onResults:(rides:any[])=>void }){
+  const [from,setFrom] = useState('');
+  const [to,setTo] = useState('');
+  const [date,setDate] = useState('');
+
+  function submit(e:React.FormEvent){
+    e.preventDefault();
+    let results = sampleRides.filter(r =>
+      r.from.toLowerCase().includes(from.toLowerCase()) &&
+      r.to.toLowerCase().includes(to.toLowerCase()) &&
+      r.date === date
+    );
+    if(results.length===0){
+      const sameRoute = sampleRides.filter(r=>r.from.toLowerCase().includes(from.toLowerCase()) && r.to.toLowerCase().includes(to.toLowerCase()));
+      if(sameRoute.length){
+        const sorted = sameRoute.sort((a,b)=> Math.abs(new Date(a.date).getTime()-new Date(date).getTime()) - Math.abs(new Date(b.date).getTime()-new Date(date).getTime()));
+        const closestDate = sorted[0]?.date;
+        alert(`Aucun trajet ce jour. Prochaine dispo le ${new Date(closestDate).toLocaleDateString('fr-FR')}.`);
+        results = sameRoute.filter(r=>r.date===closestDate);
+      }
+    }
+    onResults(results);
+  }
+
+  return (
+    <form onSubmit={submit} className="grid md:grid-cols-[1fr_1fr_180px_auto] grid-cols-1 gap-2 bg-white p-4 rounded-[18px] border border-green700/10 shadow-eco">
+      <div className="flex flex-col gap-1">
+        <label htmlFor="from" className="text-[12px] uppercase tracking-[.12em] text-ink400 font-extrabold">Départ</label>
+        <input id="from" value={from} onChange={e=>setFrom(e.target.value)} placeholder="Ville de départ" className="border border-green700/20 rounded-xl px-3 py-2 outline-none focus:border-green500 focus:ring-4 focus:ring-green500/20" required/>
+      </div>
+      <div className="flex flex-col gap-1">
+        <label htmlFor="to" className="text-[12px] uppercase tracking-[.12em] text-ink400 font-extrabold">Arrivée</label>
+        <input id="to" value={to} onChange={e=>setTo(e.target.value)} placeholder="Ville d'arrivée" className="border border-green700/20 rounded-xl px-3 py-2 outline-none focus:border-green500 focus:ring-4 focus:ring-green500/20" required/>
+      </div>
+      <div className="flex flex-col gap-1">
+        <label htmlFor="date" className="text-[12px] uppercase tracking-[.12em] text-ink400 font-extrabold">Date</label>
+        <input id="date" type="date" value={date} onChange={e=>setDate(e.target.value)} className="border border-green700/20 rounded-xl px-3 py-2 outline-none focus:border-green500 focus:ring-4 focus:ring-green500/20" required/>
+      </div>
+      <button className="btn btn-primary" type="submit">Rechercher</button>
+    </form>
+  )
+}
+"""
+
+ridecard_tsx = """export default function RideCard({ r }:{ r:any }){
+  return (
+    <article className="card p-0 overflow-hidden">
+      <div className="px-4 py-3 bg-gradient-to-b from-green100 to-white">
+        <div className="flex items-center gap-3">
+          <div className="w-11 h-11 rounded-full grid place-items-center font-extrabold text-white bg-gradient-to-br from-green300 to-green500">{r.driver.avatar}</div>
+          <div>
+            <strong>{r.driver.pseudo}</strong>
+            <div className="text-xs text-ink400">⭐ {r.driver.note.toFixed(1)} • {r.vehicule.marque} {r.vehicule.modele} ({r.vehicule.energie})</div>
+          </div>
+          <div className="flex-1" />
+          {r.eco ? <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-extrabold bg-green100 text-green900">🌱 Éco</span> : null}
+        </div>
+      </div>
+      <div className="p-4 grid gap-2">
+        <div className="text-sm text-ink400">📍 {r.from} → {r.to}</div>
+        <div className="text-sm text-ink400">🗓️ {new Date(r.date).toLocaleDateString('fr-FR',{weekday:'short', day:'2-digit', month:'short'})} • ⏱️ {r.depart} → {r.arrive} ({r.duree} min)</div>
+        <div className="text-sm text-ink400">🚗 Places restantes : <strong>{r.places}</strong></div>
+        <div className="text-green900 font-extrabold text-lg">{r.prix} €</div>
+      </div>
+      <div className="px-4 py-3 border-t border-dashed border-green700/20 flex items-center justify-between">
+        <a className="btn btn-ghost" href={`/rides/${r.id}`}>Détail</a>
+        <button className="btn btn-primary" disabled={r.places<1}>Participer</button>
+      </div>
+    </article>
+  )
+}
+"""
+
+sample_data_ts = """export const sampleRides = [
+  { id:1, from:'Paris', to:'Lyon', date:'2025-09-25', depart:'08:00', arrive:'12:30', driver:{ pseudo:'Nina', note:4.8, avatar:'N' }, places:2, prix:28, duree:270, eco:true, vehicule:{marque:'Renault', modele:'Mégane e-Tech', energie:'Électrique'}},
+  { id:2, from:'Paris', to:'Lille', date:'2025-09-25', depart:'09:10', arrive:'11:00', driver:{ pseudo:'Marc', note:4.2, avatar:'M' }, places:0, prix:14, duree:110, eco:false, vehicule:{marque:'Peugeot', modele:'308', energie:'Essence'}},
+  { id:3, from:'Bordeaux', to:'Toulouse', date:'2025-09-26', depart:'07:45', arrive:'10:05', driver:{ pseudo:'Zoé', note:5.0, avatar:'Z' }, places:3, prix:16, duree:140, eco:true, vehicule:{marque:'Tesla', modele:'Model 3', energie:'Électrique'}},
+  { id:4, from:'Paris', to:'Lyon', date:'2025-09-25', depart:'13:00', arrive:'17:00', driver:{ pseudo:'Ali', note:4.6, avatar:'A' }, places:1, prix:25, duree:240, eco:false, vehicule:{marque:'Citroën', modele:'C4', energie:'Diesel'}}
+] as const;
+"""
+
+home_page = """import Header from '@/components/Header';
+import SearchForm from '@/components/SearchForm';
+import RideCard from '@/components/RideCard';
+import { use } from 'react';
+import { sampleRides } from '@/lib/sampleData';
+
+function Hero(){
+  return (
+    <section id="hero" className="relative overflow-hidden">
+      <div className="max-w-[1100px] mx-auto px-5 grid md:grid-cols-[1.1fr_.9fr] gap-7 items-center pt-10 pb-8">
+        <div>
+          <div className="inline-flex items-center gap-2 bg-green100 text-green900 font-extrabold rounded-full px-3 py-2 shadow-eco">
+            <svg viewBox="0 0 24 24" className="w-5 h-5" aria-hidden="true"><path fill="currentColor" d="M12 2C7 2 3 6 3 11c0 6 6.4 10.6 8.2 11.8.5.3 1.2.3 1.6 0C14.6 21.6 21 17 21 11c0-5-4-9-9-9Zm3.5 9.2c-1.6 3.3-4.1 5.3-7.3 6.1a1 1 0 0 1-.5-1.9c2.7-.8 4.7-2.4 6-5a1 1 0 0 1 1.8.9Z"/></svg>
+            Covoiturez, respirez, économisez
+          </div>
+          <h1 className="text-[clamp(28px,4.5vw,46px)] leading-[1.04] mt-4 mb-2">La plateforme de covoiturage <span className="text-green700">éco‑responsable</span></h1>
+          <p className="text-lg text-ink400 mb-4">Trouvez ou proposez un trajet. Filtrez par prix, durée, note et énergie.</p>
+          <SearchForm onResults={()=>{}} />
+        </div>
+        <div aria-hidden="true">
+          <img src="/hero-illustration.svg" alt="" />
+        </div>
+      </div>
+      <img className="absolute -right-20 -bottom-28 opacity-15 pointer-events-none" src="/leafs.svg" alt="" />
+    </section>
+  )
+}
+
+export default function Page(){
+  const rides = sampleRides.filter(r=>r.places>0);
+  return (
+    <>
+      <Header />
+      <Hero />
+      <section className="py-10">
+        <div className="max-w-[1100px] mx-auto px-5">
+          <h2 className="text-2xl font-bold">Trajets disponibles</h2>
+          <div className="grid md:grid-cols-3 gap-4 mt-4">
+            {rides.map(r => <RideCard key={r.id} r={r} />)}
+          </div>
+        </div>
+      </section>
+      <section className="relative overflow-hidden py-8">
+        <div className="max-w-[1100px] mx-auto px-5 text-center">
+          <h3 className="text-xl font-bold">Envie de participer ?</h3>
+          <p className="text-lg text-ink400 mb-4">Créez un compte et recevez <strong>20 crédits</strong> de bienvenue.</p>
+          <div className="flex gap-3 items-center justify-center">
+            <a className="btn btn-primary" href="/auth/sign-up">Créer un compte</a>
+            <a className="btn btn-ghost" href="/rides">Proposer un trajet</a>
+          </div>
+        </div>
+      </section>
+      <footer id="contact" className="bg-gradient-to-b from-white to-green100 border-t border-green700/15">
+        <div className="max-w-[1100px] mx-auto px-5 py-6 grid sm:grid-cols-[1fr_auto] gap-3 items-center">
+          <p className="text-ink400 text-sm">💌 Contact : <a href="mailto:contact@ecoride.fr">contact@ecoride.fr</a></p>
+          <p className="text-ink400 text-sm"><a href="/mentions">Mentions légales</a></p>
+        </div>
+      </footer>
+    </>
+  )
+}
+"""
+
+rides_page = """import Header from '@/components/Header';
+import RideCard from '@/components/RideCard';
+import { sampleRides } from '@/lib/sampleData';
+
+export default function Page(){
+  const rides = sampleRides.filter(r=>r.places>0);
+  return (
+    <>
+      <Header />
+      <main className="max-w-[1100px] mx-auto px-5 py-8">
+        <h1 className="text-2xl font-bold mb-4">Tous les covoiturages</h1>
+        <div className="grid md:grid-cols-3 gap-4">
+          {rides.map(r => <RideCard key={r.id} r={r} />)}
+        </div>
+      </main>
+    </>
+  )
+}
+"""
+
+ride_detail = """import Header from '@/components/Header';
+import { sampleRides } from '@/lib/sampleData';
+
+export default function Page({ params }:{ params:{ id:string }}){
+  const id = Number(params.id);
+  const r = sampleRides.find(x=>x.id===id);
+  if(!r) return <div><Header /><div className="max-w-[1100px] mx-auto px-5 py-8">Trajet introuvable.</div></div>;
+  return (
+    <>
+      <Header />
+      <main className="max-w-[900px] mx-auto px-5 py-8 grid gap-4">
+        <h1 className="text-2xl font-bold">Trajet {r.from} → {r.to}</h1>
+        <div className="card p-4 grid gap-2">
+          <div>🗓️ {r.date} • {r.depart} → {r.arrive} ({r.duree} min)</div>
+          <div>🚗 {r.vehicule.marque} {r.vehicule.modele} ({r.vehicule.energie})</div>
+          <div>👤 {r.driver.pseudo} • ⭐ {r.driver.note}</div>
+          <div>💺 Places restantes : {r.places}</div>
+          <div className="flex gap-3">
+            <button className="btn btn-primary">Participer</button>
+            <a className="btn btn-ghost" href="/rides">Retour</a>
+          </div>
+        </div>
+      </main>
+    </>
+  )
+}
+"""
+
+sign_in = """import Header from '@/components/Header';
+
+export default function Page(){
+  return (
+    <>
+      <Header />
+      <main className="max-w-[480px] mx-auto px-5 py-10">
+        <h1 className="text-2xl font-bold mb-4">Connexion</h1>
+        <form className="card p-5 grid gap-3">
+          <input placeholder="Email" className="border border-green700/20 rounded-xl px-3 py-2" />
+          <input type="password" placeholder="Mot de passe" className="border border-green700/20 rounded-xl px-3 py-2" />
+          <button className="btn btn-primary">Se connecter</button>
+        </form>
+        <p className="text-sm text-ink400 mt-3">Pas encore de compte ? <a href="/auth/sign-up">Créer un compte</a></p>
+      </main>
+    </>
+  )
+}
+"""
+
+sign_up = """import Header from '@/components/Header';
+
+export default function Page(){
+  return (
+    <>
+      <Header />
+      <main className="max-w-[480px] mx-auto px-5 py-10">
+        <h1 className="text-2xl font-bold mb-4">Inscription</h1>
+        <form className="card p-5 grid gap-3">
+          <input placeholder="Nom complet" className="border border-green700/20 rounded-xl px-3 py-2" />
+          <input placeholder="Email" className="border border-green700/20 rounded-xl px-3 py-2" />
+          <input type="password" placeholder="Mot de passe" className="border border-green700/20 rounded-xl px-3 py-2" />
+          <button className="btn btn-primary">Créer le compte</button>
+        </form>
+        <p className="text-sm text-ink400 mt-3">Déjà inscrit ? <a href="/auth/sign-in">Se connecter</a></p>
+      </main>
+    </>
+  )
+}
+"""
+
+dashboard = """import Header from '@/components/Header';
+
+export default function Page(){
+  return (
+    <>
+      <Header />
+      <main className="max-w-[900px] mx-auto px-5 py-8 grid gap-4">
+        <h1 className="text-2xl font-bold">Espace utilisateur</h1>
+        <div className="card p-4">Mes trajets à venir — (démo)</div>
+        <div className="card p-4">Mes annonces — (démo)</div>
+        <div className="card p-4">Mes avis — (démo)</div>
+      </main>
+    </>
+  )
+}
+"""
+
+admin = """import Header from '@/components/Header';
+
+export default function Page(){
+  return (
+    <>
+      <Header />
+      <main className="max-w-[1100px] mx-auto px-5 py-8 grid gap-4">
+        <h1 className="text-2xl font-bold">Admin</h1>
+        <div className="card p-4">Modération des annonces — (démo)</div>
+        <div className="card p-4">Utilisateurs — (démo)</div>
+        <div className="card p-4">Statistiques — (démo)</div>
+      </main>
+    </>
+  
