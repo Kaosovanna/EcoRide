@@ -448,22 +448,4 @@ function wireEvents() {
       $('#noResults').textContent = `Aucun trajet ce jour. Essayez le ${d.toISOString().slice(0,10)}.`;
     }
 
-    applyFilters();
-  });
-
-  $$('#filters input').forEach(inp => inp.addEventListener('input', applyFilters));
-
-  $('#ridesContainer').addEventListener('click', (e) => {
-    const btn = e.target.closest('button[data-action]');
-    if (!btn) return;
-    const id = Number(btn.dataset.id);
-    const ride = state.filtered.find(r => r.id === id) || state.rides.find(r => r.id === id);
-    if (!ride) return;
-    if (btn.dataset.action === 'detail') openDetails(ride);
-    if (btn.dataset.action === 'participer') handleParticiper(ride);
-  });
-
-  $('.dialog-close')?.addEventListener('click', () => $('#rideDialog').close());
-}
-
-document.addEventListener('DOMContentLoaded', wireEvents);
+   
