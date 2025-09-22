@@ -1,513 +1,545 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>EcoRide • Covoiturage éco-responsable</title>
-  <meta name="description" content="EcoRide — la plateforme de covoiturage qui favorise les trajets éco-responsables et économiques." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      /* Palette éco */
-      --green-900:#0E7C66; /* sapin */
-      --green-700:#149E78; /* pin clair */
-      --green-500:#2BB673; /* feuille */
-      --green-300:#6ED4A4; /* menthe */
-      --green-100:#E8F7EF; /* givre */
-      --earth-500:#946B2D; /* terre */
-      --sky-100:#EAF6F6; /* ciel */
-      --ink-900:#0B1B1B; /* texte fort */
-      --ink-700:#2C3D3D; /* texte */
-      --ink-400:#637777; /* secondaire */
-      --white:#ffffff;
-      --shadow:0 8px 30px rgba(14,124,102,.15);
-      --radius: 18px;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EcoRide • Covoiturage éco-responsable</title>
+<meta name="description" content="EcoRide — la plateforme de covoiturage qui favorise les trajets éco-responsables et économiques." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial; color:var(--ink-900); background:linear-gradient(180deg,var(--sky-100),var(--white));}
-    a{color:var(--green-700); text-decoration:none}
-    img{max-width:100%;height:auto}
+<style>
+:root{
+  /* Palette éco */
+  --green-900:#0E7C66; /* sapin */
+  --green-700:#149E78; /* pin clair */
+  --green-500:#2BB673; /* feuille */
+  --green-300:#6ED4A4; /* menthe */
+  --green-100:#E8F7EF; /* givre */
+  --earth-500:#946B2D; /* terre */
+  --sky-100:#EAF6F6; /* ciel */
+  --ink-900:#0B1B1B;  /* texte fort */
+  --ink-700:#2C3D3D;  /* texte */
+  --ink-400:#637777;  /* secondaire */
+  --white:#ffffff;
+  --shadow:0 8px 30px rgba(14,124,102,.15);
+  --radius: 18px;
+}
 
-    /* App shell */
-    header{
-      position:sticky; top:0; z-index:50; backdrop-filter:saturate(1.2) blur(8px);
-      background:rgba(255,255,255,.75); border-bottom:1px solid rgba(20,158,120,.08);
-    }
-    .container{max-width:1100px; margin-inline:auto; padding:18px 20px}
-    nav{display:flex; align-items:center; gap:24px;}
-    .brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.2px; color:var(--green-900)}
-    .brand svg{width:40px;height:40px}
-    .spacer{flex:1}
-    .menu a{margin:0 10px; font-weight:600; color:var(--ink-700)}
-    .menu a:hover{color:var(--green-900)}
-    .btn{display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:10px 16px; font-weight:700; border:1px solid transparent; box-shadow:var(--shadow); transition:.2s ease; cursor:pointer}
-    .btn-primary{background:linear-gradient(135deg,var(--green-700),var(--green-500)); color:#fff}
-    .btn-primary:hover{transform:translateY(-2px)}
-    .btn-ghost{background:#fff; color:var(--green-700); border-color:rgba(20,158,120,.18)}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
+  color:var(--ink-900);
+  background:linear-gradient(180deg,var(--sky-100),var(--white));
+}
+a{color:var(--green-700); text-decoration:none}
+img{max-width:100%;height:auto}
 
-    /* Hero */
-    .hero{position:relative; overflow:hidden; min-height:520px; display:grid; align-items:center}
-    .hero::before{ /* image de fond gérée en JS */
-      content:""; position:absolute; inset:0; background-size:cover; background-position:center; filter:saturate(1.05) contrast(1.02);
-      transition:opacity .6s ease, transform .6s ease; opacity:.85; transform:scale(1.04);
-    }
-    .hero .scrim{position:absolute; inset:0; background:linear-gradient(180deg, rgba(234,246,246,.8), rgba(255,255,255,.95));}
-    .hero .container{position:relative; display:grid; grid-template-columns:1.1fr .9fr; align-items:center; gap:28px; padding-top:40px; padding-bottom:32px}
-    .badge{display:inline-flex; align-items:center; gap:8px; background:var(--green-100); color:var(--green-900); font-weight:700; border-radius:999px; padding:8px 12px; box-shadow:var(--shadow)}
-    h1{font-size:clamp(28px,4.5vw,46px); line-height:1.04; margin:16px 0}
-    .lead{font-size:18px; color:var(--ink-400); margin-bottom:22px}
+/* App shell */
+header{
+  position:sticky; top:0; z-index:50;
+  backdrop-filter:saturate(1.2) blur(8px);
+  background:rgba(255,255,255,.75);
+  border-bottom:1px solid rgba(20,158,120,.08);
+}
+.container{max-width:1100px; margin-inline:auto; padding:18px 20px}
+nav{display:flex; align-items:center; gap:24px;}
+.brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.2px; color:var(--green-900)}
+.brand svg{width:38px;height:38px}
+.spacer{flex:1}
+.menu a{margin:0 10px; font-weight:600; color:var(--ink-700)}
+.menu a:hover{color:var(--green-900)}
+.btn{display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:10px 16px; font-weight:700; border:1px solid transparent; box-shadow:var(--shadow); transition:.2s ease;}
+.btn-primary{background:linear-gradient(135deg,var(--green-700),var(--green-500)); color:#fff}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost{background:#fff; color:var(--green-700); border-color:rgba(20,158,120,.18)}
 
-    /* Search card */
-    .search-card{background:#fff; padding:16px; border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid rgba(20,158,120,.08)}
-    .search-grid{display:grid; grid-template-columns:1fr 1fr 180px auto; gap:10px}
-    .field{display:flex; flex-direction:column; gap:6px}
-    label{font-size:12px; text-transform:uppercase; letter-spacing:.12em; color:var(--ink-400); font-weight:800}
-    input, select{border:1px solid rgba(20,158,120,.18); border-radius:12px; padding:12px 14px; font-size:15px; outline:none}
-    input:focus{border-color:var(--green-500); box-shadow:0 0 0 4px rgba(43,182,115,.12)}
+/* Hero */
+.hero{position:relative; overflow:hidden}
+.hero .container{
+  position:relative; z-index:2;
+  display:grid; grid-template-columns:1.1fr .9fr; align-items:center; gap:28px;
+  padding-top:40px; padding-bottom:32px
+}
+.badge{display:inline-flex; align-items:center; gap:8px; background:var(--green-100); color:var(--green-900); font-weight:700; border-radius:999px; padding:8px 12px; box-shadow:var(--shadow)}
+h1{font-size:clamp(28px,4.5vw,46px); line-height:1.04; margin:16px 0}
+.lead{font-size:18px; color:var(--ink-400); margin-bottom:22px}
 
-    /* Illustration décorative */
-    .leafs{position:absolute; inset:auto -80px -120px auto; opacity:.15; pointer-events:none}
+/* Search card */
+.search-card{background:#fff; padding:16px; border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid rgba(20,158,120,.08)}
+.search-grid{display:grid; grid-template-columns:1fr 1fr 180px auto; gap:10px}
+.field{display:flex; flex-direction:column; gap:6px}
+label{font-size:12px; text-transform:uppercase; letter-spacing:.12em; color:var(--ink-400); font-weight:800}
+input, select{border:1px solid rgba(20,158,120,.18); border-radius:12px; padding:12px 14px; font-size:15px; outline:none}
+input:focus{border-color:var(--green-500); box-shadow:0 0 0 4px rgba(43,182,115,.12)}
 
-    /* Features */
-    .features{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:22px}
-    .feature{background:#fff; padding:16px; border-radius:16px; border:1px solid rgba(20,158,120,.08); box-shadow:var(--shadow); display:flex; gap:12px}
-    .feature svg{width:28px;height:28px; flex:0 0 28px}
+/* Illustration décorative */
+.leafs{position:absolute; inset:auto -80px -120px auto; opacity:.15; pointer-events:none}
 
-    /* Rides */
-    section#covoiturages{padding:40px 0}
-    .section-title{display:flex; align-items:center; justify-content:space-between; gap:12px}
-    .filters{display:flex; gap:10px; flex-wrap:wrap}
-    .chip{border:1px solid rgba(20,158,120,.18); background:#fff; border-radius:999px; padding:8px 12px; font-weight:600}
+/* BG Slideshow (hero) */
+.bg-slideshow{
+  position:absolute; inset:0; z-index:1; pointer-events:none; overflow:hidden;
+}
+.bg-slideshow::after{
+  /* Voile pour lisibilité du texte */
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(11,27,27,.45), rgba(11,27,27,.25), rgba(255,255,255,.0) 70%);
+}
+.bg-slide{
+  position:absolute; inset:0;
+  background-size:cover; background-position:center;
+  opacity:0; transition:opacity .8s ease;
+  transform:scale(1.03); /* léger zoom pour style */
+}
+.bg-slide.active{opacity:1}
 
-    .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px}
-    .card{background:#fff; border:1px solid rgba(20,158,120,.1); border-radius:16px; overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column}
-    .card-header{padding:14px 16px; background:linear-gradient(180deg,var(--green-100),#fff)}
-    .driver{display:flex; align-items:center; gap:12px}
-    .avatar{width:44px;height:44px;border-radius:50%; background:linear-gradient(135deg,var(--green-300),var(--green-500)); display:grid; place-items:center; font-weight:800; color:#fff}
-    .pill{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:800; background:var(--green-100); color:var(--green-900)}
-    .card-body{padding:16px; display:grid; gap:10px}
-    .meta{display:flex; gap:10px; flex-wrap:wrap; color:var(--ink-400); font-size:14px}
-    .price{font-weight:800; font-size:18px; color:var(--green-900)}
-    .card-footer{padding:12px 16px; display:flex; align-items:center; justify-content:space-between; border-top:1px dashed rgba(20,158,120,.2)}
+/* Features */
+.features{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:22px}
+.feature{background:#fff; padding:16px; border-radius:16px; border:1px solid rgba(20,158,120,.08); box-shadow:var(--shadow); display:flex; gap:12px}
+.feature svg{width:28px;height:28px; flex:0 0 28px}
 
-    /* Galerie (personnes heureuses) */
-    .gallery{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:26px 0}
-    .gallery figure{position:relative; overflow:hidden; border-radius:16px; box-shadow:var(--shadow); margin:0}
-    .gallery img{display:block; width:100%; height:220px; object-fit:cover; transition:transform .5s ease}
-    .gallery figure:hover img{transform:scale(1.06)}
-    .gallery figcaption{position:absolute; left:8px; bottom:8px; padding:6px 10px; border-radius:999px; background:rgba(0,0,0,.45); color:#fff; font-weight:700; font-size:12px}
+/* Rides */
+section#covoiturages{padding:40px 0}
+.section-title{display:flex; align-items:center; justify-content:space-between; gap:12px}
+.filters{display:flex; gap:10px; flex-wrap:wrap}
+.chip{border:1px solid rgba(20,158,120,.18); background:#fff; border-radius:999px; padding:8px 12px; font-weight:600}
+.cards{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px}
+.card{background:#fff; border:1px solid rgba(20,158,120,.1); border-radius:16px; overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column}
+.card-header{padding:14px 16px; background:linear-gradient(180deg,var(--green-100),#fff)}
+.driver{display:flex; align-items:center; gap:12px}
+.avatar{width:44px;height:44px;border-radius:50%; background:linear-gradient(135deg,var(--green-300),var(--green-500)); display:grid; place-items:center; font-weight:800; color:#fff}
+.pill{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:800; background:var(--green-100); color:var(--green-900)}
+.card-body{padding:16px; display:grid; gap:10px}
+.meta{display:flex; gap:10px; flex-wrap:wrap; color:var(--ink-400); font-size:14px}
+.price{font-weight:800; font-size:18px; color:var(--green-900)}
+.card-footer{padding:12px 16px; display:flex; align-items:center; justify-content:space-between; border-top:1px dashed rgba(20,158,120,.2)}
 
-    /* À propos */
-    #apropos{padding:46px 0; background:linear-gradient(180deg,#fff,var(--green-100)); border-top:1px solid rgba(20,158,120,.1); border-bottom:1px solid rgba(20,158,120,.1)}
-    #apropos .grid{display:grid; grid-template-columns:1.2fr .8fr; gap:22px; align-items:center}
-    .sticker{position:absolute; right:12px; bottom:12px; transform:rotate(-8deg);}
-    .sticker svg{width:86px;height:86px; filter:drop-shadow(0 6px 12px rgba(0,0,0,.25))}
+/* À propos + Témoignages */
+.section{padding:44px 0}
+.about{
+  display:grid; grid-template-columns:1.2fr .8fr; gap:22px; align-items:center;
+  background:#fff; border:1px solid rgba(20,158,120,.08); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px;
+}
+.portrait{
+  width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:16px; box-shadow:var(--shadow)
+}
+.kpis{display:flex; gap:18px; flex-wrap:wrap; margin-top:12px}
+.kpi{background:var(--green-100); color:var(--green-900); padding:12px 14px; border-radius:14px; font-weight:800}
 
-    footer{background:linear-gradient(180deg,#fff,var(--green-100)); border-top:1px solid rgba(20,158,120,.15)}
-    footer .container{display:grid; grid-template-columns:1fr auto; gap:12px; padding-top:26px; padding-bottom:26px; align-items:center}
-    .legal{color:var(--ink-400); font-size:14px}
+.testimonials{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px}
+.tcard{background:#fff; border:1px solid rgba(20,158,120,.08); border-radius:16px; padding:16px; box-shadow:var(--shadow)}
+.thead{display:flex; align-items:center; gap:12px; margin-bottom:8px}
+.tavatar{width:40px;height:40px;border-radius:50%; background:linear-gradient(135deg,var(--green-300),var(--green-500)); display:grid; place-items:center; color:#fff; font-weight:800}
 
-    /* Responsive */
-    @media (max-width:1000px){
-      .hero .container{grid-template-columns:1fr}
-      .search-grid{grid-template-columns:1fr 1fr}
-      .cards{grid-template-columns:1fr 1fr}
-      #apropos .grid{grid-template-columns:1fr}
-      .gallery{grid-template-columns:repeat(2,1fr)}
-    }
-    @media (max-width:640px){
-      .menu{display:none}
-      .search-grid{grid-template-columns:1fr}
-      .cards{grid-template-columns:1fr}
-      .gallery{grid-template-columns:1fr}
-    }
-  </style>
+/* Footer */
+footer{background:linear-gradient(180deg,#fff,var(--green-100)); border-top:1px solid rgba(20,158,120,.15)}
+footer .container{display:grid; grid-template-columns:1fr auto; gap:12px; padding-top:26px; padding-bottom:26px; align-items:center}
+.legal{color:var(--ink-400); font-size:14px}
+
+/* Responsive */
+@media (max-width:1000px){
+  .hero .container{grid-template-columns:1fr}
+  .search-grid{grid-template-columns:1fr 1fr}
+  .cards{grid-template-columns:1fr 1fr}
+  .about{grid-template-columns:1fr}
+  .testimonials{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  .menu{display:none}
+  .search-grid{grid-template-columns:1fr}
+  .cards{grid-template-columns:1fr}
+  .testimonials{grid-template-columns:1fr}
+}
+</style>
 </head>
+
 <body>
-  <!-- En-tête + Logo (SVG) -->
-  <header>
-    <div class="container">
-      <nav>
-        <a class="brand" href="#">
-          <!-- Logo révisé: volant + deux passagers + feuille + prise (énergie) -->
-          <svg viewBox="0 0 64 64" aria-hidden="true" role="img">
-            <defs>
-              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="var(--green-700)"/>
-                <stop offset="100%" stop-color="var(--green-300)"/>
-              </linearGradient>
-            </defs>
-            <circle cx="32" cy="32" r="30" fill="url(#g)" opacity=".18"/>
-            <!-- volant -->
-            <circle cx="32" cy="32" r="12" fill="#fff"/>
-            <path d="M20 32a12 12 0 0 1 24 0h-6a6 6 0 0 0-12 0h-6Z" fill="var(--green-900)"/>
-            <!-- passagers -->
-            <circle cx="27" cy="28" r="2.5" fill="var(--green-700)"/>
-            <circle cx="37" cy="28" r="2.5" fill="var(--green-700)"/>
-            <!-- feuille -->
-            <path d="M50 26c0 10-8 18-18 18-3 0-6-.6-8.7-1.9l3.7-3.7c1.6.4 3.3.6 5 .6 7.7 0 14-6.3 14-14 0-1.7-.2-3.4-.6-5l3.7-3.7c1.2 2.6 1.9 5.7 1.9 8.7Z" fill="url(#g)"/>
-            <!-- prise électrique -->
-            <rect x="44" y="38" width="8" height="4" rx="1" fill="var(--green-700)"/>
-            <rect x="45" y="34" width="2" height="5" rx="1" fill="var(--green-700)"/>
-            <rect x="49" y="34" width="2" height="5" rx="1" fill="var(--green-700)"/>
-          </svg>
-          EcoRide
-        </a>
-        <div class="spacer"></div>
-        <div class="menu" aria-label="Menu principal">
-          <a href="#hero">Accueil</a>
-          <a href="#covoiturages">Covoiturages</a>
-          <a href="#apropos">À propos</a>
-          <a href="#connexion">Connexion</a>
-          <a href="#contact">Contact</a>
-        </div>
-        <button class="btn btn-ghost" onclick="document.getElementById('proposer').scrollIntoView({behavior:'smooth'})" aria-label="Proposer un trajet">+ Proposer</button>
-        <button class="btn btn-primary" onclick="document.getElementById('connexion').scrollIntoView({behavior:'smooth'})" aria-label="Se connecter">Se connecter</button>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Section Hero -->
-  <section id="hero" class="hero">
-    <div class="scrim" aria-hidden="true"></div>
-    <div class="container">
-      <div>
-        <div class="badge" aria-label="Étiquette éco">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C7 2 3 6 3 11c0 6 6.4 10.6 8.2 11.8.5.3 1.2.3 1.6 0C14.6 21.6 21 17 21 11c0-5-4-9-9-9Zm3.5 9.2c-1.6 3.3-4.1 5.3-7.3 6.1a1 1 0 0 1-.5-1.9c2.7-.8 4.7-2.4 6-5a1 1 0 0 1 1.8.9Z"/></svg>
-          Covoiturez, respirez, économisez
-        </div>
-        <h1>La plateforme de covoiturage <span style="color:var(--green-700)">éco‑responsable</span></h1>
-        <p class="lead">Trouvez ou proposez un trajet. Filtrez par prix, durée, note et énergie (électrique = trajet « éco »).
-        </p>
-
-        <div class="search-card" role="search" aria-label="Recherche d'itinéraire">
-          <form id="searchForm" class="search-grid">
-            <div class="field">
-              <label for="from">Départ</label>
-              <input id="from" name="from" placeholder="Ville de départ" required />
-            </div>
-            <div class="field">
-              <label for="to">Arrivée</label>
-              <input id="to" name="to" placeholder="Ville d'arrivée" required />
-            </div>
-            <div class="field">
-              <label for="date">Date</label>
-              <input id="date" name="date" type="date" required />
-            </div>
-            <button class="btn btn-primary" type="submit" aria-label="Rechercher">Rechercher</button>
-          </form>
-        </div>
-
-        <div class="features" aria-label="Atouts d'EcoRide">
-          <div class="feature">
-            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 1 7 7c0 4-4 10-7 13-3-3-7-9-7-13a7 7 0 0 1 7-7Zm0 9.5 3.5 3.5 1.5-1.5L12 8l-7 7 1.5 1.5L12 11.5Z"/></svg>
-            <div><strong>Écologique</strong><br/><span class="sub">Mettez en avant les trajets en voiture électrique.</span></div>
-          </div>
-          <div class="feature">
-            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 1 3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5l-9-4Zm0 4.2 5 2.2v3.6c0 4.1-2.6 8-5 9.2-2.4-1.2-5-5.1-5-9.2V7.4l5-2.2Z"/></svg>
-            <div><strong>Sécurisé</strong><br/><span class="sub">Comptes, avis, et double confirmation.</span></div>
-          </div>
-          <div class="feature">
-            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg>
-            <div><strong>Transparent</strong><br/><span class="sub">Prix, durée, note et places restantes.</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Illustration héro (SVG) conservée -->
-      <div aria-hidden="true">
-        <svg viewBox="0 0 520 420" role="img" aria-label="Illustration véhicule électrique" style="width:100%;filter:drop-shadow(var(--shadow))">
+<!-- En-tête + Logo (SVG) -->
+<header>
+  <div class="container">
+    <nav>
+      <a class="brand" href="#" aria-label="EcoRide Accueil">
+        <!-- Nouveau logo: feuille + voiture + 2 passagers -->
+        <svg viewBox="0 0 64 64" aria-hidden="true" role="img">
           <defs>
-            <linearGradient id="car" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="var(--green-500)"/>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="var(--green-700)"/>
               <stop offset="100%" stop-color="var(--green-300)"/>
             </linearGradient>
           </defs>
-          <rect x="0" y="0" width="520" height="420" rx="24" fill="var(--green-100)"/>
-          <circle cx="420" cy="120" r="80" fill="url(#car)" opacity=".25"/>
-          <g transform="translate(40,220)">
-            <rect x="0" y="-20" width="420" height="90" rx="24" fill="url(#car)"/>
-            <rect x="40" y="-40" width="170" height="70" rx="16" fill="#fff" opacity=".85"/>
-            <rect x="230" y="-40" width="110" height="70" rx="16" fill="#fff" opacity=".85"/>
-            <g>
-              <circle cx="120" cy="90" r="34" fill="#222"/>
-              <circle cx="120" cy="90" r="18" fill="#666"/>
-            </g>
-            <g>
-              <circle cx="340" cy="90" r="34" fill="#222"/>
-              <circle cx="340" cy="90" r="18" fill="#666"/>
-            </g>
-            <path d="M370 -10h24l12 16-12 16h-24l12-16-12-16Z" fill="#fff"/>
-          </g>
-          <g>
-            <path d="M70 360c60-40 120-40 180 0 60 40 120 40 180 0" fill="none" stroke="var(--green-300)" stroke-width="8" stroke-linecap="round" opacity=".6"/>
+          <!-- feuille -->
+          <path d="M10 38C10 22 22 10 38 10c4 0 7 1 10 2-9 3-18 12-20 20-2 8-6 12-14 14  -2-2-4-5-4-8z" fill="url(#g)" opacity=".9"/>
+          <!-- voiture stylisée -->
+          <g transform="translate(8,24)">
+            <rect x="8" y="10" width="40" height="12" rx="6" fill="url(#g)" opacity=".9"/>
+            <path d="M12 10c2-6 8-8 16-8s14 2 16 8" fill="none" stroke="var(--green-900)" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="18" cy="24" r="4" fill="var(--ink-900)"/>
+            <circle cx="42" cy="24" r="4" fill="var(--ink-900)"/>
+            <!-- 2 passagers -->
+            <circle cx="26" cy="10" r="3" fill="#fff"/><circle cx="34" cy="10" r="3" fill="#fff"/>
           </g>
         </svg>
+        EcoRide
+      </a>
+      <div class="spacer"></div>
+      <div class="menu" aria-label="Menu principal">
+        <a href="#hero">Accueil</a>
+        <a href="#covoiturages">Covoiturages</a>
+        <a href="#apropos">À propos</a>
+        <a href="#temoignages">Témoignages</a>
+        <a href="#connexion">Connexion</a>
+        <a href="#contact">Contact</a>
       </div>
-    </div>
-    <!-- Feuilles décoratives -->
-    <svg class="leafs" viewBox="0 0 200 200">
-      <path d="M20 180c40-80 80-120 160-160-40 80-80 120-160 160Z" fill="var(--green-300)"/>
-    </svg>
-  </section>
+      <a class="btn btn-ghost" href="#covoiturages" aria-label="Proposer un trajet">+ Proposer</a>
+      <a class="btn btn-primary" href="#connexion" aria-label="Se connecter">Se connecter</a>
+    </nav>
+  </div>
+</header>
 
-  <!-- Galerie de personnes contentes (carte/portrait) -->
-  <section class="container" aria-label="Galerie de covoitureurs heureux">
-    <h2>Ils adorent covoiturer avec EcoRide</h2>
-    <div class="gallery">
-      <figure>
-        <img src="https://source.unsplash.com/featured/800x600?carpool,smile,people" alt="Groupe de covoitureurs souriants"/>
-        <figcaption>Ambiance conviviale</figcaption>
-      </figure>
-      <figure>
-        <img src="https://source.unsplash.com/featured/800x600?electric-car,driver,happy" alt="Conducteur heureux dans une voiture électrique"/>
-        <figcaption>Conducteurs engagés</figcaption>
-      </figure>
-      <figure>
-        <img src="https://source.unsplash.com/featured/800x600?friends,roadtrip,car" alt="Amis en roadtrip"/>
-        <figcaption>Partage & rencontres</figcaption>
-      </figure>
-      <figure>
-        <img src="https://source.unsplash.com/featured/800x600?commute,car,team" alt="Coéquipiers en trajet partagé"/>
-        <figcaption>Trajets quotidiens</figcaption>
-      </figure>
-    </div>
-  </section>
+<!-- Section Hero -->
+<section id="hero" class="hero"
+  data-bg='[
+    "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1600&auto=format&fit=crop",          /* voiture électrique */
+    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop",          /* forêt / écologie */
+    "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1600&auto=format&fit=crop",          /* route nature */
+    "https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=1600&auto=format&fit=crop"           /* horizon propre */
+  ]'>
+  <!-- arrière-plan diaporama -->
+  <div class="bg-slideshow" aria-hidden="true"></div>
 
-  <!-- Résultats & filtres -->
-  <section id="covoiturages">
-    <div class="container">
-      <div class="section-title">
-        <h2>Trajets disponibles</h2>
-        <div class="filters" aria-label="Filtres">
-          <label class="chip"><input type="checkbox" id="fEco" style="accent-color:var(--green-700)"> Trajet éco (VE)</label>
-          <label class="chip">Prix max <input type="number" id="fPrix" min="1" step="1" style="width:90px;margin-left:8px"></label>
-          <label class="chip">Durée max <input type="number" id="fDuree" min="5" step="5" style="width:90px;margin-left:8px"> min</label>
-          <label class="chip">Note min <input type="number" id="fNote" min="1" max="5" step="0.5" style="width:90px;margin-left:8px"></label>
+  <div class="container">
+    <div>
+      <div class="badge" aria-label="Étiquette éco">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C7 2 3 6 3 11c0 6 6.4 10.6 8.2 11.8.5.3 1.2.3 1.6 0C14.6 21.6 21 17 21 11c0-5-4-9-9-9Zm3.5 9.2c-1.6 3.3-4.1 5.3-7.3 6.1a1 1 0 0 1-.5-1.9c2.7-.8 4.7-2.4 6-5a1 1 0 0 1 1.8.9Z"/></svg>
+        Covoiturez, respirez, économisez
+      </div>
+      <h1>La plateforme de covoiturage <span style="color:var(--green-700)">éco-responsable</span></h1>
+      <p class="lead">Trouvez ou proposez un trajet. Filtrez par prix, durée, note et énergie (électrique = trajet « éco »).</p>
+
+      <div class="search-card" role="search" aria-label="Recherche d'itinéraire">
+        <form id="searchForm" class="search-grid">
+          <div class="field">
+            <label for="from">Départ</label>
+            <input id="from" name="from" placeholder="Ville de départ" required />
+          </div>
+          <div class="field">
+            <label for="to">Arrivée</label>
+            <input id="to" name="to" placeholder="Ville d'arrivée" required />
+          </div>
+          <div class="field">
+            <label for="date">Date</label>
+            <input id="date" name="date" type="date" required />
+          </div>
+          <button class="btn btn-primary" type="submit" aria-label="Rechercher">Rechercher</button>
+        </form>
+      </div>
+
+      <div class="features" aria-label="Atouts d'EcoRide">
+        <div class="feature">
+          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 1 7 7c0 4-4 10-7 13-3-3-7-9-7-13a7 7 0 0 1 7-7Zm0 9.5 3.5 3.5 1.5-1.5L12 8l-7 7 1.5 1.5L12 11.5Z"/></svg>
+          <div><strong>Écologique</strong><br/><span class="sub">Mettez en avant les trajets en voiture électrique.</span></div>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 1 3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5l-9-4Zm0 4.2 5 2.2v3.6c0 4.1-2.6 8-5 9.2-2.4-1.2-5-5.1-5-9.2V7.4l5-2.2Z"/></svg>
+          <div><strong>Sécurisé</strong><br/><span class="sub">Comptes, avis, et double confirmation.</span></div>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg>
+          <div><strong>Transparent</strong><br/><span class="sub">Prix, durée, note et places restantes.</span></div>
         </div>
       </div>
-
-      <div id="cards" class="cards" aria-live="polite"></div>
     </div>
-  </section>
 
-  <!-- CTA proposer/inscription -->
-  <section id="proposer" class="hero" style="padding: 10px 0 30px">
-    <div class="scrim" aria-hidden="true"></div>
-    <div class="container" style="grid-template-columns:1fr; text-align:center">
-      <h3>Envie de participer ?</h3>
-      <p class="lead">Créez un compte et recevez <strong>20 crédits</strong> de bienvenue.</p>
-      <div>
-        <a class="btn btn-primary" href="#inscription" id="inscription">Créer un compte</a>
-        <a class="btn btn-ghost" href="#proposer">Proposer un trajet</a>
+    <!-- Illustration héro (SVG) -->
+    <div aria-hidden="true">
+      <svg viewBox="0 0 520 420" role="img" aria-label="Illustration véhicule électrique" style="width:100%;filter:drop-shadow(var(--shadow))">
+        <defs>
+          <linearGradient id="car" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="var(--green-500)"/>
+            <stop offset="100%" stop-color="var(--green-300)"/>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="520" height="420" rx="24" fill="var(--green-100)"/>
+        <circle cx="420" cy="120" r="80" fill="url(#car)" opacity=".25"/>
+        <g transform="translate(40,220)">
+          <rect x="0" y="-20" width="420" height="90" rx="24" fill="url(#car)"/>
+          <rect x="40" y="-40" width="170" height="70" rx="16" fill="#fff" opacity=".85"/>
+          <rect x="230" y="-40" width="110" height="70" rx="16" fill="#fff" opacity=".85"/>
+          <g><circle cx="120" cy="90" r="34" fill="#222"/><circle cx="120" cy="90" r="18" fill="#666"/></g>
+          <g><circle cx="340" cy="90" r="34" fill="#222"/><circle cx="340" cy="90" r="18" fill="#666"/></g>
+          <path d="M370 -10h24l12 16-12 16h-24l12-16-12-16Z" fill="#fff"/>
+        </g>
+        <g>
+          <path d="M70 360c60-40 120-40 180 0 60 40 120 40 180 0" fill="none" stroke="var(--green-300)" stroke-width="8" stroke-linecap="round" opacity=".6"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Feuilles décoratives -->
+  <svg class="leafs" viewBox="0 0 200 200">
+    <path d="M20 180c40-80 80-120 160-160-40 80-80 120-160 160Z" fill="var(--green-300)"/>
+  </svg>
+</section>
+
+<!-- Résultats & filtres -->
+<section id="covoiturages">
+  <div class="container">
+    <div class="section-title">
+      <h2>Trajets disponibles</h2>
+      <div class="filters" aria-label="Filtres">
+        <label class="chip"><input type="checkbox" id="fEco" style="accent-color:var(--green-700)"> Trajet éco (VE)</label>
+        <label class="chip">Prix max <input type="number" id="fPrix" min="1" step="1" style="width:90px;margin-left:8px"></label>
+        <label class="chip">Durée max <input type="number" id="fDuree" min="5" step="5" style="width:90px;margin-left:8px"> min</label>
+        <label class="chip">Note min <input type="number" id="fNote" min="1" max="5" step="0.5" style="width:90px;margin-left:8px"></label>
       </div>
     </div>
-  </section>
+    <div id="cards" class="cards" aria-live="polite"></div>
+  </div>
+</section>
 
-  <!-- À propos de l'entreprise & du créateur José -->
-  <section id="apropos">
-    <div class="container grid">
+<!-- À propos -->
+<section id="apropos" class="section">
+  <div class="container">
+    <div class="about">
       <div>
         <h2>À propos d’EcoRide</h2>
-        <p><strong>EcoRide</strong> est une startup française dédiée à la réduction de l’empreinte carbone des déplacements quotidiens. Notre mission est simple : <em>remplir les voitures plutôt que les routes</em>. Nous mettons en relation conducteurs et passagers qui partagent les mêmes itinéraires, en valorisant les <strong>véhicules électriques</strong> et les bonnes pratiques (éco‑conduite, sécurité, transparence).</p>
-        <p>Créée et portée par <strong>José</strong>, notre directeur technique, EcoRide place l’innovation et l’écologie au cœur de ses choix. José croit qu’une plateforme peut être à la fois <strong>agréable</strong>, <strong>sécurisée</strong> et <strong>vertueuse</strong> pour la planète.</p>
+        <p>
+          EcoRide est une initiative française née d’une conviction simple : <strong>la mobilité peut être plus propre, plus abordable et plus conviviale</strong>.
+          Nous mettons en relation conducteurs et passagers en favorisant les <em>trajets à faible empreinte carbone</em> (électriques, hybrides, remplissage optimisé).
+        </p>
+        <p>
+          Notre algorithme met en avant les trajets « éco », les bonnes pratiques de conduite et la transparence des coûts.
+          Chaque réservation contribue à un fonds de <strong>micro-reforestation urbaine</strong>.
+        </p>
+        <div class="kpis">
+          <div class="kpi">+120 000 kg CO₂ évités</div>
+          <div class="kpi">98% d’avis positifs</div>
+          <div class="kpi">Communauté vérifiée</div>
+        </div>
       </div>
       <div>
-        <figure style="position:relative; margin:0;">
-          <img src="https://source.unsplash.com/featured/1000x700?electric-car,parking,driver" alt="José heureux à côté d’une voiture électrique" style="width:100%; height:100%; object-fit:cover; border-radius:16px; box-shadow:var(--shadow)"/>
-          <!-- Autocollant du logo EcoRide apposé (overlay) -->
-          <div class="sticker" aria-label="Autocollant EcoRide">
-            <svg viewBox="0 0 100 100" role="img" aria-label="Logo autocollant">
-              <defs>
-                <linearGradient id="s" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stop-color="var(--green-700)"/>
-                  <stop offset="100%" stop-color="var(--green-300)"/>
-                </linearGradient>
-              </defs>
-              <circle cx="50" cy="50" r="46" fill="url(#s)"/>
-              <circle cx="50" cy="50" r="40" fill="#fff"/>
-              <path d="M30 54a20 20 0 0 1 40 0h-7a13 13 0 0 0-26 0h-7Z" fill="var(--green-900)"/>
-              <circle cx="42" cy="45" r="3.2" fill="var(--green-700)"/>
-              <circle cx="58" cy="45" r="3.2" fill="var(--green-700)"/>
-              <path d="M74 40c0 12-12 22-24 22-4 0-7-.6-10-1.8l4-4c1.8.4 3.6.6 5.6.6 8.5 0 16.4-6.5 17.6-15 .2-1.4.2-2.8 0-4.2l3.9-3.9C73.8 35.8 74 37.9 74 40Z" fill="url(#s)"/>
-            </svg>
-          </div>
-          <figcaption style="margin-top:10px; color:var(--ink-400);">José (fondateur) — « Covoiturer, c’est faire du bien au porte‑monnaie et à la planète. »</figcaption>
-        </figure>
+        <img class="portrait" src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=1200&auto=format&fit=crop" alt="José, fondateur d’EcoRide">
+        <p style="margin-top:10px"><strong>José, fondateur</strong> — Ingénieur mobilité & énergies renouvelables. José a lancé EcoRide pour démocratiser le covoiturage éco-responsable au quotidien.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Pied de page -->
-  <footer id="contact">
-    <div class="container">
-      <p class="legal">💌 Contact : <a href="mailto:contact@ecoride.fr">contact@ecoride.fr</a></p>
-      <p class="legal"><a href="#mentions">Mentions légales</a></p>
+<!-- Témoignages -->
+<section id="temoignages" class="section">
+  <div class="container">
+    <h2>Ils nous font confiance</h2>
+    <div class="testimonials" aria-label="Témoignages d’utilisateurs">
+      <article class="tcard">
+        <div class="thead">
+          <div class="tavatar">É</div>
+          <div><strong>Élise</strong><br/><span style="color:var(--ink-400)">⭐️⭐️⭐️⭐️⭐️</span></div>
+        </div>
+        <p>Trajet impeccable, conducteur ponctuel et véhicule électrique silencieux. J’ai réduit mes frais et mon empreinte carbone !</p>
+      </article>
+      <article class="tcard">
+        <div class="thead">
+          <div class="tavatar">S</div>
+          <div><strong>Samir</strong><br/><span style="color:var(--ink-400)">⭐️⭐️⭐️⭐️½</span></div>
+        </div>
+        <p>Réservation simple, arrêt recharge rapide bien anticipé. L’app valorise vraiment les trajets éco, c’est top.</p>
+      </article>
+      <article class="tcard">
+        <div class="thead">
+          <div class="tavatar">N</div>
+          <div><strong>Nina</strong><br/><span style="color:var(--ink-400)">⭐️⭐️⭐️⭐️⭐️</span></div>
+        </div>
+        <p>La communauté est bienveillante et vérifiée. Je covoiture 3×/semaine et je divise mes coûts par deux.</p>
+      </article>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <script>
-    // === Diaporama d'arrière-plan du site (change chaque seconde) ===
-    const hero = document.getElementById('hero');
-    const bgImages = [
-      'https://images.unsplash.com/photo-1517792844039-8c1e6acaac4a?q=80&w=1600&auto=format&fit=crop', // route verdoyante
-      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1600&auto=format&fit=crop', // voiture sur route
-      'https://images.unsplash.com/photo-1571607388848-61a2a95a7b03?q=80&w=1600&auto=format&fit=crop', // intérieur voiture sourires
-      'https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=1600&auto=format&fit=crop'  // forêt / nature
-    ];
-    let bgIndex = 0;
-    function setHeroBackground(idx){
-      hero.style.setProperty('--bg-url', `url("${bgImages[idx]}")`);
-      hero.style.setProperty('--bg-next', `url("${bgImages[(idx+1)%bgImages.length]}")`);
-      hero.style.setProperty('--bg-prev', `url("${bgImages[(idx-1+bgImages.length)%bgImages.length]}")`);
-      // Met l'image via le pseudo-élément
-      hero.style.setProperty('--bg', `url("${bgImages[idx]}")`);
-      hero.style.setProperty('--bg-opacity', '0.9');
-      hero.style.setProperty('--bg-scale', '1');
-      hero.style.backgroundImage = `url(${bgImages[idx]})`;
-      hero.style.backgroundSize = 'cover';
-      hero.style.backgroundPosition = 'center';
+<!-- CTA -->
+<section class="hero" style="padding: 10px 0 30px">
+  <div class="container" style="grid-template-columns:1fr; text-align:center">
+    <h3>Envie de participer ?</h3>
+    <p class="lead">Créez un compte et recevez <strong>20 crédits</strong> de bienvenue.</p>
+    <div>
+      <a class="btn btn-primary" href="#inscription">Créer un compte</a>
+      <a class="btn btn-ghost" href="#proposer">Proposer un trajet</a>
+    </div>
+  </div>
+</section>
+
+<!-- Pied de page -->
+<footer id="contact">
+  <div class="container">
+    <p class="legal">💌 Contact : <a href="mailto:contact@ecoride.fr">contact@ecoride.fr</a></p>
+    <p class="legal"><a href="#mentions">Mentions légales</a></p>
+  </div>
+</footer>
+
+<script>
+/* ---------- BG Slideshow (hero) ----------- */
+(function(){
+  const hero = document.getElementById('hero');
+  const holder = hero.querySelector('.bg-slideshow');
+  let urls = [];
+  try {
+    urls = JSON.parse(hero.getAttribute('data-bg') || '[]');
+  } catch(e){ urls = []; }
+  if(!urls.length) return;
+  // Crée les slides
+  urls.forEach((u,i)=>{
+    const d = document.createElement('div');
+    d.className = 'bg-slide' + (i===0 ? ' active' : '');
+    d.style.backgroundImage = `url("${u}")`;
+    holder.appendChild(d);
+  });
+  const slides = [...holder.querySelectorAll('.bg-slide')];
+  let idx = 0;
+  setInterval(()=>{
+    slides[idx].classList.remove('active');
+    idx = (idx + 1) % slides.length;
+    slides[idx].classList.add('active');
+  }, 5000); // 5 secondes
+})();
+
+/* --- Données de démonstration (remplaçables par du back-end) --- */
+const sampleRides = [
+  { id:1, from:"Paris", to:"Lyon", date:"2025-09-25", depart:"08:00", arrive:"12:30",
+    driver:{ pseudo:"Nina", note:4.8, avatar:"N" }, places:2, prix:28, duree:270, eco:true,
+    vehicule:{marque:"Renault", modele:"Mégane e-Tech", energie:"Électrique"}},
+  { id:2, from:"Paris", to:"Lille", date:"2025-09-25", depart:"09:10", arrive:"11:00",
+    driver:{ pseudo:"Marc", note:4.2, avatar:"M" }, places:0, prix:14, duree:110, eco:false,
+    vehicule:{marque:"Peugeot", modele:"308", energie:"Essence"}},
+  { id:3, from:"Bordeaux", to:"Toulouse", date:"2025-09-26", depart:"07:45", arrive:"10:05",
+    driver:{ pseudo:"Zoé", note:5.0, avatar:"Z" }, places:3, prix:16, duree:140, eco:true,
+    vehicule:{marque:"Tesla", modele:"Model 3", energie:"Électrique"}},
+  { id:4, from:"Paris", to:"Lyon", date:"2025-09-25", depart:"13:00", arrive:"17:00",
+    driver:{ pseudo:"Ali", note:4.6, avatar:"A" }, places:1, prix:25, duree:240, eco:false,
+    vehicule:{marque:"Citroën", modele:"C4", energie:"Diesel"}}
+];
+
+const cardsEl = document.getElementById('cards');
+
+function cardTemplate(r){
+  return `
+  <article class="card" data-id="${r.id}">
+    <div class="card-header">
+      <div class="driver">
+        <div class="avatar" aria-hidden="true">${r.driver.avatar}</div>
+        <div>
+          <strong>${r.driver.pseudo}</strong>
+          <div style="color:var(--ink-400); font-size:13px">⭐ ${r.driver.note.toFixed(1)} • ${r.vehicule.marque} ${r.vehicule.modele} (${r.vehicule.energie})</div>
+        </div>
+        <div class="spacer"></div>
+        ${r.eco ? '<span class="pill">🌱 Éco</span>' : ''}
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="meta">📍 ${r.from} → ${r.to}</div>
+      <div class="meta">🗓️ ${new Date(r.date).toLocaleDateString('fr-FR',{weekday:'short', day:'2-digit', month:'short'})} • ⏱️ ${r.depart} → ${r.arrive} (${r.duree} min)</div>
+      <div class="meta">🚗 Places restantes : <strong>${r.places}</strong></div>
+      <div class="price">${r.prix} €</div>
+    </div>
+    <div class="card-footer">
+      <button class="btn btn-ghost" onclick="details(${r.id})">Détail</button>
+      <button class="btn btn-primary" ${r.places<1? 'disabled aria-disabled="true"' : ''} onclick="participer(${r.id})">Participer</button>
+    </div>
+  </article>`;
+}
+
+function render(list){
+  const html = (list.filter(r=>r.places>0).map(cardTemplate).join('')) ||
+    `<p>Aucun covoiturage disponible. Essayez d'ajuster votre date (nous proposons le plus proche disponible si besoin).</p>`;
+  cardsEl.innerHTML = html;
+}
+
+// Recherche simple (par villes + date)
+document.getElementById('searchForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  const from = e.target.from.value.trim().toLowerCase();
+  const to = e.target.to.value.trim().toLowerCase();
+  const date = e.target.date.value;
+
+  let results = sampleRides.filter(r=>
+    r.from.toLowerCase().includes(from) &&
+    r.to.toLowerCase().includes(to) &&
+    r.date === date
+  );
+
+  if(results.length===0){
+    // proposer la date la plus proche
+    const sameRoute = sampleRides.filter(r=>r.from.toLowerCase().includes(from) && r.to.toLowerCase().includes(to));
+    if(sameRoute.length){
+      const sorted = sameRoute.sort((a,b)=> Math.abs(new Date(a.date)-new Date(date)) - Math.abs(new Date(b.date)-new Date(date)));
+      const closestDate = sorted[0]?.date;
+      alert(`Aucun trajet ce jour. Prochaine disponibilité le ${new Date(closestDate).toLocaleDateString('fr-FR')}.`);
+      results = sameRoute.filter(r=>r.date===closestDate);
     }
-    // Applique via ::before
-    const heroStyle = document.styleSheets[0];
-    // règle dynamique pour .hero::before
-    (function ensureBefore(){
-      for(const sheet of document.styleSheets){
-        try{
-          const rules = sheet.cssRules || [];
-          for(let i=0;i<rules.length;i++){
-            if(rules[i].selectorText === '.hero::before'){ return; }
-          }
-          sheet.insertRule(`.hero::before{ background-image: var(--bg) !important; }`, sheet.cssRules.length);
-        }catch(e){/* certaines CSS externes peuvent être protégées */}
-      }
-    })();
-    setHeroBackground(bgIndex);
-    let bgTimer = setInterval(()=>{
-      bgIndex = (bgIndex + 1) % bgImages.length;
-      hero.style.setProperty('--bg', `url("${bgImages[bgIndex]}")`);
-    }, 1000); // toutes les secondes
-    // Pause du diapo au survol (optionnel)
-    hero.addEventListener('mouseenter', ()=> clearInterval(bgTimer));
-    hero.addEventListener('mouseleave', ()=>{ bgTimer = setInterval(()=>{ bgIndex = (bgIndex + 1) % bgImages.length; hero.style.setProperty('--bg', `url("${bgImages[bgIndex]}")`); }, 1000); });
+  }
+  applyFilters(results);
+});
 
-    // --- Données de démonstration (remplaçables par des données back-end) ---
-    const sampleRides = [
-      { id:1, from:"Paris", to:"Lyon", date:"2025-09-25", depart:"08:00", arrive:"12:30", driver:{ pseudo:"Nina", note:4.8, avatar:"N", photo:"https://source.unsplash.com/featured/200x200?woman,smile" }, places:2, prix:28, duree:270, eco:true, vehicule:{marque:"Renault", modele:"Mégane e-Tech", energie:"Électrique"}},
-      { id:2, from:"Paris", to:"Lille", date:"2025-09-25", depart:"09:10", arrive:"11:00", driver:{ pseudo:"Marc", note:4.2, avatar:"M", photo:"https://source.unsplash.com/featured/200x200?man,driver" }, places:0, prix:14, duree:110, eco:false, vehicule:{marque:"Peugeot", modele:"308", energie:"Essence"}},
-      { id:3, from:"Bordeaux", to:"Toulouse", date:"2025-09-26", depart:"07:45", arrive:"10:05", driver:{ pseudo:"Zoé", note:5.0, avatar:"Z", photo:"https://source.unsplash.com/featured/200x200?woman,driver,smile" }, places:3, prix:16, duree:140, eco:true, vehicule:{marque:"Tesla", modele:"Model 3", energie:"Électrique"}},
-      { id:4, from:"Paris", to:"Lyon", date:"2025-09-25", depart:"13:00", arrive:"17:00", driver:{ pseudo:"Ali", note:4.6, avatar:"A", photo:"https://source.unsplash.com/featured/200x200?man,portrait" }, places:1, prix:25, duree:240, eco:false, vehicule:{marque:"Citroën", modele:"C4", energie:"Diesel"}}
-    ];
+// Filtres (éco, prix max, durée max, note min)
+['fEco','fPrix','fDuree','fNote'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', ()=> applyFilters(currentBase));
+});
 
-    const cardsEl = document.getElementById('cards');
+let currentBase = sampleRides;
 
-    function cardTemplate(r){
-      return `
-        <article class="card" data-id="${r.id}">
-          <div class="card-header">
-            <div class="driver">
-              <div class="avatar" aria-hidden="true" style="background-image:url('${r.driver.photo}'); background-size:cover; background-position:center;">${!r.driver.photo? r.driver.avatar: ''}</div>
-              <div>
-                <strong>${r.driver.pseudo}</strong>
-                <div style="color:var(--ink-400); font-size:13px">⭐ ${r.driver.note.toFixed(1)} • ${r.vehicule.marque} ${r.vehicule.modele} (${r.vehicule.energie})</div>
-              </div>
-              <div class="spacer"></div>
-              ${r.eco ? '<span class="pill">🌱 Éco</span>' : ''}
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="meta">📍 ${r.from} → ${r.to}</div>
-            <div class="meta">🗓️ ${new Date(r.date).toLocaleDateString('fr-FR',{weekday:'short', day:'2-digit', month:'short'})} • ⏱️ ${r.depart} → ${r.arrive} (${r.duree} min)</div>
-            <div class="meta">🚗 Places restantes : <strong>${r.places}</strong></div>
-            <div class="price">${r.prix} €</div>
-          </div>
-          <div class="card-footer">
-            <button class="btn btn-ghost" onclick="details(${r.id})">Détail</button>
-            <button class="btn btn-primary" ${r.places<1? 'disabled aria-disabled="true"' : ''} onclick="participer(${r.id})">Participer</button>
-          </div>
-        </article>`;
-    }
+function applyFilters(base){
+  currentBase = base || sampleRides;
+  const eco = document.getElementById('fEco').checked;
+  const prix = parseFloat(document.getElementById('fPrix').value || Infinity);
+  const duree = parseFloat(document.getElementById('fDuree').value || Infinity);
+  const note = parseFloat(document.getElementById('fNote').value || 0);
 
-    function render(list){
-      cardsEl.innerHTML = list.filter(r=>r.places>0).map(cardTemplate).join('') || `<p>Aucun covoiturage disponible. Essayez d\'ajuster votre date (nous proposons le plus proche disponible si besoin).</p>`;
-    }
+  const filtered = currentBase.filter(r=>
+    (!eco || r.eco) &&
+    (r.prix <= prix) &&
+    (r.duree <= duree) &&
+    (r.driver.note >= note)
+  );
+  render(filtered);
+}
 
-    // Recherche simple (par villes + date)
-    document.getElementById('searchForm').addEventListener('submit', e=>{
-      e.preventDefault();
-      const from = e.target.from.value.trim().toLowerCase();
-      const to = e.target.to.value.trim().toLowerCase();
-      const date = e.target.date.value;
-      let results = sampleRides.filter(r=>
-        r.from.toLowerCase().includes(from) &&
-        r.to.toLowerCase().includes(to) &&
-        r.date === date
-      );
-      if(results.length===0){
-        // proposer la date la plus proche
-        const sameRoute = sampleRides.filter(r=>r.from.toLowerCase().includes(from) && r.to.toLowerCase().includes(to));
-        if(sameRoute.length){
-          const sorted = sameRoute.sort((a,b)=> Math.abs(new Date(a.date)-new Date(date)) - Math.abs(new Date(b.date)-new Date(date)));
-          const closestDate = sorted[0]?.date;
-          alert(`Aucun trajet ce jour. Prochaine disponibilité le ${new Date(closestDate).toLocaleDateString('fr-FR')}.`);
-          results = sameRoute.filter(r=>r.date===closestDate);
-        }
-      }
-      applyFilters(results);
-    });
+function details(id){
+  const r = sampleRides.find(x=>x.id===id);
+  if(!r) return;
 
-    // Filtres (éco, prix max, durée max, note min)
-    ['fEco','fPrix','fDuree','fNote'].forEach(id=>{
-      document.getElementById(id).addEventListener('input', ()=> applyFilters(currentBase));
-    });
+  const avis = [
+    {auteur:'Élise', note:5, texte:'Trajet impeccable, conducteur ponctuel.'},
+    {auteur:'Samir', note:4.5, texte:'Confortable et charge rapide en route.'}
+  ];
+  const prefs = ['Non-fumeur','Animaux acceptés','Musique douce'];
 
-    let currentBase = sampleRides;
-    function applyFilters(base){
-      currentBase = base || sampleRides;
-      const eco = document.getElementById('fEco').checked;
-      const prix = parseFloat(document.getElementById('fPrix').value || Infinity);
-      const duree = parseFloat(document.getElementById('fDuree').value || Infinity);
-      const note = parseFloat(document.getElementById('fNote').value || 0);
-      const filtered = currentBase.filter(r=>
-        (!eco || r.eco) &&
-        (r.prix <= prix) &&
-        (r.duree <= duree) &&
-        (r.driver.note >= note)
-      );
-      render(filtered);
-    }
+  const html =
+`Trajet: ${r.from} → ${r.to}
+Date: ${r.date} • ${r.depart} → ${r.arrive}
+Véhicule: ${r.vehicule.marque} ${r.vehicule.modele} (${r.vehicule.energie})
+Chauffeur: ${r.driver.pseudo} (⭐ ${r.driver.note})
+Préférences: ${prefs.join(', ')}
+Avis: ${avis.map(a=>`${a.auteur} ⭐${a.note} — ${a.texte}`).join(' | ')}`;
 
-    function details(id){
-      const r = sampleRides.find(x=>x.id===id);
-      if(!r) return;
-      const avis = [
-        {auteur:'Élise', note:5, texte:'Trajet impeccable, conducteur ponctuel.'},
-        {auteur:'Samir', note:4.5, texte:'Confortable et charge rapide en route.'}
-      ];
-      const prefs = ['Non‑fumeur','Animaux acceptés','Musique douce'];
-      const html = `\nTrajet: ${r.from} → ${r.to}\nDate: ${r.date} • ${r.depart} → ${r.arrive}\nVéhicule: ${r.vehicule.marque} ${r.vehicule.modele} (${r.vehicule.energie})\nChauffeur: ${r.driver.pseudo} (⭐ ${r.driver.note})\nPréférences: ${prefs.join(', ')}\nAvis: ${avis.map(a=>`${'${a.auteur}'} ⭐${'${a.note}'} — ${'${a.texte}'}`).join(' | ')}`;
-      alert(html);
-    }
+  alert(html);
+}
 
-    function participer(id){
-      const r = sampleRides.find(x=>x.id===id);
-      if(!r) return;
-      if(r.places<1){ alert('Plus de place disponible.'); return; }
-      const first = confirm(`Participer à ce trajet (${r.from} → ${r.to}) pour ${r.prix}€ ?`);
-      if(!first) return;
-      const second = confirm('Confirmez l\'utilisation de vos crédits.');
-      if(!second) return;
-      r.places -= 1; // démo
-      alert('Participation confirmée ! Vos crédits seront mis à jour.');
-      applyFilters(currentBase);
-    }
+function participer(id){
+  const r = sampleRides.find(x=>x.id===id);
+  if(!r) return;
+  if(r.places<1){ alert('Plus de place disponible.'); return; }
+  const first = confirm(`Participer à ce trajet (${r.from} → ${r.to}) pour ${r.prix}€ ?`);
+  if(!first) return;
+  const second = confirm('Confirmez l\'utilisation de vos crédits.');
+  if(!second) return;
+  r.places -= 1; // démo
+  alert('Participation confirmée ! Vos crédits seront mis à jour.');
+  applyFilters(currentBase);
+}
 
-    // Initial render
-    render(sampleRides);
-  </script>
+// Initial render
+render(sampleRides);
+</script>
 </body>
 </html>
