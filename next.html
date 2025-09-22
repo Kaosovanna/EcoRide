@@ -1,224 +1,59 @@
-<!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>EcoRide — Covoiturages</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    .filters, .results { margin-top: 1rem; }
-    .filters{
-      display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;
-      background:var(--card);padding:1rem;border-radius:var(--radius);box-shadow:var(--shadow);
-    }
-    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem}
-    .card{
-      background:linear-gradient(180deg,#0b1a11,#0f2418);
-      border:1px solid #1e3a29;border-radius:var(--radius);padding:1rem;box-shadow:var(--shadow)
-    }
-    .badge{display:inline-block;padding:.15rem .5rem;border-radius:1rem;font-size:.8rem;background:#10331f;border:1px solid #1e422b}
-    .meta{display:flex;gap:.6rem;flex-wrap:wrap;color:var(--muted);font-size:.95rem}
-    .card h3{margin:.2rem 0 .5rem}
-    .row{display:flex;justify-content:space-between;gap:1rem;align-items:center}
-    .stars{letter-spacing:.08em}
-    @media (max-width: 1000px){ .cards{grid-template-columns:1fr 1fr} .filters{grid-template-columns:1fr 1fr 1fr} }
-    @media (max-width: 640px){ .cards{grid-template-columns:1fr} .filters{grid-template-columns:1fr} }
-  </style>
-</head>
-<body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="index.html">
-        <img src="assets/logo.svg" alt="" class="brand-logo" />
-        <span class="brand-name">EcoRide</span>
-      </a>
-      <nav aria-label="Navigation principale">
-        <ul class="nav">
-          <li><a class="nav-link" href="index.html">Accueil</a></li>
-          <li><a class="nav-link current" href="next.html">Covoiturages</a></li>
-          <li><a class="nav-link" href="#connexion">Connexion</a></li>
-          <li><a class="nav-link" href="#contact">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+/* Interactions front minimalistes pour la démo (mock de données) */
+if (!ok2) return;
+ride.seats -= 1;
+state.user.credits -= 1; // démo (la plateforme prendrait 2 crédits côté chauffeur en réel)
+applyFilters();
+alert('Participation confirmée !');
+$('#rideDialog').close();
+}
 
-  <main id="main" class="container">
-    <h1>Résultats de recherche</h1>
-    <p class="muted">
-      Recherche par ville et date. Seuls les itinéraires avec au moins <strong>1 place disponible</strong> sont proposés.
-    </p>
 
-    <!-- Filtres (US 4) -->
-    <form id="filters" class="filters" aria-label="Filtres des covoiturages">
-      <div class="field">
-        <label for="eco">Écologique uniquement</label>
-        <select id="eco" name="eco">
-          <option value="">Peu importe</option>
-          <option value="true">Oui (voiture électrique)</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="priceMax">Prix max (€)</label>
-        <input id="priceMax" name="priceMax" type="number" min="1" step="1" placeholder="ex. 30">
-      </div>
-      <div class="field">
-        <label for="durationMax">Durée max (min)</label>
-        <input id="durationMax" name="durationMax" type="number" min="1" step="1" placeholder="ex. 240">
-      </div>
-      <div class="field">
-        <label for="noteMin">Note min</label>
-        <input id="noteMin" name="noteMin" type="number" min="1" max="5" step=".1" placeholder="ex. 4.5">
-      </div>
-      <div class="actions">
-        <button class="btn" type="submit">Appliquer</button>
-      </div>
-    </form>
+function wireEvents() {
+// Année footer
+$('#year').textContent = new Date().getFullYear();
 
-    <!-- Résultats -->
-    <section class="results">
-      <div id="empty" class="card" style="display:none">
-        <h3>Aucun covoiturage disponible</h3>
-        <p class="muted">
-          Essayez d’ajuster la <strong>date</strong>. Nous vous proposons la
-          <strong>première date la plus proche</strong> dès qu’un itinéraire existe.
-        </p>
-        <p class="small">
-          Suggestion de date : <span id="suggest-date" class="badge">—</span>
-        </p>
-      </div>
 
-      <div id="cards" class="cards"></div>
-    </section>
-  </main>
+// Soumission recherche
+$('#searchForm').addEventListener('submit', (e) => {
+e.preventDefault();
+const from = $('#from').value.trim();
+const to = $('#to').value.trim();
+const date = $('#date').value;
+if (!from || !to || !date) return;
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <p><strong>Contact :</strong> <a href="mailto:contact@ecoride.fr">contact@ecoride.fr</a></p>
-      <p><a href="mentions-legales.html">Mentions légales</a></p>
-    </div>
-  </footer>
 
-  <!-- Démo JS : jeu de données fictif + filtres côté client -->
-  <script>
-    /**
-     * Démo de la logique côté client :
-     * - Affiche des trajets mockés (avec/ sans électricité).
-     * - Filtre selon US 4 (écologie, prix max, durée max, note min).
-     * - Masque les trajets sans place.
-     * - Propose une date alternative la plus proche si 0 résultat.
-     * Cette démo est autonome, à remplacer par vos appels API plus tard.
-     */
-    const formatter = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
+const results = mockSearch(from, to, date);
+state.rides = results;
+applyFilters();
 
-    const trips = [
-      {
-        id: 'TRP-001', from: 'Lyon', to: 'Paris',
-        date: '2025-10-03', depart: '08:00', arrivee: '12:10',
-        driver: { pseudo: 'Alice', note: 4.8, photo: 'assets/driver1.jpg', vehicule: { marque:'Renault', modele:'ZOE', energie:'électrique' } },
-        places: 2, prix: 28, dureeMin: 250, eco: true
-      },
-      {
-        id: 'TRP-002', from: 'Lyon', to: 'Paris',
-        date: '2025-10-03', depart: '18:00', arrivee: '22:05',
-        driver: { pseudo: 'Marc', note: 4.2, photo: 'assets/driver2.jpg', vehicule: { marque:'Peugeot', modele:'308', energie:'essence' } },
-        places: 0, prix: 22, dureeMin: 245, eco: false
-      },
-      {
-        id: 'TRP-003', from: 'Lyon', to: 'Paris',
-        date: '2025-10-04', depart: '07:15', arrivee: '11:20',
-        driver: { pseudo: 'Sara', note: 4.9, photo: 'assets/driver3.jpg', vehicule: { marque:'Tesla', modele:'Model 3', energie:'électrique' } },
-        places: 3, prix: 32, dureeMin: 245, eco: true
-      },
-      {
-        id: 'TRP-004', from: 'Bordeaux', to: 'Toulouse',
-        date: '2025-10-03', depart: '09:00', arrivee: '11:30',
-        driver: { pseudo: 'Nico', note: 3.9, photo: 'assets/driver4.jpg', vehicule: { marque:'Dacia', modele:'Spring', energie:'électrique' } },
-        places: 1, prix: 10, dureeMin: 150, eco: true
-      }
-    ];
 
-    // Récup des query params de la recherche (depuis index.html)
-    const params = new URLSearchParams(location.search);
-    const qFrom = params.get('from')?.trim().toLowerCase() || '';
-    const qTo   = params.get('to')?.trim().toLowerCase() || '';
-    const qDate = params.get('date') || '';
+if (results.length === 0) {
+$('#noResults').hidden = false;
+// Suggestion de date proche (démo)
+// Dans une app réelle, on proposerait la date du premier itinéraire disponible.
+}
+});
 
-    const cardsEl = document.getElementById('cards');
-    const emptyEl = document.getElementById('empty');
-    const suggestDateEl = document.getElementById('suggest-date');
 
-    function stars(note){
-      const full = '★'.repeat(Math.floor(note));
-      const half = (note % 1 >= 0.5) ? '½' : '';
-      const rest = '☆'.repeat(5 - Math.ceil(note));
-      return `${full}${half}${rest}`;
-    }
+// Filtres
+$$('#filters input').forEach(inp => inp.addEventListener('input', applyFilters));
 
-    function tripCard(t){
-      const ecoBadge = t.eco ? `<span class="badge" title="Voyage écologique (voiture électrique)">Écologique</span>` : '';
-      return `
-        <article class="card" data-id="${t.id}">
-          <div class="row">
-            <h3>${t.from} → ${t.to}</h3>
-            ${ecoBadge}
-          </div>
-          <p class="meta">
-            <span>Départ <strong>${t.date}</strong> à <strong>${t.depart}</strong> — Arrivée <strong>${t.arrivee}</strong></span>
-            <span>Durée env. <strong>${t.dureeMin}</strong> min</span>
-            <span>Places restantes : <strong>${t.places}</strong></span>
-            <span>Prix : <strong>${formatter.format(t.prix)}</strong></span>
-          </p>
-          <div class="row">
-            <div class="meta">
-              <img src="${t.driver.photo}" alt="" width="36" height="36" style="border-radius:50%">
-              <span>Chauffeur <strong>${t.driver.pseudo}</strong></span>
-              <span class="stars" aria-label="Note ${t.driver.note} sur 5">${stars(t.driver.note)}</span>
-            </div>
-            <a class="btn" href="detail.html?id=${encodeURIComponent(t.id)}">Détail</a>
-          </div>
-        </article>
-      `;
-    }
 
-    function applyFilters(list){
-      const eco = document.getElementById('eco').value === 'true';
-      const priceMax = +document.getElementById('priceMax').value || Infinity;
-      const durationMax = +document.getElementById('durationMax').value || Infinity;
-      const noteMin = +document.getElementById('noteMin').value || -Infinity;
+// Délégation des clics sur les cartes
+$('#ridesContainer').addEventListener('click', (e) => {
+const btn = e.target.closest('button[data-action]');
+if (!btn) return;
+const id = Number(btn.dataset.id);
+const ride = state.filtered.find(r => r.id === id) || state.rides.find(r => r.id === id);
+if (!ride) return;
+if (btn.dataset.action === 'detail') openDetails(ride);
+if (btn.dataset.action === 'participer') handleParticiper(ride);
+});
 
-      return list
-        .filter(t => t.places > 0)
-        .filter(t => !eco || t.eco)
-        .filter(t => t.prix <= priceMax)
-        .filter(t => t.dureeMin <= durationMax)
-        .filter(t => t.driver.note >= noteMin);
-    }
 
-    function render(){
-      // Filtrage par ville+date (US 3)
-      const base = trips.filter(t =>
-        (!qFrom || t.from.toLowerCase().includes(qFrom)) &&
-        (!qTo   || t.to.toLowerCase().includes(qTo)) &&
-        (!qDate || t.date === qDate)
-      );
+// Modale close
+$('.dialog-close')?.addEventListener('click', () => $('#rideDialog').close());
+}
 
-      const filtered = applyFilters(base);
 
-      cardsEl.innerHTML = '';
-      if(filtered.length){
-        emptyEl.style.display = 'none';
-        filtered.forEach(t => cardsEl.insertAdjacentHTML('beforeend', tripCard(t)));
-      } else {
-        // Proposer la première date la plus proche (US 3)
-        const sameRoute = trips.filter(t =>
-          (!qFrom || t.from.toLowerCase().includes(qFrom)) &&
-          (!qTo   || t.to.toLowerCase().includes(qTo))
-        ).sort((a,b)=> a.date.localeCompare(b.date));
-
-        suggestDateEl.textContent = sameRoute[0]?.date ?? 'Aucune pour l’instant';
-        emptyEl.style.display = 'block';
-      }
-    }
-
-    document.getElementById('filters').addEventListener('submit', (e
+document.addEventListener('DOMContentLoaded', wireEvents);
