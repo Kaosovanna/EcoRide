@@ -40,18 +40,23 @@
     .container{max-width:1100px; margin-inline:auto; padding:18px 20px}
     nav{display:flex; align-items:center; gap:24px;}
     .brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.2px; color:var(--green-900)}
-    .brand svg{width:38px;height:38px}
+    .brand svg{width:40px;height:40px}
     .spacer{flex:1}
     .menu a{margin:0 10px; font-weight:600; color:var(--ink-700)}
     .menu a:hover{color:var(--green-900)}
-    .btn{display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:10px 16px; font-weight:700; border:1px solid transparent; box-shadow:var(--shadow); transition:.2s ease;}
+    .btn{display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:10px 16px; font-weight:700; border:1px solid transparent; box-shadow:var(--shadow); transition:.2s ease; cursor:pointer}
     .btn-primary{background:linear-gradient(135deg,var(--green-700),var(--green-500)); color:#fff}
     .btn-primary:hover{transform:translateY(-2px)}
     .btn-ghost{background:#fff; color:var(--green-700); border-color:rgba(20,158,120,.18)}
 
     /* Hero */
-    .hero{position:relative; overflow:hidden}
-    .hero .container{display:grid; grid-template-columns:1.1fr .9fr; align-items:center; gap:28px; padding-top:40px; padding-bottom:32px}
+    .hero{position:relative; overflow:hidden; min-height:520px; display:grid; align-items:center}
+    .hero::before{ /* image de fond gérée en JS */
+      content:""; position:absolute; inset:0; background-size:cover; background-position:center; filter:saturate(1.05) contrast(1.02);
+      transition:opacity .6s ease, transform .6s ease; opacity:.85; transform:scale(1.04);
+    }
+    .hero .scrim{position:absolute; inset:0; background:linear-gradient(180deg, rgba(234,246,246,.8), rgba(255,255,255,.95));}
+    .hero .container{position:relative; display:grid; grid-template-columns:1.1fr .9fr; align-items:center; gap:28px; padding-top:40px; padding-bottom:32px}
     .badge{display:inline-flex; align-items:center; gap:8px; background:var(--green-100); color:var(--green-900); font-weight:700; border-radius:999px; padding:8px 12px; box-shadow:var(--shadow)}
     h1{font-size:clamp(28px,4.5vw,46px); line-height:1.04; margin:16px 0}
     .lead{font-size:18px; color:var(--ink-400); margin-bottom:22px}
@@ -89,7 +94,20 @@
     .price{font-weight:800; font-size:18px; color:var(--green-900)}
     .card-footer{padding:12px 16px; display:flex; align-items:center; justify-content:space-between; border-top:1px dashed rgba(20,158,120,.2)}
 
-    footer{background:#0f2; background:linear-gradient(180deg,#fff,var(--green-100)); border-top:1px solid rgba(20,158,120,.15)}
+    /* Galerie (personnes heureuses) */
+    .gallery{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:26px 0}
+    .gallery figure{position:relative; overflow:hidden; border-radius:16px; box-shadow:var(--shadow); margin:0}
+    .gallery img{display:block; width:100%; height:220px; object-fit:cover; transition:transform .5s ease}
+    .gallery figure:hover img{transform:scale(1.06)}
+    .gallery figcaption{position:absolute; left:8px; bottom:8px; padding:6px 10px; border-radius:999px; background:rgba(0,0,0,.45); color:#fff; font-weight:700; font-size:12px}
+
+    /* À propos */
+    #apropos{padding:46px 0; background:linear-gradient(180deg,#fff,var(--green-100)); border-top:1px solid rgba(20,158,120,.1); border-bottom:1px solid rgba(20,158,120,.1)}
+    #apropos .grid{display:grid; grid-template-columns:1.2fr .8fr; gap:22px; align-items:center}
+    .sticker{position:absolute; right:12px; bottom:12px; transform:rotate(-8deg);}
+    .sticker svg{width:86px;height:86px; filter:drop-shadow(0 6px 12px rgba(0,0,0,.25))}
+
+    footer{background:linear-gradient(180deg,#fff,var(--green-100)); border-top:1px solid rgba(20,158,120,.15)}
     footer .container{display:grid; grid-template-columns:1fr auto; gap:12px; padding-top:26px; padding-bottom:26px; align-items:center}
     .legal{color:var(--ink-400); font-size:14px}
 
@@ -98,11 +116,14 @@
       .hero .container{grid-template-columns:1fr}
       .search-grid{grid-template-columns:1fr 1fr}
       .cards{grid-template-columns:1fr 1fr}
+      #apropos .grid{grid-template-columns:1fr}
+      .gallery{grid-template-columns:repeat(2,1fr)}
     }
     @media (max-width:640px){
       .menu{display:none}
       .search-grid{grid-template-columns:1fr}
       .cards{grid-template-columns:1fr}
+      .gallery{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -112,7 +133,7 @@
     <div class="container">
       <nav>
         <a class="brand" href="#">
-          <!-- Logo: feuille + volant -->
+          <!-- Logo révisé: volant + deux passagers + feuille + prise (énergie) -->
           <svg viewBox="0 0 64 64" aria-hidden="true" role="img">
             <defs>
               <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
@@ -121,10 +142,18 @@
               </linearGradient>
             </defs>
             <circle cx="32" cy="32" r="30" fill="url(#g)" opacity=".18"/>
-            <path d="M50 28c0 12-10 22-22 22-3 0-6-.6-8.7-1.9l3.7-3.7c1.6.4 3.3.6 5 .6 9.4 0 17-7.6 17-17 0-1.7-.2-3.4-.6-5l3.7-3.7c1.2 2.6 1.9 5.7 1.9 8.7Z" fill="url(#g)"/>
-            <path d="M14 36c0-12 10-22 22-22 3 0 6 .6 8.7 1.9l-8.4 8.4A9 9 0 0 0 23 37L14 46c-1.2-2.6-1.9-5.7-1.9-8.7Z" fill="url(#g)"/>
-            <circle cx="32" cy="32" r="10" fill="#fff"/>
-            <path d="M32 23a9 9 0 1 1 0 18 9 9 0 0 1 0-18Zm0 4a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z" fill="var(--green-900)"/>
+            <!-- volant -->
+            <circle cx="32" cy="32" r="12" fill="#fff"/>
+            <path d="M20 32a12 12 0 0 1 24 0h-6a6 6 0 0 0-12 0h-6Z" fill="var(--green-900)"/>
+            <!-- passagers -->
+            <circle cx="27" cy="28" r="2.5" fill="var(--green-700)"/>
+            <circle cx="37" cy="28" r="2.5" fill="var(--green-700)"/>
+            <!-- feuille -->
+            <path d="M50 26c0 10-8 18-18 18-3 0-6-.6-8.7-1.9l3.7-3.7c1.6.4 3.3.6 5 .6 7.7 0 14-6.3 14-14 0-1.7-.2-3.4-.6-5l3.7-3.7c1.2 2.6 1.9 5.7 1.9 8.7Z" fill="url(#g)"/>
+            <!-- prise électrique -->
+            <rect x="44" y="38" width="8" height="4" rx="1" fill="var(--green-700)"/>
+            <rect x="45" y="34" width="2" height="5" rx="1" fill="var(--green-700)"/>
+            <rect x="49" y="34" width="2" height="5" rx="1" fill="var(--green-700)"/>
           </svg>
           EcoRide
         </a>
@@ -132,17 +161,19 @@
         <div class="menu" aria-label="Menu principal">
           <a href="#hero">Accueil</a>
           <a href="#covoiturages">Covoiturages</a>
+          <a href="#apropos">À propos</a>
           <a href="#connexion">Connexion</a>
           <a href="#contact">Contact</a>
         </div>
-        <a class="btn btn-ghost" href="#covoiturages" aria-label="Proposer un trajet">+ Proposer</a>
-        <a class="btn btn-primary" href="#connexion" aria-label="Se connecter">Se connecter</a>
+        <button class="btn btn-ghost" onclick="document.getElementById('proposer').scrollIntoView({behavior:'smooth'})" aria-label="Proposer un trajet">+ Proposer</button>
+        <button class="btn btn-primary" onclick="document.getElementById('connexion').scrollIntoView({behavior:'smooth'})" aria-label="Se connecter">Se connecter</button>
       </nav>
     </div>
   </header>
 
   <!-- Section Hero -->
   <section id="hero" class="hero">
+    <div class="scrim" aria-hidden="true"></div>
     <div class="container">
       <div>
         <div class="badge" aria-label="Étiquette éco">
@@ -150,7 +181,7 @@
           Covoiturez, respirez, économisez
         </div>
         <h1>La plateforme de covoiturage <span style="color:var(--green-700)">éco‑responsable</span></h1>
-        <p class="lead">Trouvez ou proposez un trajet. Filtrez par prix, durée, note et énergie (électrique = trajet "éco").
+        <p class="lead">Trouvez ou proposez un trajet. Filtrez par prix, durée, note et énergie (électrique = trajet « éco »).
         </p>
 
         <div class="search-card" role="search" aria-label="Recherche d'itinéraire">
@@ -187,7 +218,7 @@
         </div>
       </div>
 
-      <!-- Illustration héro (SVG) -->
+      <!-- Illustration héro (SVG) conservée -->
       <div aria-hidden="true">
         <svg viewBox="0 0 520 420" role="img" aria-label="Illustration véhicule électrique" style="width:100%;filter:drop-shadow(var(--shadow))">
           <defs>
@@ -224,6 +255,29 @@
     </svg>
   </section>
 
+  <!-- Galerie de personnes contentes (carte/portrait) -->
+  <section class="container" aria-label="Galerie de covoitureurs heureux">
+    <h2>Ils adorent covoiturer avec EcoRide</h2>
+    <div class="gallery">
+      <figure>
+        <img src="https://source.unsplash.com/featured/800x600?carpool,smile,people" alt="Groupe de covoitureurs souriants"/>
+        <figcaption>Ambiance conviviale</figcaption>
+      </figure>
+      <figure>
+        <img src="https://source.unsplash.com/featured/800x600?electric-car,driver,happy" alt="Conducteur heureux dans une voiture électrique"/>
+        <figcaption>Conducteurs engagés</figcaption>
+      </figure>
+      <figure>
+        <img src="https://source.unsplash.com/featured/800x600?friends,roadtrip,car" alt="Amis en roadtrip"/>
+        <figcaption>Partage & rencontres</figcaption>
+      </figure>
+      <figure>
+        <img src="https://source.unsplash.com/featured/800x600?commute,car,team" alt="Coéquipiers en trajet partagé"/>
+        <figcaption>Trajets quotidiens</figcaption>
+      </figure>
+    </div>
+  </section>
+
   <!-- Résultats & filtres -->
   <section id="covoiturages">
     <div class="container">
@@ -241,14 +295,49 @@
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="hero" style="padding: 10px 0 30px">
+  <!-- CTA proposer/inscription -->
+  <section id="proposer" class="hero" style="padding: 10px 0 30px">
+    <div class="scrim" aria-hidden="true"></div>
     <div class="container" style="grid-template-columns:1fr; text-align:center">
       <h3>Envie de participer ?</h3>
       <p class="lead">Créez un compte et recevez <strong>20 crédits</strong> de bienvenue.</p>
       <div>
-        <a class="btn btn-primary" href="#inscription">Créer un compte</a>
+        <a class="btn btn-primary" href="#inscription" id="inscription">Créer un compte</a>
         <a class="btn btn-ghost" href="#proposer">Proposer un trajet</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- À propos de l'entreprise & du créateur José -->
+  <section id="apropos">
+    <div class="container grid">
+      <div>
+        <h2>À propos d’EcoRide</h2>
+        <p><strong>EcoRide</strong> est une startup française dédiée à la réduction de l’empreinte carbone des déplacements quotidiens. Notre mission est simple : <em>remplir les voitures plutôt que les routes</em>. Nous mettons en relation conducteurs et passagers qui partagent les mêmes itinéraires, en valorisant les <strong>véhicules électriques</strong> et les bonnes pratiques (éco‑conduite, sécurité, transparence).</p>
+        <p>Créée et portée par <strong>José</strong>, notre directeur technique, EcoRide place l’innovation et l’écologie au cœur de ses choix. José croit qu’une plateforme peut être à la fois <strong>agréable</strong>, <strong>sécurisée</strong> et <strong>vertueuse</strong> pour la planète.</p>
+      </div>
+      <div>
+        <figure style="position:relative; margin:0;">
+          <img src="https://source.unsplash.com/featured/1000x700?electric-car,parking,driver" alt="José heureux à côté d’une voiture électrique" style="width:100%; height:100%; object-fit:cover; border-radius:16px; box-shadow:var(--shadow)"/>
+          <!-- Autocollant du logo EcoRide apposé (overlay) -->
+          <div class="sticker" aria-label="Autocollant EcoRide">
+            <svg viewBox="0 0 100 100" role="img" aria-label="Logo autocollant">
+              <defs>
+                <linearGradient id="s" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="var(--green-700)"/>
+                  <stop offset="100%" stop-color="var(--green-300)"/>
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="46" fill="url(#s)"/>
+              <circle cx="50" cy="50" r="40" fill="#fff"/>
+              <path d="M30 54a20 20 0 0 1 40 0h-7a13 13 0 0 0-26 0h-7Z" fill="var(--green-900)"/>
+              <circle cx="42" cy="45" r="3.2" fill="var(--green-700)"/>
+              <circle cx="58" cy="45" r="3.2" fill="var(--green-700)"/>
+              <path d="M74 40c0 12-12 22-24 22-4 0-7-.6-10-1.8l4-4c1.8.4 3.6.6 5.6.6 8.5 0 16.4-6.5 17.6-15 .2-1.4.2-2.8 0-4.2l3.9-3.9C73.8 35.8 74 37.9 74 40Z" fill="url(#s)"/>
+            </svg>
+          </div>
+          <figcaption style="margin-top:10px; color:var(--ink-400);">José (fondateur) — « Covoiturer, c’est faire du bien au porte‑monnaie et à la planète. »</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -262,12 +351,56 @@
   </footer>
 
   <script>
+    // === Diaporama d'arrière-plan du site (change chaque seconde) ===
+    const hero = document.getElementById('hero');
+    const bgImages = [
+      'https://images.unsplash.com/photo-1517792844039-8c1e6acaac4a?q=80&w=1600&auto=format&fit=crop', // route verdoyante
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1600&auto=format&fit=crop', // voiture sur route
+      'https://images.unsplash.com/photo-1571607388848-61a2a95a7b03?q=80&w=1600&auto=format&fit=crop', // intérieur voiture sourires
+      'https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=1600&auto=format&fit=crop'  // forêt / nature
+    ];
+    let bgIndex = 0;
+    function setHeroBackground(idx){
+      hero.style.setProperty('--bg-url', `url("${bgImages[idx]}")`);
+      hero.style.setProperty('--bg-next', `url("${bgImages[(idx+1)%bgImages.length]}")`);
+      hero.style.setProperty('--bg-prev', `url("${bgImages[(idx-1+bgImages.length)%bgImages.length]}")`);
+      // Met l'image via le pseudo-élément
+      hero.style.setProperty('--bg', `url("${bgImages[idx]}")`);
+      hero.style.setProperty('--bg-opacity', '0.9');
+      hero.style.setProperty('--bg-scale', '1');
+      hero.style.backgroundImage = `url(${bgImages[idx]})`;
+      hero.style.backgroundSize = 'cover';
+      hero.style.backgroundPosition = 'center';
+    }
+    // Applique via ::before
+    const heroStyle = document.styleSheets[0];
+    // règle dynamique pour .hero::before
+    (function ensureBefore(){
+      for(const sheet of document.styleSheets){
+        try{
+          const rules = sheet.cssRules || [];
+          for(let i=0;i<rules.length;i++){
+            if(rules[i].selectorText === '.hero::before'){ return; }
+          }
+          sheet.insertRule(`.hero::before{ background-image: var(--bg) !important; }`, sheet.cssRules.length);
+        }catch(e){/* certaines CSS externes peuvent être protégées */}
+      }
+    })();
+    setHeroBackground(bgIndex);
+    let bgTimer = setInterval(()=>{
+      bgIndex = (bgIndex + 1) % bgImages.length;
+      hero.style.setProperty('--bg', `url("${bgImages[bgIndex]}")`);
+    }, 1000); // toutes les secondes
+    // Pause du diapo au survol (optionnel)
+    hero.addEventListener('mouseenter', ()=> clearInterval(bgTimer));
+    hero.addEventListener('mouseleave', ()=>{ bgTimer = setInterval(()=>{ bgIndex = (bgIndex + 1) % bgImages.length; hero.style.setProperty('--bg', `url("${bgImages[bgIndex]}")`); }, 1000); });
+
     // --- Données de démonstration (remplaçables par des données back-end) ---
     const sampleRides = [
-      { id:1, from:"Paris", to:"Lyon", date:"2025-09-25", depart:"08:00", arrive:"12:30", driver:{ pseudo:"Nina", note:4.8, avatar:"N" }, places:2, prix:28, duree:270, eco:true, vehicule:{marque:"Renault", modele:"Mégane e-Tech", energie:"Électrique"}},
-      { id:2, from:"Paris", to:"Lille", date:"2025-09-25", depart:"09:10", arrive:"11:00", driver:{ pseudo:"Marc", note:4.2, avatar:"M" }, places:0, prix:14, duree:110, eco:false, vehicule:{marque:"Peugeot", modele:"308", energie:"Essence"}},
-      { id:3, from:"Bordeaux", to:"Toulouse", date:"2025-09-26", depart:"07:45", arrive:"10:05", driver:{ pseudo:"Zoé", note:5.0, avatar:"Z" }, places:3, prix:16, duree:140, eco:true, vehicule:{marque:"Tesla", modele:"Model 3", energie:"Électrique"}},
-      { id:4, from:"Paris", to:"Lyon", date:"2025-09-25", depart:"13:00", arrive:"17:00", driver:{ pseudo:"Ali", note:4.6, avatar:"A" }, places:1, prix:25, duree:240, eco:false, vehicule:{marque:"Citroën", modele:"C4", energie:"Diesel"}}
+      { id:1, from:"Paris", to:"Lyon", date:"2025-09-25", depart:"08:00", arrive:"12:30", driver:{ pseudo:"Nina", note:4.8, avatar:"N", photo:"https://source.unsplash.com/featured/200x200?woman,smile" }, places:2, prix:28, duree:270, eco:true, vehicule:{marque:"Renault", modele:"Mégane e-Tech", energie:"Électrique"}},
+      { id:2, from:"Paris", to:"Lille", date:"2025-09-25", depart:"09:10", arrive:"11:00", driver:{ pseudo:"Marc", note:4.2, avatar:"M", photo:"https://source.unsplash.com/featured/200x200?man,driver" }, places:0, prix:14, duree:110, eco:false, vehicule:{marque:"Peugeot", modele:"308", energie:"Essence"}},
+      { id:3, from:"Bordeaux", to:"Toulouse", date:"2025-09-26", depart:"07:45", arrive:"10:05", driver:{ pseudo:"Zoé", note:5.0, avatar:"Z", photo:"https://source.unsplash.com/featured/200x200?woman,driver,smile" }, places:3, prix:16, duree:140, eco:true, vehicule:{marque:"Tesla", modele:"Model 3", energie:"Électrique"}},
+      { id:4, from:"Paris", to:"Lyon", date:"2025-09-25", depart:"13:00", arrive:"17:00", driver:{ pseudo:"Ali", note:4.6, avatar:"A", photo:"https://source.unsplash.com/featured/200x200?man,portrait" }, places:1, prix:25, duree:240, eco:false, vehicule:{marque:"Citroën", modele:"C4", energie:"Diesel"}}
     ];
 
     const cardsEl = document.getElementById('cards');
@@ -277,7 +410,7 @@
         <article class="card" data-id="${r.id}">
           <div class="card-header">
             <div class="driver">
-              <div class="avatar" aria-hidden="true">${r.driver.avatar}</div>
+              <div class="avatar" aria-hidden="true" style="background-image:url('${r.driver.photo}'); background-size:cover; background-position:center;">${!r.driver.photo? r.driver.avatar: ''}</div>
               <div>
                 <strong>${r.driver.pseudo}</strong>
                 <div style="color:var(--ink-400); font-size:13px">⭐ ${r.driver.note.toFixed(1)} • ${r.vehicule.marque} ${r.vehicule.modele} (${r.vehicule.energie})</div>
@@ -356,7 +489,7 @@
         {auteur:'Samir', note:4.5, texte:'Confortable et charge rapide en route.'}
       ];
       const prefs = ['Non‑fumeur','Animaux acceptés','Musique douce'];
-      const html = `\nTrajet: ${r.from} → ${r.to}\nDate: ${r.date} • ${r.depart} → ${r.arrive}\nVéhicule: ${r.vehicule.marque} ${r.vehicule.modele} (${r.vehicule.energie})\nChauffeur: ${r.driver.pseudo} (⭐ ${r.driver.note})\nPréférences: ${prefs.join(', ')}\nAvis: ${avis.map(a=>`${a.auteur} ⭐${a.note} — ${a.texte}`).join(' | ')}`;
+      const html = `\nTrajet: ${r.from} → ${r.to}\nDate: ${r.date} • ${r.depart} → ${r.arrive}\nVéhicule: ${r.vehicule.marque} ${r.vehicule.modele} (${r.vehicule.energie})\nChauffeur: ${r.driver.pseudo} (⭐ ${r.driver.note})\nPréférences: ${prefs.join(', ')}\nAvis: ${avis.map(a=>`${'${a.auteur}'} ⭐${'${a.note}'} — ${'${a.texte}'}`).join(' | ')}`;
       alert(html);
     }
 
