@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EcoRide • Covoiturage éco-responsable</title>
+  <meta name="description" content="EcoRide — la plateforme de covoiturage qui favorise les trajets éco-responsables et économiques." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- En-tête + Navigation -->
+  <header>
+    <div class="container">
+      <nav>
+        <a class="brand" href="#" aria-label="EcoRide Accueil">
+          <!-- Logo simplifié -->
+          <svg viewBox="0 0 64 64" aria-hidden="true" role="img">
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="var(--green-700)"/>
+                <stop offset="100%" stop-color="var(--green-300)"/>
+              </linearGradient>
+            </defs>
+            <path d="M10 38C10 22 22 10 38 10c4 0 7 1 10 2-9 3-18 12-20 20-2 8-6 12-14 14  -2-2-4-5-4-8z" fill="url(#g)" opacity=".9"/>
+            <g transform="translate(8,24)">
+              <rect x="8" y="10" width="40" height="12" rx="6" fill="url(#g)" opacity=".9"/>
+              <path d="M12 10c2-6 8-8 16-8s14 2 16 8" fill="none" stroke="var(--green-900)" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="18" cy="24" r="4" fill="var(--ink-900)"/>
+              <circle cx="42" cy="24" r="4" fill="var(--ink-900)"/>
+              <circle cx="26" cy="10" r="3" fill="#fff"/>
+              <circle cx="34" cy="10" r="3" fill="#fff"/>
+            </g>
+          </svg>
+          EcoRide
+        </a>
+        <div class="spacer"></div>
+        <div class="menu" aria-label="Menu principal">
+          <a href="#hero">Accueil</a>
+          <a href="#covoiturages">Covoiturages</a>
+          <a href="#apropos">À propos</a>
+          <a href="#temoignages">Témoignages</a>
+          <a href="#connexion">Connexion</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <a class="btn btn-ghost" href="#covoiturages" aria-label="Proposer un trajet">+ Proposer</a>
+        <a class="btn btn-primary" href="#connexion" aria-label="Se connecter">Se connecter</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Héro avec diaporama d’arrière-plan -->
+  <section id="hero" class="hero"
+    data-bg='[
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=1600&auto=format&fit=crop"
+    ]'>
+    <div class="bg-slideshow" aria-hidden="true"></div>
+
+    <div class="container">
+      <div>
+        <div class="badge" aria-label="Étiquette éco">🌱 Covoiturez, respirez, économisez</div>
+        <h1>La plateforme de covoiturage <span style="color:var(--green-700)">éco-responsable</span></h1>
+        <p class="lead">Trouvez ou proposez un trajet. Filtrez par prix, durée, note et énergie (électrique = trajet « éco »).</p>
+
+        <div class="search-card" role="search" aria-label="Recherche d'itinéraire">
+          <form id="formRecherche" class="search-grid">
+            <div class="field">
+              <label for="depart">Départ</label>
+              <input id="depart" name="depart" placeholder="Ville de départ" required />
+            </div>
+            <div class="field">
+              <label for="arrivee">Arrivée</label>
+              <input id="arrivee" name="arrivee" placeholder="Ville d'arrivée" required />
+            </div>
+            <div class="field">
+              <label for="date">Date</label>
+              <input id="date" name="date" type="date" required />
+            </div>
+            <button class="btn btn-primary" type="submit" aria-label="Rechercher">Rechercher</button>
+          </form>
+        </div>
+
+        <div class="features" aria-label="Atouts d'EcoRide">
+          <div class="feature">♻️ <div><strong>Écologique</strong><br/><span class="sub">Mettez en avant les trajets en voiture électrique.</span></div></div>
+          <div class="feature">🔒 <div><strong>Sécurisé</strong><br/><span class="sub">Comptes, avis, et double confirmation.</span></div></div>
+          <div class="feature">📊 <div><strong>Transparent</strong><br/><span class="sub">Prix, durée, note et places restantes.</span></div></div>
+        </div>
+      </div>
+
+      <!-- Illustration héro -->
+      <div aria-hidden="true">
+        <svg viewBox="0 0 520 420" role="img" aria-label="Illustration véhicule électrique" style="width:100%;filter:drop-shadow(var(--shadow))">
+          <defs>
+            <linearGradient id="car" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="var(--green-500)"/>
+              <stop offset="100%" stop-color="var(--green-300)"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="520" height="420" rx="24" fill="var(--green-100)"/>
+          <circle cx="420" cy="120" r="80" fill="url(#car)" opacity=".25"/>
+          <g transform="translate(40,220)">
+            <rect x="0" y="-20" width="420" height="90" rx="24" fill="url(#car)"/>
+            <rect x="40" y="-40" width="170" height="70" rx="16" fill="#fff" opacity=".85"/>
+            <rect x="230" y="-40" width="110" height="70" rx="16" fill="#fff" opacity=".85"/>
+            <g><circle cx="120" cy="90" r="34" fill="#222"/><circle cx="120" cy="90" r="18" fill="#666"/></g>
+            <g><circle cx="340" cy="90" r="34" fill="#222"/><circle cx="340" cy="90" r="18" fill="#666"/></g>
+            <path d="M370 -10h24l12 16-12 16h-24l12-16-12-16Z" fill="#fff"/>
+          </g>
+          <g>
+            <path d="M70 360c60-40 120-40 180 0 60 40 120 40 180 0" fill="none" stroke="var(--green-300)" stroke-width="8" stroke-linecap="round" opacity=".6"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <svg class="leafs" viewBox="0 0 200 200"><path d="M20 180c40-80 80-120 160-160-40 80-80 120-160 160Z" fill="var(--green-300)"/></svg>
+  </section>
+
+  <!-- Résultats & filtres -->
+  <section id="covoiturages">
+    <div class="container">
+      <div class="section-title">
+        <h2>Trajets disponibles</h2>
+        <div class="filters" aria-label="Filtres">
+          <label class="chip"><input type="checkbox" id="fEco" style="accent-color:var(--green-700)"> Trajet éco (VE)</label>
+          <label class="chip">Prix max <input type="number" id="fPrix" min="1" step="1" style="width:90px;margin-left:8px"></label>
+          <label class="chip">Durée max <input type="number" id="fDuree" min="5" step="5" style="width:90px;margin-left:8px"> min</label>
+          <label class="chip">Note min <input type="number" id="fNote" min="1" max="5" step="0.5" style="width:90px;margin-left:8px"></label>
+        </div>
+      </div>
+      <div id="cartes" class="cards" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- Sections À propos / Témoignages / CTA / Footer -->
+  <section id="apropos" class="section">
+    <div class="container">
+      <div class="about">
+        <div>
+          <h2>À propos d’EcoRide</h2>
+          <p>EcoRide est une initiative française : <strong>mobilité plus propre, abordable et conviviale</strong>. Nous mettons en relation conducteurs et passagers en favorisant les <em>trajets à faible empreinte carbone</em>.</p>
+          <div class="kpis">
+            <div class="kpi">+120 000 kg CO₂ évités</div>
+            <div class="kpi">98% d’avis positifs</div>
+            <div class="kpi">Communauté vérifiée</div>
+          </div>
+        </div>
+        <div>
+          <img class="portrait" src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=1200&auto=format&fit=crop" alt="José, fondateur d’EcoRide">
+          <p style="margin-top:10px"><strong>José, fondateur</strong> — Ingénieur mobilité & énergies renouvelables.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="temoignages" class="section">
+    <div class="container">
+      <h2>Ils nous font confiance</h2>
+      <div class="testimonials" aria-label="Témoignages d’utilisateurs">
+        <article class="tcard"><div class="thead"><div class="tavatar">É</div><div><strong>Élise</strong><br/><span style="color:var(--ink-400)">⭐️⭐️⭐️⭐️⭐️</span></div></div><p>Trajet impeccable et silencieux. J’économise et je pollue moins !</p></article>
+        <article class="tcard"><div class="thead"><div class="tavatar">S</div><div><strong>Samir</strong><br/><span style="color:var(--ink-400)">⭐️⭐️⭐️⭐️½</span></div></div><p>Réservation simple, arrêt recharge anticipé. L’app valorise vraiment l’éco.</p></article>
+        <article class="tcard"><div class="thead"><div class="tavatar">N</div><div><strong>Nina</strong><br/><span style="color:var(--ink-400)">⭐️⭐️⭐️⭐️⭐️</span></div></div><p>Communauté vérifiée, 3×/semaine, coûts divisés par deux.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero" style="padding: 10px 0 30px">
+    <div class="container" style="grid-template-columns:1fr; text-align:center">
+      <h3>Envie de participer ?</h3>
+      <p class="lead">Créez un compte et recevez <strong>20 crédits</strong> de bienvenue.</p>
+      <div>
+        <a class="btn btn-primary" href="#inscription">Créer un compte</a>
+        <a class="btn btn-ghost" href="#proposer">Proposer un trajet</a>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="container">
+      <p class="legal">💌 Contact : <a href="mailto:contact@ecoride.fr">contact@ecoride.fr</a></p>
+      <p class="legal"><a href="#mentions">Mentions légales</a></p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
