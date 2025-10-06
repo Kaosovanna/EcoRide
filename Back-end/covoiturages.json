@@ -1,0 +1,90 @@
+[
+  {
+    "id": 1,
+    "from": "Paris",
+    "to": "Lyon",
+    "date": "2025-09-25",
+    "depart": "08:00",
+    "arrive": "12:30",
+    "driver": {
+      "pseudo": "Nina",
+      "note": 4.8,
+      "avatar": "N"
+    },
+    "places": 2,
+    "prix": 28,
+    "duree": 270,
+    "eco": true,
+    "vehicule": {
+      "marque": "Renault",
+      "modele": "Mégane e-Tech",
+      "energie": "Électrique"
+    }
+  },
+  {
+    "id": 2,
+    "from": "Paris",
+    "to": "Lille",
+    "date": "2025-09-25",
+    "depart": "09:10",
+    "arrive": "11:00",
+    "driver": {
+      "pseudo": "Marc",
+      "note": 4.2,
+      "avatar": "M"
+    },
+    "places": 0,
+    "prix": 14,
+    "duree": 110,
+    "eco": false,
+    "vehicule": {
+      "marque": "Peugeot",
+      "modele": "308",
+      "energie": "Essence"
+    }
+  },
+  {
+    "id": 3,
+    "from": "Bordeaux",
+    "to": "Toulouse",
+    "date": "2025-09-26",
+    "depart": "07:45",
+    "arrive": "10:05",
+    "driver": {
+      "pseudo": "Zoé",
+      "note": 5.0,
+      "avatar": "Z"
+    },
+    "places": 3,
+    "prix": 16,
+    "duree": 140,
+    "eco": true,
+    "vehicule": {
+      "marque": "Tesla",
+      "modele": "Model 3",
+      "energie": "Électrique"
+    }
+  },
+  {
+    "id": 4,
+    "from": "Paris",
+    "to": "Lyon",
+    "date": "2025-09-25",
+    "depart": "13:00",
+    "arrive": "17:00",
+    "driver": {
+      "pseudo": "Ali",
+      "note": 4.6,
+      "avatar": "A"
+    },
+    "places": 1,
+    "prix": 25,
+    "duree": 240,
+    "eco": false,
+    "vehicule": {
+      "marque": "Citroën",
+      "modele": "C4",
+      "energie": "Diesel"
+    }
+  }
+]
