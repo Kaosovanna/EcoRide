@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoRide — Covoiturage écologique et fun</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <img src="assets/img/logo-ecoride.svg" alt="Logo EcoRide" class="logo"/>
+    <a href="index.html">Accueil</a>
+    <a href="covoiturages.html">Covoiturages</a>
+    <a href="connexion.html">Connexion</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</header>
+<main class="container">
+  <section class="hero">
+    <div class="bloc">
+      <h1>Bienvenue sur EcoRide</h1>
+      <p>La plateforme qui encourage le covoiturage <b>respectueux de l’environnement</b>. Des trajets simples, des économies, et la planète vous dit merci 🌿.</p>
+      <div class="grid-2">
+        <img class="full" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" alt="Forêt verdoyante">
+        <img class="full" src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop" alt="Route et nature">
+      </div>
+    </div>
+    <div class="bloc">
+      <h2>Rechercher un itinéraire</h2>
+      <form id="form-recherche" class="search-form">
+        <input id="depart" type="text" placeholder="Ville de départ" required>
+        <input id="arrivee" type="text" placeholder="Ville d’arrivée" required>
+        <input id="date" type="date" required>
+        <select id="filtre-eco">
+          <option value="">Tous les trajets</option>
+          <option value="eco">Écologiques (voiture électrique)</option>
+        </select>
+        <button type="submit">Chercher</button>
+      </form>
+      <div id="resultats" class="section"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Histoire du projet & fondateur</h2>
+    <div class="card">
+      <p><b>EcoRide</b> est une jeune startup française née d’une idée simple : réduire l’impact environnemental des déplacements en voiture grâce au covoiturage. Le projet est porté par <b>José</b>, son fondateur et directeur technique, qui a souhaité une application aux couleurs de l’écologie et centrée sur la simplicité d’usage.</p>
+      <p>Notre ambition : devenir la plateforme de covoiturage de référence pour les voyageurs soucieux de l’environnement et de leur budget. 🚗⚡</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Itinéraires disponibles (carrousel)</h2>
+    <div id="carousel-itineraires" class="carousel">
+      <div class="carousel-track">
+        <div class="carousel-item">
+          <h3>Paris → Nantes <span class="badge">ÉCO</span></h3>
+          <p>Demain • 09:00 → 12:15 • Places: 2 • 8 crédits</p>
+        </div>
+        <div class="carousel-item">
+          <h3>Lyon → Grenoble <span class="badge">Classique</span></h3>
+          <p>Mercredi • 18:00 → 19:30 • Places: 1 • 6 crédits</p>
+        </div>
+        <div class="carousel-item">
+          <h3>Bordeaux → Toulouse <span class="badge">ÉCO</span></h3>
+          <p>Vendredi • 14:00 → 16:30 • Places: 3 • 7 crédits</p>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn prev">◀</button>
+        <button class="btn next">▶</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Avis clients</h2>
+    <div id="temoignages" class="cards"></div>
+  </section>
+
+  <div id="modal"></div>
+</main>
+<footer>
+  <div class="container">
+    <p>Contact : <a href="mailto:contact@ecoride.fr">contact@ecoride.fr</a> • <a href="mentions.html">Mentions légales</a></p>
+    <p class="small">© 2025 EcoRide</p>
+  </div>
+</footer>
+<script src="js/script.js"></script>
+</body>
+</html>
