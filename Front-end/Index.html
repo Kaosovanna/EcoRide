@@ -1,1 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoRide - Covoiturage écologique et fun</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="brand">
+        <img class="logo" src="logo.svg" alt="Logo EcoRide">
+        <h1>EcoRide</h1>
+      </div>
+      <nav>
+        <a href="index.html">Accueil</a>
+        <a href="covoiturages.html">Covoiturages</a>
+        <a href="connexion.html">Connexion</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
 
+  <main class="container">
+    <section class="hero">
+      <h2>Le covoiturage qui aime la planète 🌿</h2>
+      <p>Voyagez à plusieurs, payez moins, et respirez mieux.</p>
+    </section>
+
+    <section class="card">
+      <h3>Histoire du projet EcoRide</h3>
+      <p>
+        EcoRide est une jeune startup française imaginée pour réduire l'impact environnemental
+        des déplacements en voiture. Le projet est porté par <strong>José</strong>, son fondateur et directeur technique,
+        qui souhaite une application web aux couleurs de l'écologie. Notre ambition est de devenir la
+        plateforme de référence pour les voyageurs responsables et économes, en se concentrant uniquement
+        sur les trajets en <strong>voiture</strong>.
+      </p>
+    </section>
+
+    <section class="card">
+      <h3>Rechercher un itinéraire</h3>
+      <div class="row">
+        <input id="home-depart" class="input" placeholder="Ville de départ">
+        <input id="home-arrivee" class="input" placeholder="Ville d'arrivée">
+        <input id="home-date" type="date" class="input">
+        <button class="btn" id="home-search">Chercher</button>
+      </div>
+      <p id="home-search-msg"></p>
+    </section>
+
+    <section class="card">
+      <h3>Propositions d'itinéraires</h3>
+      <div class="carousel" id="carousel">
+        <div class="carousel-track" id="carousel-track">
+          <div class="slide">
+            <strong>Paris → Lyon</strong> • demain 08:00 • 3 places • <span class="badge eco">Éco</span>
+          </div>
+          <div class="slide">
+            <strong>Nantes → Bordeaux</strong> • samedi 14:30 • 2 places
+          </div>
+          <div class="slide">
+            <strong>Lille → Bruxelles</strong> • dimanche 10:15 • 4 places • <span class="badge eco">Éco</span>
+          </div>
+        </div>
+        <div class="controls">
+          <button id="prev">◀</button>
+          <button id="next">▶</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Avis clients</h3>
+      <div class="grid" id="avis"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 EcoRide — <a href="mentions-legales.html">Mentions légales</a> — contact : hello@ecoride.fr</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
