@@ -13,7 +13,7 @@
  * Constante pointant vers la racine de l'API Backend.
  * @constant {string}
  */
-const API_BASE_URL = '/EcoRide/api';
+const API_BASE_URL = '/noyau_backend/api/v1';
 
 // ============================================================================
 // UTILITAIRES DE VALIDATION (Ajoutés pour fiabiliser les requêtes)

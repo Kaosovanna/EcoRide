@@ -69,9 +69,30 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="col-md-9">
-                    <div class="tab-content" id="nav-tabContent">
+            <div class="col-md-9">
+                <div class="tab-content" id="nav-tabContent">
+                        <!-- Réservations Tab -->
+                        <div class="tab-pane fade show active" id="reservations">
+                            <div class="card p-5 shadow-sm border-0 rounded-4">
+                                <h3 class="fw-bold mb-4" style="color: var(--eco-primary);">Mes Réservations</h3>
+                                <div id="reservations-list" class="row mb-5 g-4">
+                                    <!-- Loaded via JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mes Trajets (Chauffeur) Tab -->
+                        <div class="tab-pane fade" id="mes-trajets">
+                            <div class="card p-5 shadow-sm border-0 rounded-4">
+                                <h3 class="fw-bold mb-4" style="color: var(--eco-primary);">Mes Trajets Publiés</h3>
+                                <div id="trips-driver-list" class="row mb-5 g-4">
+                                    <!-- Loaded via JS -->
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Profil Tab -->
                         <div class="tab-pane fade" id="profil">
                             <div class="card p-5 shadow-sm border-0 rounded-4">
@@ -129,7 +150,7 @@
                         </div>
 
                         <!-- Véhicules Tab -->
-                        <div class="tab-pane fade show active" id="vehicules">
+                        <div class="tab-pane fade" id="vehicules">
                             <div class="card p-5 shadow-sm border-0 rounded-4">
                                 <h3 class="fw-bold mb-4" style="color: var(--eco-primary);">Mes Véhicules</h3>
                                 <div id="vehicles-list" class="row mb-5 g-4">
@@ -283,12 +304,12 @@
                 const select = document.getElementById('t-vehicule');
                 select.innerHTML = '<option value="">Sélectionner un véhicule</option>';
 
-                if (vehicules.length === 0) {
+                if (vehicles.length === 0) {
                     list.innerHTML = '<div class="col-12"><p class="text-muted">Aucun véhicule enregistré.</p></div>';
                     return;
                 }
 
-                list.innerHTML = vehicules.map(v => {
+                list.innerHTML = vehicles.map(v => {
                     select.innerHTML += `<option value="${v.id}">${v.modele} (${v.immatriculation})</option>`;
                     let badge = v.est_electrique == 1 ? '<span class="eco-badge">🍃 Électrique</span>' : '';
                     return `
@@ -378,9 +399,13 @@
                 document.getElementById('p-animals').checked = p.pref_animaux == 1;
                 document.getElementById('p-music').checked = p.pref_musique == 1;
 
-                if (p.photo) {
-                    document.getElementById('profile-photo-preview').innerHTML = `<img src="${p.photo}" class="w-100 h-100" style="object-fit: cover;">`;
-                    document.getElementById('user-avatar-initial').innerHTML = `<img src="${p.photo}" class="w-100 h-100 rounded-circle" style="object-fit: cover;">`;
+                if (p.photo && p.photo !== 'null' && p.photo !== 'undefined' && p.photo.trim() !== '') {
+                    let photoUrl = p.photo;
+                    if (!photoUrl.startsWith('http') && !photoUrl.startsWith('../')) {
+                        photoUrl = '../ressources/images/' + photoUrl;
+                    }
+                    document.getElementById('profile-photo-preview').innerHTML = `<img src="${photoUrl}" class="w-100 h-100" style="object-fit: cover;" onerror="this.outerHTML='<span class=\\'fs-1\\'>👤</span>'">`;
+                    document.getElementById('user-avatar-initial').innerHTML = `<img src="${photoUrl}" class="w-100 h-100 rounded-circle" style="object-fit: cover;" onerror="this.outerHTML='${p.pseudo.charAt(0).toUpperCase()}'">`;
                 } else {
                     document.getElementById('user-avatar-initial').textContent = p.pseudo.charAt(0).toUpperCase();
                 }
@@ -488,8 +513,8 @@
                 }
 
                 list.innerHTML = reservations.map(r => {
-                    let statusColor = r.reservation_statut === 'en_attente' ? 'bg-warning' : (r.reservation_statut === 'confirme' ? 'bg-success' : 'bg-danger');
-                    let statusText = r.reservation_statut === 'en_attente' ? 'En attente' : (r.reservation_statut === 'confirme' ? 'Confirmé' : 'Annulé');
+                    let statusColor = r.reservation_statut === 'en_attente' ? 'bg-warning' : (r.reservation_statut === 'valide' ? 'bg-success' : 'bg-danger');
+                    let statusText = r.reservation_statut === 'en_attente' ? 'En attente' : (r.reservation_statut === 'valide' ? 'Confirmé' : 'Annulé');
 
                     return `
                     <div class="col-md-12">

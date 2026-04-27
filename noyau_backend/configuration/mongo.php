@@ -1,12 +1,13 @@
 <?php
 // noyau_backend/configuration/mongo.php
+require_once __DIR__ . '/env_loader.php';
 
 if (file_exists(__DIR__ . '/../../vendor/autoload.php')) {
     require_once __DIR__ . '/../../vendor/autoload.php'; // If using Composer for MongoDB driver
 }
 
 // Fallback logic for when MongoDB native driver is used instead of the library
-$mongoUri = getenv('MONGO_URI') ?: 'mongodb+srv://ViteetGourmand:Vite%26Gourmand@cluster0.ypwko9k.mongodb.net/?appName=Cluster0';
+$mongoUri = getenv('MONGO_URI');
 
 try {
     if (class_exists('MongoDB\Client')) {

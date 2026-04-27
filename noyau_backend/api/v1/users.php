@@ -44,7 +44,7 @@ switch ($method) {
             $res = $controller->getProfile($_GET['utilisateur_id'] ?? 0);
             if ($res['status'] === 200) {
                 http_response_code(200);
-                echo json_encode($res['profile']);
+                echo json_encode($res['profil']);
                 exit;
             }
         }

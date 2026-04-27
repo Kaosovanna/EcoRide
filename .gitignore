@@ -3,3 +3,10 @@ package-lock.json
 capture.js
 capture_whimsical.js
 snapshot_board.js
+.env
+test_mongo.php
+get_reviews.php
+seed_reviews.php
+mongo_dashboard.php
+sync_to_mongo.php
+scratch/

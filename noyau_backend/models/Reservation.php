@@ -54,6 +54,11 @@ class Reservation
             $stmt->bindParam(":passager_id", $this->passager_id);
             $stmt->execute();
 
+            // Decrement available seats (places_max)
+            $updateSeatsQuery = "UPDATE trajets SET places_max = places_max - 1 WHERE id = ? AND places_max > 0";
+            $stmtSeats = $this->conn->prepare($updateSeatsQuery);
+            $stmtSeats->execute([$this->trajet_id]);
+
             $this->conn->commit();
             return true;
         }

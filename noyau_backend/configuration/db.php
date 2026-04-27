@@ -1,5 +1,6 @@
 <?php
 // noyau_backend/configuration/db.php
+require_once __DIR__ . '/env_loader.php';
 
 $host = getenv('MYSQL_HOST') ?: 'localhost';
 $port = getenv('MYSQL_PORT') ?: '3306';
