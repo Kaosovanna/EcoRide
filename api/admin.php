@@ -11,13 +11,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once '../../configuration/db.php';
-require_once '../../configuration/mongo.php';
-require_once '../../controllers/AdminController.php';
-require_once '../../controllers/ReviewController.php';
+require_once __DIR__ . '/../noyau_backend/configuration/db.php';
+require_once __DIR__ . '/../noyau_backend/configuration/mongo.php';
+require_once __DIR__ . '/../noyau_backend/controllers/AdminController.php';
+require_once __DIR__ . '/../noyau_backend/controllers/AvisController.php';
 
 $adminCtrl = new AdminController($pdo);
-$reviewCtrl = isset($mongoDb) ? new ReviewController($mongoDb) : null;
+$reviewCtrl = isset($mongoDb) ? new AvisController($mongoDb) : null;
 $action = $_GET['action'] ?? '';
 $method = $_SERVER['REQUEST_METHOD'];
 

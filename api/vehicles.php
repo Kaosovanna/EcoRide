@@ -11,10 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once '../../configuration/db.php';
-require_once '../../controllers/VehicleController.php';
+require_once __DIR__ . '/../noyau_backend/configuration/db.php';
+require_once __DIR__ . '/../noyau_backend/controllers/VehiculeController.php';
 
-$controller = new VehicleController($pdo);
+$controller = new VehiculeController($pdo);
 $action = $_GET['action'] ?? '';
 $method = $_SERVER['REQUEST_METHOD'];
 

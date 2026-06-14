@@ -13,7 +13,7 @@
  * Constante pointant vers la racine de l'API Backend.
  * @constant {string}
  */
-const API_BASE_URL = '/noyau_backend/api/v1';
+const API_BASE_URL = '../../api';
 
 // ============================================================================
 // UTILITAIRES DE VALIDATION (Ajoutés pour fiabiliser les requêtes)

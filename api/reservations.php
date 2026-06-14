@@ -11,8 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once '../../configuration/db.php';
-require_once '../../controllers/ReservationController.php';
+require_once __DIR__ . '/../noyau_backend/configuration/db.php';
+require_once __DIR__ . '/../noyau_backend/controllers/ReservationController.php';
 
 $controller = new ReservationController($pdo);
 $action = $_GET['action'] ?? '';

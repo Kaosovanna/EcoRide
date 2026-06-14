@@ -12,9 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 require_once __DIR__ . '/../noyau_backend/configuration/db.php';
-require_once __DIR__ . '/../noyau_backend/controllers/UserController.php';
+require_once __DIR__ . '/../noyau_backend/controllers/UtilisateurController.php';
 
-$controller = new UserController($pdo);
+$controller = new UtilisateurController($pdo);
 $action = $_GET['action'] ?? '';
 $method = $_SERVER['REQUEST_METHOD'];
 

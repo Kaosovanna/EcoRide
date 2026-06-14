@@ -11,10 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once '../../configuration/mongo.php';
-require_once '../../controllers/ReviewController.php';
+require_once __DIR__ . '/../noyau_backend/configuration/mongo.php';
+require_once __DIR__ . '/../noyau_backend/controllers/AvisController.php';
 
-$controller = isset($mongoDb) ? new ReviewController($mongoDb) : null;
+$controller = isset($mongoDb) ? new AvisController($mongoDb) : null;
 $action = $_GET['action'] ?? '';
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -38,7 +38,7 @@ switch ($method) {
     case 'GET':
         if ($action === 'approved') {
             $cible_id = $_GET['utilisateur_id'] ?? 0;
-            $review = new Review($mongoDb);
+            $review = new Avis($mongoDb);
             $reviews = $review->getApprovedByReviewee($cible_id);
             http_response_code(200);
             echo json_encode($reviews);
