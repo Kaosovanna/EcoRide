@@ -26,7 +26,7 @@ try {
         }
     }
 
-    // 4. Lire et exécuter seed_data.sql (qui contient maintenant les images corrigées)
+    // 4. Lire et exécuter seed_data.sql (qui contient maintenant 'Max')
     $seedFile = __DIR__ . '/../noyau_backend/configuration/seed_data.sql';
     if (file_exists($seedFile)) {
         $seedSql = file_get_contents($seedFile);
@@ -41,8 +41,7 @@ try {
         }
     }
 
-    // 5. Ré-insérer l'utilisateur de test spécifié par l'utilisateur
-    // Email: milya.maxwell@test.fr, Mot de passe: password123
+    // 5. Ré-insérer l'utilisateur de test milya.maxwell@test.fr
     $stmt = $pdo->prepare("SELECT id FROM utilisateurs WHERE email = ?");
     $stmt->execute(['milya.maxwell@test.fr']);
     if (!$stmt->fetch()) {
@@ -51,7 +50,7 @@ try {
         $stmtInsert->execute(['Milya Maxwell', 'milya.maxwell@test.fr', $hash, 'passager', 100]);
     }
 
-    echo json_encode(["status" => 200, "message" => "Base de données initialisée avec les photos corrigées !"]);
+    echo json_encode(["status" => 200, "message" => "Base de données initialisée avec succès (Max et photos corrigées) !"]);
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode(["status" => 500, "message" => "Erreur d'initialisation", "error" => $e->getMessage()]);
