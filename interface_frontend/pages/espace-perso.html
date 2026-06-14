@@ -412,7 +412,7 @@
 
                 if (p.photo && p.photo !== 'null' && p.photo !== 'undefined' && p.photo.trim() !== '') {
                     let photoUrl = p.photo;
-                    if (!photoUrl.startsWith('http') && !photoUrl.startsWith('../')) {
+                    if (!photoUrl.startsWith('http') && !photoUrl.startsWith('../') && !photoUrl.startsWith('data:')) {
                         photoUrl = '../ressources/images/' + photoUrl;
                     }
                     document.getElementById('profile-photo-preview').innerHTML = `<img src="${photoUrl}" class="w-100 h-100" style="object-fit: cover;" onerror="this.outerHTML='<span class=\\'fs-1\\'>👤</span>'">`;

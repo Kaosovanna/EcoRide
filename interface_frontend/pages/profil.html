@@ -258,7 +258,11 @@
             // Avatar
             const avatarContainer = document.getElementById('avatar-container');
             if (u.photo && u.photo !== 'generic.png' && u.photo !== '') {
-                avatarContainer.innerHTML = `<div class="avatar-wrap"><img src="../ressources/images/${u.photo}" alt="${u.pseudo}"></div>`;
+                let photoUrl = u.photo;
+                if (!photoUrl.startsWith('http') && !photoUrl.startsWith('../') && !photoUrl.startsWith('data:')) {
+                    photoUrl = '../ressources/images/' + photoUrl;
+                }
+                avatarContainer.innerHTML = `<div class="avatar-wrap"><img src="${photoUrl}" alt="${u.pseudo}"></div>`;
             } else {
                 document.getElementById('avatar-placeholder').textContent = u.pseudo.charAt(0).toUpperCase();
             }

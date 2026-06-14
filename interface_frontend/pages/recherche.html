@@ -210,7 +210,11 @@
                 // Driver Photo Logic (fallback to initial if generic.png or empty)
                 let driverPhotoHtml = '';
                 if (t.conducteur_photo && t.conducteur_photo !== 'generic.png' && t.conducteur_photo !== '') {
-                    driverPhotoHtml = `<img src="../ressources/images/${t.conducteur_photo}" alt="${t.conducteur_pseudo}" class="rounded-circle object-fit-cover me-2" style="width: 40px; height: 40px; border: 1px solid #eee;">`;
+                    let photoUrl = t.conducteur_photo;
+                    if (!photoUrl.startsWith('http') && !photoUrl.startsWith('../') && !photoUrl.startsWith('data:')) {
+                        photoUrl = '../ressources/images/' + photoUrl;
+                    }
+                    driverPhotoHtml = `<img src="${photoUrl}" alt="${t.conducteur_pseudo}" class="rounded-circle object-fit-cover me-2" style="width: 40px; height: 40px; border: 1px solid #eee;">`;
                 } else {
                     const initial = t.conducteur_pseudo ? t.conducteur_pseudo.charAt(0).toUpperCase() : '?';
                     driverPhotoHtml = `<div class="rounded-circle d-flex align-items-center justify-content-center me-2 text-white bg-eco fw-bold" style="width: 40px; height: 40px; font-size: 1.1rem; border: 1px solid #00cc66;">${initial}</div>`;
