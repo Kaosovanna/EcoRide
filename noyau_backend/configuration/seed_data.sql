@@ -13,11 +13,11 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- 2. Insertion des Utilisateurs Réalistes (Hash de 'password' pour tous)
 -- Mot de passe: password
 INSERT INTO utilisateurs (id, pseudo, email, mot_de_passe_hash, role, credits, photo, biographie, pref_fumeur, pref_animaux, pref_musique) VALUES
-(1, 'Administrateur', 'admin@ecoride.fr', '$2y$10$Kjgj.pjzhcODkLdSkLCg6utXscW7Y9Icohq6ew/OB2yHfL4tkxkZW', 'admin', 150, 'user1.jpg', 'Administrateur de la plateforme EcoRide.', 0, 1, 1),
-(2, 'Marc D.', 'marc.d@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'chauffeur', 85, 'user2.jpg', 'Trajets réguliers entre Paris et Lyon.', 0, 0, 1),
-(3, 'Julie D.', 'julie.d@outlook.fr', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'chauffeur', 120, 'user3.jpg', 'Voyagez confortablement et en musique ! 🎶', 0, 1, 1),
-(4, 'Thomas G.', 'thomas.g@yahoo.fr', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'passager', 40, 'user4.jpg', 'Adepte du covoiturage depuis 5 ans.', 1, 1, 0),
-(5, 'Employé', 'employe@ecoride.fr', '$2y$10$Kjgj.pjzhcODkLdSkLCg6utXscW7Y9Icohq6ew/OB2yHfL4tkxkZW', 'employe', 60, 'user5.jpg', 'Support EcoRide à votre service.', 0, 0, 1);
+(1, 'Administrateur', 'admin@ecoride.fr', '$2y$10$Kjgj.pjzhcODkLdSkLCg6utXscW7Y9Icohq6ew/OB2yHfL4tkxkZW', 'admin', 150, 'antoine.png', 'Administrateur de la plateforme EcoRide.', 0, 1, 1),
+(2, 'Marc D.', 'marc.d@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'chauffeur', 85, 'marc.png', 'Trajets réguliers entre Paris et Lyon.', 0, 0, 1),
+(3, 'Julie D.', 'julie.d@outlook.fr', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'chauffeur', 120, 'julie.png', 'Voyagez confortablement et en musique ! 🎶', 0, 1, 1),
+(4, 'Thomas G.', 'thomas.g@yahoo.fr', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'passager', 40, 'thomas.png', 'Adepte du covoiturage depuis 5 ans.', 1, 1, 0),
+(5, 'Employé', 'employe@ecoride.fr', '$2y$10$Kjgj.pjzhcODkLdSkLCg6utXscW7Y9Icohq6ew/OB2yHfL4tkxkZW', 'employe', 60, 'sophie.png', 'Support EcoRide à votre service.', 0, 0, 1);
 
 -- 3. Insertion des Véhicules Électriques
 INSERT INTO vehicules (id, utilisateur_id, immatriculation, modele, couleur, est_electrique) VALUES
