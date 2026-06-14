@@ -14,7 +14,7 @@ if (!$user_id) {
 
 // 1. Profil public (sans email, sans crédits)
 $stmt = $pdo->prepare("
-    SELECT id, pseudo, photo, bio, role, pref_fumeur, pref_animaux, pref_musique, date_creation
+    SELECT id, pseudo, photo, biographie, role, pref_fumeur, pref_animaux, pref_musique, date_creation
     FROM utilisateurs WHERE id = ? LIMIT 1
 ");
 $stmt->execute([$user_id]);
