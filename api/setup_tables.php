@@ -29,6 +29,27 @@ try {
     // Force la colonne photo en LONGTEXT si la table existait déjà
     $pdo->exec("ALTER TABLE utilisateurs MODIFY COLUMN photo LONGTEXT DEFAULT NULL");
 
+    // Force la colonne photos en LONGTEXT pour la table vehicules si elle existait déjà
+    try {
+        $pdo->exec("ALTER TABLE vehicules ADD COLUMN photos LONGTEXT DEFAULT NULL");
+    } catch (Exception $e) {
+        // Ignorer si la colonne existe déjà
+    }
+
+    // Renommer mot_de_passe en mot_de_passe_hash si nécessaire
+    try {
+        $pdo->exec("ALTER TABLE utilisateurs CHANGE COLUMN mot_de_passe mot_de_passe_hash VARCHAR(255) NOT NULL");
+    } catch (Exception $e) {
+        // Ignorer si déjà renommé
+    }
+
+    // Renommer ville_destination en ville_arrivee si nécessaire
+    try {
+        $pdo->exec("ALTER TABLE trajets CHANGE COLUMN ville_destination ville_arrivee VARCHAR(100) NOT NULL");
+    } catch (Exception $e) {
+        // Ignorer si déjà renommé
+    }
+
     // 4. Lire et exécuter seed_data.sql (qui contient maintenant 'Max')
     $seedFile = __DIR__ . '/../noyau_backend/configuration/seed_data.sql';
     if (file_exists($seedFile)) {

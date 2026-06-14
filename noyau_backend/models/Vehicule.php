@@ -12,6 +12,7 @@ class Vehicule
     public $modele;
     public $couleur;
     public $est_electrique;
+    public $photos;
 
     public function __construct($db)
     {
@@ -21,7 +22,7 @@ class Vehicule
     public function create()
     {
         $query = "INSERT INTO " . $this->table_name . " 
-                  SET utilisateur_id=:utilisateur_id, immatriculation=:immatriculation, modele=:modele, couleur=:couleur, est_electrique=:est_electrique";
+                  SET utilisateur_id=:utilisateur_id, immatriculation=:immatriculation, modele=:modele, couleur=:couleur, est_electrique=:est_electrique, photos=:photos";
         $stmt = $this->conn->prepare($query);
 
         $this->immatriculation = htmlspecialchars(strip_tags($this->immatriculation));
@@ -34,6 +35,7 @@ class Vehicule
         $stmt->bindParam(":modele", $this->modele);
         $stmt->bindParam(":couleur", $this->couleur);
         $stmt->bindParam(":est_electrique", $this->est_electrique);
+        $stmt->bindParam(":photos", $this->photos);
 
         if ($stmt->execute()) {
             return true;
@@ -53,13 +55,14 @@ class Vehicule
     public function update()
     {
         $query = "UPDATE " . $this->table_name . " 
-                  SET immatriculation=:immatriculation, modele=:modele, couleur=:couleur, est_electrique=:est_electrique 
+                  SET immatriculation=:immatriculation, modele=:modele, couleur=:couleur, est_electrique=:est_electrique, photos=:photos 
                   WHERE id = :id AND utilisateur_id = :utilisateur_id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":immatriculation", $this->immatriculation);
         $stmt->bindParam(":modele", $this->modele);
         $stmt->bindParam(":couleur", $this->couleur);
         $stmt->bindParam(":est_electrique", $this->est_electrique);
+        $stmt->bindParam(":photos", $this->photos);
         $stmt->bindParam(":id", $this->id);
         $stmt->bindParam(":utilisateur_id", $this->utilisateur_id);
         return $stmt->execute();

@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS vehicules (
     modele VARCHAR(100) NOT NULL,
     couleur VARCHAR(30) NOT NULL,
     est_electrique BOOLEAN DEFAULT FALSE,  -- True = Voyage Écologique
+    photos LONGTEXT DEFAULT NULL,          -- JSON list of base64 photos or URLs
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id) ON DELETE CASCADE
 );

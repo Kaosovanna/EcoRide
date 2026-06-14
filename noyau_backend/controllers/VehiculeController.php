@@ -24,6 +24,7 @@ class VehiculeController
         $this->vehicule->modele = $data->modele;
         $this->vehicule->couleur = $data->couleur;
         $this->vehicule->est_electrique = $data->est_electrique ?? 0;
+        $this->vehicule->photos = isset($data->photos) ? json_encode($data->photos) : '[]';
 
         if ($this->vehicule->create()) {
             return ["status" => 201, "message" => "Véhicule ajouté."];

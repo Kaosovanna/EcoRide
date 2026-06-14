@@ -189,6 +189,20 @@
                                         <input type="text" class="form-control form-control-lg bg-white border-0"
                                             id="v-color" placeholder="Couleur" required>
                                     </div>
+
+                                    <!-- Photos Upload Section -->
+                                    <div class="col-12 mt-2">
+                                        <label class="form-label fw-bold text-muted small text-uppercase mb-2">Photos du véhicule (Max 5)</label>
+                                        <div class="d-flex align-items-center gap-3 flex-wrap">
+                                            <label for="v-photos-file" class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-2 fw-semibold text-center mb-0" style="cursor: pointer;">
+                                                📁 Sélectionner des photos
+                                            </label>
+                                            <input type="file" id="v-photos-file" accept="image/*" class="d-none" multiple onchange="handleVehiclePhotos(event)">
+                                            <span class="text-muted small" id="photos-count-text">Aucune photo sélectionnée</span>
+                                        </div>
+                                        <div class="row g-2 mt-2" id="v-photos-preview"></div>
+                                    </div>
+
                                     <div class="col-12 mt-3 d-flex align-items-center">
                                         <div class="form-check me-auto">
                                             <input class="form-check-input fs-5" type="checkbox" id="v-eco"
@@ -311,6 +325,62 @@
             `;
         }
 
+        let selectedVehiclePhotos = [];
+
+        function handleVehiclePhotos(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+            
+            const remaining = 5 - selectedVehiclePhotos.length;
+            const toProcess = Math.min(files.length, remaining);
+            
+            if (files.length > remaining) {
+                alert(`Vous pouvez ajouter au maximum 5 photos par véhicule. Seulement ${toProcess} photos ont été ajoutées.`);
+            }
+
+            for (let i = 0; i < toProcess; i++) {
+                const file = files[i];
+                if (file.size > 2 * 1024 * 1024) {
+                    alert(`L'image ${file.name} est trop volumineuse (max 2 Mo).`);
+                    continue;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    selectedVehiclePhotos.push(e.target.result);
+                    renderPhotosPreview();
+                };
+                reader.readAsDataURL(file);
+            }
+            event.target.value = '';
+        }
+
+        function removeVehiclePhoto(index) {
+            selectedVehiclePhotos.splice(index, 1);
+            renderPhotosPreview();
+        }
+
+        function renderPhotosPreview() {
+            const container = document.getElementById('v-photos-preview');
+            const countText = document.getElementById('photos-count-text');
+            if (!container) return;
+            
+            countText.textContent = `${selectedVehiclePhotos.length} photo(s) sélectionnée(s)`;
+            
+            container.innerHTML = selectedVehiclePhotos.map((photo, idx) => `
+                <div class="col-3 col-sm-2 position-relative mb-2">
+                    <div class="rounded border overflow-hidden bg-white" style="height: 60px;">
+                        <img src="${photo}" class="w-100 h-100" style="object-fit: cover;">
+                    </div>
+                    <button type="button" class="btn btn-danger btn-sm rounded-circle position-absolute top-0 end-0 p-0 d-flex align-items-center justify-content-center" 
+                            style="width: 20px; height: 20px; font-size: 10px; margin-top: -5px; margin-right: 5px; line-height: 1;" 
+                            onclick="removeVehiclePhoto(${idx})">
+                        &times;
+                    </button>
+                </div>
+            `).join('');
+        }
+
         async function loadVehicles() {
             try {
                 const vehicles = await apiCall(`vehicles.php?action=list&utilisateur_id=${user.id}`);
@@ -327,18 +397,72 @@
 
                 list.innerHTML = vehicles.map(v => {
                     select.innerHTML += `<option value="${v.id}">${v.modele} (${v.immatriculation})</option>`;
-                    let badge = v.est_electrique == 1 ? '<span class="eco-badge">🍃 Électrique</span>' : '';
+                    let badge = v.est_electrique == 1 ? '<span class="eco-badge bg-success text-white px-2 py-1 rounded-pill small ms-2" style="font-size: 0.75rem;">🍃 Électrique</span>' : '';
+                    
+                    let photos = [];
+                    try {
+                        photos = v.photos ? JSON.parse(v.photos) : [];
+                    } catch (e) {
+                        photos = [];
+                    }
+
+                    let photosHtml = '';
+                    if (photos && photos.length > 0) {
+                        photosHtml = `
+                            <div class="d-flex gap-2 overflow-x-auto py-2" style="scrollbar-width: thin;">
+                                ${photos.map(p => `
+                                    <div class="rounded border overflow-hidden flex-shrink-0" style="width: 80px; height: 60px;">
+                                        <img src="${p}" class="w-100 h-100" style="object-fit: cover;">
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    } else {
+                        photosHtml = `
+                            <div class="d-flex align-items-center justify-content-center bg-white border rounded text-muted small" style="height: 60px; font-size: 0.8rem;">
+                                🚗 Aucune photo
+                            </div>
+                        `;
+                    }
+
                     return `
                         <div class="col-md-6 mb-3">
-                            <div class="p-3 border rounded">
-                                <strong>${v.modele}</strong> ${badge}<br>
-                                <small class="text-muted">${v.immatriculation} • ${v.couleur}</small>
+                            <div class="card shadow-sm border-0 rounded-4 overflow-hidden h-100 bg-white">
+                                <div class="card-body p-4 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <h5 class="fw-bold mb-0 text-dark" style="font-size: 1.1rem;">${v.modele}</h5>
+                                            ${badge}
+                                        </div>
+                                        <div class="text-muted small mb-3">
+                                            <span class="badge bg-light text-secondary border px-2 py-1 rounded" style="font-size: 0.75rem;">${v.immatriculation}</span>
+                                            <span class="ms-2">🎨 ${v.couleur}</span>
+                                        </div>
+                                        ${photosHtml}
+                                    </div>
+                                    <div class="text-end mt-3">
+                                        <button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="deleteVehicle(${v.id})">
+                                            🗑️ Supprimer
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     `;
                 }).join('');
             } catch (error) {
                 console.error(error);
+            }
+        }
+
+        async function deleteVehicle(id) {
+            if (!confirm("Voulez-vous vraiment supprimer ce véhicule ?")) return;
+            try {
+                await apiCall(`vehicles.php?id=${id}&utilisateur_id=${user.id}`, 'DELETE');
+                alert("Véhicule supprimé !");
+                loadVehicles();
+            } catch (error) {
+                alert(error.message);
             }
         }
 
@@ -350,10 +474,13 @@
                     immatriculation: document.getElementById('v-immat').value,
                     modele: document.getElementById('v-model').value,
                     couleur: document.getElementById('v-color').value,
-                    est_electrique: document.getElementById('v-eco').checked
+                    est_electrique: document.getElementById('v-eco').checked,
+                    photos: selectedVehiclePhotos
                 });
                 alert("Véhicule ajouté !");
                 document.getElementById('add-vehicle-form').reset();
+                selectedVehiclePhotos = [];
+                renderPhotosPreview();
                 loadVehicles();
             } catch (error) {
                 alert(error.message);
