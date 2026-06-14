@@ -336,7 +336,8 @@
                 }
 
                 // Filter for "Bon Plans": Strictly Price <= 20
-                const featured = trips.trajets.filter(t => t.prix <= 20).slice(0, 10);
+                const tripsArray = Array.isArray(trips) ? trips : (trips.trajets || []);
+                const featured = tripsArray.filter(t => t.prix <= 20).slice(0, 10);
 
                 if (featured.length === 0) {
                     container.innerHTML = '<div class="col-12 text-center text-muted py-5"><p>Aucun bon plan avec réduction de crédits trouvé. Consultez tous les trajets !</p></div>';
