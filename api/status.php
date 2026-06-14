@@ -1,5 +1,5 @@
 <?php
-// api/init_db.php
+// api/status.php
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
@@ -18,7 +18,6 @@ try {
     $schemaSql = preg_replace('/USE [^;]+;/i', '', $schemaSql);
 
     // 3. Exécuter le schéma table par table
-    // On sépare par point-virgule pour éviter les erreurs d'exécution multiple sur certains pilotes PDO
     $queries = explode(';', $schemaSql);
     foreach ($queries as $query) {
         $trimmed = trim($query);
