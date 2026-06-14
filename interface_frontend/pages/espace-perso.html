@@ -105,9 +105,11 @@
                                             id="profile-photo-preview">
                                             <span class="fs-1">👤</span>
                                         </div>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill"
-                                            onclick="promptPhoto()">Changer la photo (URL)</button>
-                                        <input type="hidden" id="p-photo">
+                                         <label for="p-photo-file" class="btn btn-sm btn-outline-secondary rounded-pill px-3" style="cursor: pointer;">
+                                             📁 Parcourir une photo
+                                         </label>
+                                         <input type="file" id="p-photo-file" accept="image/*" class="d-none" onchange="handlePhotoUpload(event)">
+                                         <input type="hidden" id="p-photo">
                                     </div>
                                     <div class="col-12">
                                         <label class="form-label fw-bold">Biographie</label>
@@ -382,11 +384,20 @@
             loadReservations();
         });
 
-        function promptPhoto() {
-            const url = prompt("Veuillez entrer l'URL de votre photo de profil :");
-            if (url) {
-                document.getElementById('p-photo').value = url;
-                document.getElementById('profile-photo-preview').innerHTML = `<img src="${url}" class="w-100 h-100" style="object-fit: cover;">`;
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) {
+                    alert("La photo est trop volumineuse. Veuillez choisir une image de moins de 2 Mo.");
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Url = e.target.result;
+                    document.getElementById('p-photo').value = base64Url;
+                    document.getElementById('profile-photo-preview').innerHTML = `<img src="${base64Url}" class="w-100 h-100" style="object-fit: cover;">`;
+                };
+                reader.readAsDataURL(file);
             }
         }
 

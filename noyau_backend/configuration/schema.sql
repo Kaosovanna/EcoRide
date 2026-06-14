@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS utilisateurs (
     mot_de_passe_hash VARCHAR(255) NOT NULL,
     role ENUM('passager', 'chauffeur', 'employe', 'admin', 'suspendu') DEFAULT 'passager',
     credits INT DEFAULT 20,
-    photo VARCHAR(255) DEFAULT NULL,
+    photo LONGTEXT DEFAULT NULL,
     biographie TEXT DEFAULT NULL,
     pref_fumeur BOOLEAN DEFAULT FALSE,
     pref_animaux BOOLEAN DEFAULT FALSE,

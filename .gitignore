@@ -10,3 +10,6 @@ seed_reviews.php
 mongo_dashboard.php
 sync_to_mongo.php
 scratch/
+
+.vercel
+.env*
