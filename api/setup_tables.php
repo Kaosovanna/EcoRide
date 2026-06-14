@@ -26,6 +26,9 @@ try {
         }
     }
 
+    // Force la colonne photo en LONGTEXT si la table existait déjà
+    $pdo->exec("ALTER TABLE utilisateurs MODIFY COLUMN photo LONGTEXT DEFAULT NULL");
+
     // 4. Lire et exécuter seed_data.sql (qui contient maintenant 'Max')
     $seedFile = __DIR__ . '/../noyau_backend/configuration/seed_data.sql';
     if (file_exists($seedFile)) {
