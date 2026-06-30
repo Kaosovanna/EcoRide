@@ -67,7 +67,7 @@ class Utilisateur
             $this->role = $row['role'];
             $this->credits = $row['credits'];
             $this->photo = $row['photo'];
-            $this->biographie = $row['biographie'];
+            $this->biographie = htmlspecialchars_decode($row['biographie'] ?? '', ENT_QUOTES);
             $this->pref_fumeur = $row['pref_fumeur'];
             $this->pref_animaux = $row['pref_animaux'];
             $this->pref_musique = $row['pref_musique'];
@@ -92,7 +92,7 @@ class Utilisateur
             $this->role = $row['role'];
             $this->credits = $row['credits'];
             $this->photo = $row['photo'];
-            $this->biographie = $row['biographie'];
+            $this->biographie = htmlspecialchars_decode($row['biographie'] ?? '', ENT_QUOTES);
             $this->pref_fumeur = $row['pref_fumeur'];
             $this->pref_animaux = $row['pref_animaux'];
             $this->pref_musique = $row['pref_musique'];
@@ -126,8 +126,8 @@ class Utilisateur
                   WHERE id = :id";
         $stmt = $this->conn->prepare($query);
 
-        $biographie = htmlspecialchars(strip_tags($data->biographie ?? ''));
-        $photo = htmlspecialchars(strip_tags($data->photo ?? ''));
+        $biographie = strip_tags($data->biographie ?? '');
+        $photo = $data->photo ?? '';
         $fumeur = (int)($data->pref_fumeur ?? 0);
         $animaux = (int)($data->pref_animaux ?? 0);
         $musique = (int)($data->pref_musique ?? 0);

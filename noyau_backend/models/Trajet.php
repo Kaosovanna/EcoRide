@@ -16,6 +16,8 @@ class Trajet
     public $duree_max;
     public $places_max;
     public $statut; // 'planifie', 'demarre', 'termine', 'annule'
+    public $is_bon_plan;
+    public $reduction_credit;
 
     public function __construct($db)
     {
@@ -48,7 +50,8 @@ class Trajet
             $query = "INSERT INTO " . $this->table_name . " 
                       SET conducteur_id=:conducteur_id, vehicule_id=:vehicule_id, ville_depart=:ville_depart, 
                           ville_arrivee=:ville_arrivee, date_depart=:date_depart, heure_depart=:heure_depart, 
-                          prix=:prix, duree_max=:duree_max, places_max=:places_max, statut='planifie'";
+                          prix=:prix, duree_max=:duree_max, places_max=:places_max, statut='planifie',
+                          is_bon_plan=:is_bon_plan, reduction_credit=:reduction_credit";
 
             $stmt = $this->conn->prepare($query);
 
@@ -61,6 +64,8 @@ class Trajet
             $stmt->bindParam(":prix", $this->prix);
             $stmt->bindParam(":duree_max", $this->duree_max);
             $stmt->bindParam(":places_max", $this->places_max);
+            $stmt->bindParam(":is_bon_plan", $this->is_bon_plan);
+            $stmt->bindParam(":reduction_credit", $this->reduction_credit);
 
             $stmt->execute();
 
@@ -93,7 +98,7 @@ class Trajet
         // Build base query
         $query = "
             SELECT t.id, t.conducteur_id, t.ville_depart, t.ville_arrivee, t.date_depart, t.heure_depart, 
-                   t.prix, t.duree_max, t.places_max, t.statut, 
+                   t.prix, t.duree_max, t.places_max, t.statut, t.is_bon_plan, t.reduction_credit,
                    u.pseudo as conducteur_pseudo, u.photo as conducteur_photo, v.modele as vehicule_modele, v.est_electrique
             FROM " . $this->table_name . " t
             JOIN utilisateurs u ON t.conducteur_id = u.id
@@ -138,7 +143,7 @@ class Trajet
     {
         $query = "
             SELECT t.id, t.ville_depart, t.ville_arrivee, t.date_depart, t.heure_depart, 
-                   t.prix, t.duree_max, t.places_max, t.statut, 
+                   t.prix, t.duree_max, t.places_max, t.statut, t.is_bon_plan, t.reduction_credit,
                    v.modele as vehicule_modele, v.immatriculation
             FROM " . $this->table_name . " t
             JOIN vehicules v ON t.vehicule_id = v.id

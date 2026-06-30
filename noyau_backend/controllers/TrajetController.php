@@ -27,8 +27,10 @@ class TrajetController
         $this->trajet->date_depart = $data->date_depart;
         $this->trajet->heure_depart = $data->heure_depart;
         $this->trajet->prix = $data->prix;
-        $this->trajet->duree_max = $data->duree_max;
+        $this->trajet->duree_max = !empty($data->duree_max) ? $data->duree_max : 120;
         $this->trajet->places_max = $data->places_max;
+        $this->trajet->is_bon_plan = !empty($data->is_bon_plan) ? 1 : 0;
+        $this->trajet->reduction_credit = !empty($data->reduction_credit) ? intval($data->reduction_credit) : 0;
 
         if ($this->trajet->create()) {
             return ["status" => 201, "message" => "Trajet créé (2 crédits prélevés)."];

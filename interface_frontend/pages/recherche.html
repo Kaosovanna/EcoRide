@@ -52,6 +52,10 @@
                     </h5>
                     <form id="filter-form">
                         <div class="mb-4">
+                            <label class="form-label text-muted fw-bold small text-uppercase tracking-wide">Ville de départ</label>
+                            <input type="text" class="form-control form-control-lg border-0 bg-light rounded-3" id="filter-departure" placeholder="Ex: Paris">
+                        </div>
+                        <div class="mb-4">
                             <label class="form-label text-muted fw-bold small text-uppercase tracking-wide">Prix max
                                 (€/crédits)</label>
                             <input type="range" class="form-range" id="filter-price" min="0" max="100" value="100"
@@ -61,15 +65,15 @@
                                 <span><output id="priceOutput" class="fs-5">100</output></span>
                             </div>
                         </div>
+
                         <div class="mb-4">
-                            <label class="form-label text-muted fw-bold small text-uppercase tracking-wide">Durée max
-                                (min)</label>
-                            <input type="range" class="form-range" id="filter-duration" min="0" max="600" value="600"
-                                step="30" oninput="durationOutput.value = this.value">
-                            <div class="d-flex justify-content-between text-success fw-bold mt-1">
-                                <span>0</span>
-                                <span><output id="durationOutput" class="fs-5">600</output></span>
-                            </div>
+                            <label class="form-label text-muted fw-bold small text-uppercase tracking-wide">Note chauffeur min</label>
+                            <select class="form-select form-select-lg border-0 bg-light rounded-3" id="filter-rating">
+                                <option value="0">Toutes les notes</option>
+                                <option value="4.5">⭐ 4.5 et plus</option>
+                                <option value="4.8">⭐ 4.8 et plus</option>
+                                <option value="5.0">⭐ 5.0 uniquement</option>
+                            </select>
                         </div>
                         <div class="form-check mb-3 custom-checkbox">
                             <input class="form-check-input border-success" type="checkbox" id="filter-eco">
@@ -93,19 +97,19 @@
                 <div class="card p-4 glass-panel rounded-4 mt-4 d-none d-lg-block">
                     <h6 class="fw-bold mb-3" style="color: var(--eco-primary);">Nos Conducteurs Vedettes</h6>
                     <div id="drivers-list" class="d-flex flex-column gap-3">
-                        <div class="d-flex align-items-center bg-white p-2 rounded-3 shadow-sm">
+                        <div class="d-flex align-items-center bg-white p-2 rounded-3 shadow-sm hover-scale" style="cursor: pointer;" onclick="filterByDriverName('Sophie M.')" title="Voir les trajets de Sophie M.">
                             <img src="../ressources/images/sophie.png" class="rounded-circle me-2"
                                 style="width: 35px; height: 35px; object-fit: cover;">
                             <div class="small fw-bold">Sophie M.</div>
                             <div class="ms-auto text-warning small">⭐ 4.9</div>
                         </div>
-                        <div class="d-flex align-items-center bg-white p-2 rounded-3 shadow-sm">
+                        <div class="d-flex align-items-center bg-white p-2 rounded-3 shadow-sm hover-scale" style="cursor: pointer;" onclick="filterByDriverName('Marc D.')" title="Voir les trajets de Marc D.">
                             <img src="../ressources/images/marc.png" class="rounded-circle me-2"
                                 style="width: 35px; height: 35px; object-fit: cover;">
                             <div class="small fw-bold">Marc D.</div>
                             <div class="ms-auto text-warning small">⭐ 4.8</div>
                         </div>
-                        <div class="d-flex align-items-center bg-white p-2 rounded-3 shadow-sm">
+                        <div class="d-flex align-items-center bg-white p-2 rounded-3 shadow-sm hover-scale" style="cursor: pointer;" onclick="filterByDriverName('Julie D.')" title="Voir les trajets de Julie D.">
                             <img src="../ressources/images/julie.png" class="rounded-circle me-2"
                                 style="width: 35px; height: 35px; object-fit: cover;">
                             <div class="small fw-bold">Julie D.</div>
@@ -198,11 +202,13 @@
 
             let html = trips.map(t => {
                 let ecoBadge = t.est_electrique == 1 ? '<span class="badge bg-eco-accent rounded-pill fs-6 pulse-animation">🍃 ÉCOLOGIQUE</span>' : '';
-                let isBonPlan = t.prix <= 20;
-                let dealBadge = isBonPlan ? '<div class="bon-plan-badge">🔥 BON PLAN</div>' : '';
+                
+                // Read directly from DB or fallback to price <= 20
+                let isBonPlan = t.is_bon_plan == 1 || t.prix <= 20;
+                let dealBadge = isBonPlan ? '<div class="bon-plan-badge position-static shadow-none m-0" style="padding: 2px 10px; font-size: 0.7rem;">🔥 BON PLAN</div>' : '';
 
-                const oldPrice = Math.round(t.prix * 1.5);
-                const savings = oldPrice - t.prix;
+                const savings = t.reduction_credit !== undefined && parseInt(t.reduction_credit) > 0 ? parseInt(t.reduction_credit) : (isBonPlan ? Math.round(t.prix * 0.5) : 0);
+                const oldPrice = parseInt(t.prix) + savings;
 
                 // Simulate a realistic rating based on driver id to keep it consistent
                 const simulatedRating = (4.5 + (t.conducteur_id % 5) / 10).toFixed(1);
@@ -223,8 +229,7 @@
                 return `
                     <div class="col-lg-6 col-md-12">
                         <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white bon-plan-card position-relative pb-0">
-                            ${dealBadge}
-                            ${isBonPlan ? `<div class="savings-badge">-${savings} Crédits !</div>` : ''}
+                            ${isBonPlan && savings > 0 ? `<div class="savings-badge">-${savings} Crédits !</div>` : ''}
                             
                             <div class="card-body p-4 d-flex flex-column" style="cursor:pointer;" onclick="window.location.href='detail.html?id=${t.id}'">
                                 <!-- En-tête : Conducteur & Note -->
@@ -233,8 +238,11 @@
                                         ${driverPhotoHtml}
                                         <a href="profil.html?id=${t.conducteur_id}" onclick="event.stopPropagation()" class="fw-bold text-dark fs-6 text-decoration-none hover-underline">${t.conducteur_pseudo || 'Conducteur'}</a>
                                     </div>
-                                    <div class="d-flex align-items-center text-warning fw-bold fs-6">
-                                        <span class="me-1">⭐</span> ${simulatedRating}
+                                    <div class="d-flex align-items-center gap-2">
+                                        ${dealBadge}
+                                        <div class="d-flex align-items-center text-warning fw-bold fs-6" style="cursor: pointer;" title="Choisir ce trajet (note : ${simulatedRating})" onclick="event.stopPropagation(); window.location.href='detail.html?id=${t.id}'">
+                                            <span class="me-1">⭐</span> ${simulatedRating}
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -244,20 +252,21 @@
                                         ${t.ville_depart} <span class="text-muted mx-1">&rarr;</span> ${t.ville_arrivee}
                                     </h5>
                                     <div class="text-muted small fw-medium d-flex flex-wrap align-items-center">
-                                        <span>${new Date(t.date_depart).toLocaleDateString('fr-FR', { month: 'short', day: 'numeric' })}. &bull; ${t.heure_depart} - ${new Date(new Date('1970/01/01 ' + t.heure_depart).getTime() + t.duree_max * 60000).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</span>
-                                        <span class="mx-1">&bull;</span>
-                                        <span>${Math.floor(t.duree_max / 60)}h${t.duree_max % 60 > 0 ? (t.duree_max % 60).toString().padStart(2, '0') : ''}</span>
+                                        <span>${new Date(t.date_depart).toLocaleDateString('fr-FR', { month: 'short', day: 'numeric' })}. &bull; ${t.heure_depart}</span>
                                     </div>
                                 </div>
                                 
-                                <div class="mb-3">
+                                <div class="mb-3 d-flex gap-2 align-items-center flex-wrap">
                                     ${ecoBadge ? `<div class="badge bg-light text-success border border-success rounded-pill px-2 py-1 small" style="font-weight:600;"><span class="me-1">🍃</span> Véhicule Électrique</div>` : `<div class="badge bg-light text-secondary border rounded-pill px-2 py-1 small"><span class="me-1">🚗</span> Thermique</div>`}
+                                    <div class="badge bg-light text-dark border rounded-pill px-2 py-1 small" style="font-weight:600;">
+                                        👤 ${t.places_max} ${t.places_max > 1 ? 'places disponibles' : 'place disponible'}
+                                    </div>
                                 </div>
                                 
                                 <!-- Prix -->
                                 <div class="text-center mt-auto py-2">
                                     <span class="display-6 fw-bold text-success">${t.prix} <span class="fs-5 text-muted fw-normal" style="color: #28a745 !important;">crédits</span></span>
-                                    ${isBonPlan ? `<span class="text-muted text-decoration-line-through fs-6 ms-2">${oldPrice}cr</span>` : ''}
+                                    ${isBonPlan && savings > 0 ? `<span class="text-muted text-decoration-line-through fs-6 ms-2">${oldPrice}cr</span>` : ''}
                                 </div>
                             </div>
                             
@@ -273,27 +282,48 @@
             container.innerHTML = html;
         }
 
-        function applyFilters() {
+        async function applyFilters() {
+            const departureInput = document.getElementById('filter-departure').value.trim();
+            if (departureInput !== departure) {
+                departure = departureInput;
+                await loadTrips();
+            }
+
             let maxPrice = document.getElementById('filter-price').value;
-            let maxDuration = document.getElementById('filter-duration').value;
             let onlyEco = document.getElementById('filter-eco').checked;
             let bundleBonPlan = document.getElementById('filter-bonplan').checked;
+            let minRating = parseFloat(document.getElementById('filter-rating').value);
 
             let filtered = allTrips.filter(t => {
                 let match = true;
                 if (parseFloat(t.prix) > parseFloat(maxPrice)) match = false;
-                if (parseFloat(t.duree_max) > parseFloat(maxDuration)) match = false;
                 if (onlyEco && t.est_electrique != 1) match = false;
 
                 // Bon Plan logic: Strictly price <= 20 as requested
                 if (bundleBonPlan && t.prix > 20) match = false;
+
+                // Rating filter
+                const simulatedRating = parseFloat((4.5 + (t.conducteur_id % 5) / 10).toFixed(1));
+                if (simulatedRating < minRating) match = false;
 
                 return match;
             });
             renderTrips(filtered);
         }
 
-        document.addEventListener('DOMContentLoaded', loadTrips);
+        function filterByDriverName(name) {
+            const keyword = name.split(' ')[0].toLowerCase();
+            let filtered = allTrips.filter(t => {
+                const driverName = (t.conducteur_pseudo || '').toLowerCase();
+                return driverName.includes(keyword);
+            });
+            renderTrips(filtered);
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            document.getElementById('filter-departure').value = departure;
+            await loadTrips();
+        });
     </script>
 </body>
 

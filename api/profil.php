@@ -20,6 +20,10 @@ $stmt = $pdo->prepare("
 $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+if ($user) {
+    $user['biographie'] = htmlspecialchars_decode($user['biographie'] ?? '', ENT_QUOTES);
+}
+
 if (!$user) {
     http_response_code(404);
     echo json_encode(["status" => 404, "message" => "Utilisateur non trouvé."]);

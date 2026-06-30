@@ -19,6 +19,10 @@ class VehiculeController
             return ["status" => 400, "message" => "Données incomplètes."];
         }
 
+        if (empty($data->est_electrique) || $data->est_electrique != 1) {
+            return ["status" => 400, "message" => "Seuls les véhicules écologiques (électriques) peuvent être inscrits sur EcoRide."];
+        }
+
         $this->vehicule->utilisateur_id = $data->utilisateur_id;
         $this->vehicule->immatriculation = $data->immatriculation;
         $this->vehicule->modele = $data->modele;

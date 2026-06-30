@@ -43,14 +43,14 @@
                     </div>
 
                     <div class="list-group shadow-sm rounded-4 border-0">
-                        <button class="list-group-item list-group-item-action active fw-bold border-0 py-3"
+                        <button class="list-group-item list-group-item-action fw-bold border-0 py-3"
                             data-bs-toggle="list" data-bs-target="#reservations" type="button"
                             style="border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;">🎫 Mes
                             Réservations</button>
                         <button class="list-group-item list-group-item-action fw-bold border-0 py-3"
                             data-bs-toggle="list" data-bs-target="#mes-trajets" type="button">🛣️ Mes Trajets
                             (Chauffeur)</button>
-                        <button class="list-group-item list-group-item-action fw-bold border-0 py-3"
+                        <button class="list-group-item list-group-item-action active fw-bold border-0 py-3"
                             data-bs-toggle="list" data-bs-target="#profil" type="button">👤 Mon Profil</button>
                         <button class="list-group-item list-group-item-action fw-bold border-0 py-3"
                             data-bs-toggle="list" data-bs-target="#vehicules" type="button">🚗 Mes Véhicules</button>
@@ -74,7 +74,7 @@
             <div class="col-md-9">
                 <div class="tab-content" id="nav-tabContent">
                         <!-- Réservations Tab -->
-                        <div class="tab-pane fade show active" id="reservations">
+                        <div class="tab-pane fade" id="reservations">
                             <div class="card p-5 shadow-sm border-0 rounded-4">
                                 <h3 class="fw-bold mb-4" style="color: var(--eco-primary);">Mes Réservations</h3>
                                 <div id="reservations-list" class="row mb-5 g-4">
@@ -94,7 +94,7 @@
                         </div>
 
                         <!-- Profil Tab -->
-                        <div class="tab-pane fade" id="profil">
+                        <div class="tab-pane fade show active" id="profil">
                             <div class="card p-5 shadow-sm border-0 rounded-4">
                                 <h3 class="fw-bold mb-4" style="color: var(--eco-primary);">Mon Profil & Préférences
                                 </h3>
@@ -205,11 +205,11 @@
 
                                     <div class="col-12 mt-3 d-flex align-items-center">
                                         <div class="form-check me-auto">
-                                            <input class="form-check-input fs-5" type="checkbox" id="v-eco"
-                                                style="cursor: pointer;">
+                                            <input class="form-check-input fs-5" type="checkbox" id="v-eco" checked disabled
+                                                style="cursor: not-allowed;">
                                             <label class="form-check-label text-success fw-bold ms-2 pt-1" for="v-eco"
-                                                style="cursor: pointer;">
-                                                Véhicule Électrique (Covoiturage Écologique)
+                                                style="cursor: not-allowed;">
+                                                Véhicule Électrique (Obligatoire - Covoiturage 100% Éco uniquement)
                                             </label>
                                         </div>
                                         <button type="submit"
@@ -262,24 +262,32 @@
                                         <input type="time" class="form-control form-control-lg border-0 bg-white"
                                             id="t-heure" required>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label class="form-label fw-bold text-muted small text-uppercase">Prix
                                             (Crédits)</label>
                                         <input type="number" class="form-control form-control-lg border-0 bg-white"
                                             id="t-prix" min="1" required>
                                     </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label fw-bold text-muted small text-uppercase">Durée
-                                            (Minutes)</label>
-                                        <input type="number" class="form-control form-control-lg border-0 bg-white"
-                                            id="t-duree" min="10" required>
-                                    </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label class="form-label fw-bold text-muted small text-uppercase">Places
                                             Dispo.</label>
                                         <input type="number" class="form-control form-control-lg border-0 bg-white"
                                             id="t-places" min="1" required>
                                     </div>
+                                    
+                                    <!-- Bon Plan option -->
+                                    <div class="col-12 border-top pt-4">
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="t-is-bonplan" style="cursor: pointer;" onchange="toggleReductionInput(this.checked)">
+                                            <label class="form-check-label fw-bold text-success" for="t-is-bonplan" style="cursor: pointer;">🔥 Activer comme Bon Plan du moment</label>
+                                        </div>
+                                        <div class="col-md-6 d-none" id="reduction-container">
+                                            <label class="form-label fw-bold text-muted small text-uppercase">Réduction de crédits appliquée</label>
+                                            <input type="number" class="form-control form-control-lg border-0 bg-white" id="t-reduction" min="0" value="0">
+                                            <div class="form-text text-muted">Cette valeur sera affichée comme l'économie réalisée (ex. : -5 Crédits).</div>
+                                        </div>
+                                    </div>
+
                                     <div class="col-12 text-end mt-5">
                                         <button type="submit"
                                             class="btn btn-eco btn-lg px-5 rounded-pill shadow-sm fw-bold">🚀 Publier
@@ -502,8 +510,9 @@
                     date_depart: document.getElementById('t-date').value,
                     heure_depart: document.getElementById('t-heure').value,
                     prix: document.getElementById('t-prix').value,
-                    duree_max: document.getElementById('t-duree').value,
-                    places_max: document.getElementById('t-places').value
+                    places_max: document.getElementById('t-places').value,
+                    is_bon_plan: document.getElementById('t-is-bonplan').checked ? 1 : 0,
+                    reduction_credit: document.getElementById('t-reduction').value
                 });
                 alert(res.message);
 
@@ -513,10 +522,28 @@
                 document.getElementById('user-credits').textContent = user.credits;
 
                 document.getElementById('publish-trip-form').reset();
+                toggleReductionInput(false);
+                
+                // Refresh list of driver trips instantly and switch to that tab
+                await loadDriverTrips();
+                const tabBtn = document.querySelector('[data-bs-target="#mes-trajets"]');
+                if (tabBtn) {
+                    tabBtn.click();
+                }
             } catch (error) {
                 alert(error.message);
             }
         });
+
+        function toggleReductionInput(isChecked) {
+            const container = document.getElementById('reduction-container');
+            if (isChecked) {
+                container.classList.remove('d-none');
+            } else {
+                container.classList.add('d-none');
+                document.getElementById('t-reduction').value = 0;
+            }
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             loadProfile();
@@ -660,12 +687,14 @@
                 const trajets = await apiCall(`trips.php?action=list_by_driver&conducteur_id=${user.id}`);
                 const list = document.getElementById('trips-driver-list');
 
-                if (trajets.length === 0) {
+                const activeTrajets = trajets.filter(t => t.statut !== 'annule');
+
+                if (activeTrajets.length === 0) {
                     list.innerHTML = '<div class="col-12 text-muted">Vous n\'avez publié aucun trajet.</div>';
                     return;
                 }
 
-                list.innerHTML = trajets.map(t => {
+                list.innerHTML = activeTrajets.map(t => {
                     let actions = '';
                     if (t.statut === 'planifie') {
                         actions = `<button class="btn btn-sm btn-success fw-bold me-2" onclick="changeTripStatus(${t.id}, 'demarre')">▶️ Démarrer</button>
@@ -674,8 +703,6 @@
                         actions = `<button class="btn btn-sm btn-eco-accent fw-bold" onclick="changeTripStatus(${t.id}, 'termine')">✅ Terminer</button>`;
                     } else if (t.statut === 'termine') {
                         actions = `<span class="badge bg-secondary">Terminé</span>`;
-                    } else if (t.statut === 'annule') {
-                        actions = `<span class="badge bg-danger">Annulé</span>`;
                     }
 
                     return `
@@ -708,7 +735,7 @@
                     statut: status
                 });
 
-                if (status === 'cancelled') {
+                if (status === 'annule') {
                     console.log(`[SIMULATION MAIL] Notification envoyée aux passagers pour l'annulation du trajet #${tripId}`);
                     alert("Trajet annulé. Une notification a été envoyée aux passagers.");
                 } else {

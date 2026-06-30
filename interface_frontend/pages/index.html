@@ -104,26 +104,6 @@
             </div>
         </section>
 
-        <!-- Bon Plan Section -->
-        <section class="container py-5">
-            <div class="d-flex align-items-center mb-5">
-                <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center me-3"
-                    style="width: 50px; height: 50px;">
-                    <span class="fs-3">🔥</span>
-                </div>
-                <h2 class="fw-bold mb-0" style="color: var(--eco-primary);">Bon plan du moment</h2>
-                <div class="ms-auto">
-                    <a href="recherche.html" class="text-decoration-none fw-bold text-success">Voir tout ➔</a>
-                </div>
-            </div>
-            <div id="featured-trips-container" class="row g-4">
-                <!-- Data loaded via JS -->
-                <div class="col-12 text-center py-5">
-                    <div class="spinner-border text-success"></div>
-                </div>
-            </div>
-        </section>
-
         <!-- Environmental Impact Section -->
         <section class="container-fluid mb-5 py-5" style="background-color: #f0fdf4;">
             <div class="container">
@@ -153,6 +133,26 @@
                                 alt="Impact Environnemental" class="w-100 h-100" style="object-fit: cover;">
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bon Plan Section -->
+        <section class="container py-5">
+            <div class="d-flex align-items-center mb-5">
+                <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center me-3"
+                    style="width: 50px; height: 50px;">
+                    <span class="fs-3">🔥</span>
+                </div>
+                <h2 class="fw-bold mb-0" style="color: var(--eco-primary);">Bon plan du moment</h2>
+                <div class="ms-auto">
+                    <a href="recherche.html" class="text-decoration-none fw-bold text-success">Voir tout ➔</a>
+                </div>
+            </div>
+            <div id="featured-trips-container" class="row g-4">
+                <!-- Data loaded via JS -->
+                <div class="col-12 text-center py-5">
+                    <div class="spinner-border text-success"></div>
                 </div>
             </div>
         </section>
@@ -337,7 +337,7 @@
 
                 // Filter for "Bon Plans": Strictly Price <= 20
                 const tripsArray = Array.isArray(trips) ? trips : (trips.trajets || []);
-                const featured = tripsArray.filter(t => t.prix <= 20).slice(0, 10);
+                const featured = tripsArray.filter(t => t.prix <= 20 || t.is_bon_plan == 1).slice(0, 10);
 
                 if (featured.length === 0) {
                     container.innerHTML = '<div class="col-12 text-center text-muted py-5"><p>Aucun bon plan avec réduction de crédits trouvé. Consultez tous les trajets !</p></div>';
@@ -346,11 +346,13 @@
 
                 container.innerHTML = featured.map(t => {
                     let ecoBadge = t.est_electrique == 1 ? '<span class="eco-badge">🍃 Écologique</span>' : '';
-                    let dealBadge = '<div class="bon-plan-badge">🔥 Prix Réduit</div>';
+                    
+                    // Read directly from DB or fallback to price <= 20
+                    let isBonPlan = t.is_bon_plan == 1 || t.prix <= 20;
+                    let dealBadge = isBonPlan ? '<div class="bon-plan-badge position-static shadow-none m-0" style="padding: 2px 10px; font-size: 0.7rem;">🔥 Prix Réduit</div>' : '';
 
-                    // Logic to simulate a "before" price for visual impact
-                    const oldPrice = Math.round(t.prix * 1.5);
-                    const savings = oldPrice - t.prix;
+                    const savings = t.reduction_credit !== undefined && parseInt(t.reduction_credit) > 0 ? parseInt(t.reduction_credit) : (isBonPlan ? Math.round(t.prix * 0.5) : 0);
+                    const oldPrice = parseInt(t.prix) + savings;
 
                     // Simulate a realistic rating based on driver id
                     const simulatedRating = (4.5 + (t.conducteur_id % 5) / 10).toFixed(1);
@@ -371,8 +373,7 @@
                     return `
                     <div class="col-md-4">
                         <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white bon-plan-card position-relative pb-0">
-                            ${dealBadge}
-                            <div class="savings-badge">-${savings} Crédits !</div>
+                            ${isBonPlan && savings > 0 ? `<div class="savings-badge">-${savings} Crédits !</div>` : ''}
                             
                             <div class="card-body p-4 d-flex flex-column" style="cursor:pointer;" onclick="window.location.href='detail.html?id=${t.id}'">
                                 <!-- En-tête : Conducteur & Note -->
@@ -381,8 +382,11 @@
                                         ${driverPhotoHtml}
                                         <div class="fw-bold text-dark fs-6 text-truncate" style="max-width: 120px;">${t.conducteur_pseudo || 'Conducteur'}</div>
                                     </div>
-                                    <div class="d-flex align-items-center text-warning fw-bold fs-6">
-                                        <span class="me-1">⭐</span> ${simulatedRating}
+                                    <div class="d-flex align-items-center gap-2">
+                                        ${dealBadge}
+                                        <div class="d-flex align-items-center text-warning fw-bold fs-6">
+                                            <span class="me-1">⭐</span> ${simulatedRating}
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -393,19 +397,20 @@
                                     </h5>
                                     <div class="text-muted small fw-medium d-flex flex-wrap align-items-center">
                                         <span>${new Date(t.date_depart).toLocaleDateString('fr-FR', { month: 'short', day: 'numeric' })}. &bull; ${t.heure_depart.substring(0, 5)}</span>
-                                        <span class="mx-1">&bull;</span>
-                                        <span>${Math.floor(t.duree_max / 60)}h${t.duree_max % 60 > 0 ? (t.duree_max % 60).toString().padStart(2, '0') : ''}</span>
                                     </div>
                                 </div>
                                 
-                                <div class="mb-3">
+                                <div class="mb-3 d-flex gap-2 align-items-center flex-wrap">
                                     ${t.est_electrique == 1 ? `<div class="badge bg-light text-success border border-success rounded-pill px-2 py-1 small" style="font-weight:600;"><span class="me-1">🍃</span> Électrique</div>` : `<div class="badge bg-light text-secondary border rounded-pill px-2 py-1 small"><span class="me-1">🚗</span> Thermique</div>`}
+                                    <div class="badge bg-light text-dark border rounded-pill px-2 py-1 small" style="font-weight:600;">
+                                        👤 ${t.places_max} ${t.places_max > 1 ? 'places disponibles' : 'place disponible'}
+                                    </div>
                                 </div>
                                 
                                 <!-- Prix -->
                                 <div class="text-center mt-auto py-2">
                                     <span class="display-6 fw-bold text-success">${t.prix} <span class="fs-5 text-muted fw-normal" style="color: #28a745 !important;">crédits</span></span>
-                                    <span class="text-muted text-decoration-line-through fs-6 ms-2">${oldPrice}cr</span>
+                                    ${isBonPlan && savings > 0 ? `<span class="text-muted text-decoration-line-through fs-6 ms-2">${oldPrice}cr</span>` : ''}
                                 </div>
                             </div>
                             
